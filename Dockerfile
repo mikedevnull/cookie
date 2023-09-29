@@ -8,7 +8,7 @@ COPY . .
 RUN npm run build
 
 # Step 2: Set up nginx to server static page
-FROM nginx:stable-alpine
+FROM nginx:stable-alpine as nginx-container
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 80
