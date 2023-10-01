@@ -1,7 +1,7 @@
 import "@mantine/core/styles.css";
 import { MantineProvider, Stack, Title } from "@mantine/core";
 import { DEFAULT_THEME } from "@mantine/core";
-import ShopItemList from "./components/ShopItemList";
+import ShopItemList from "./components/ItemList";
 import "./App.css";
 import SearchAndAddItemField from "./components/SearchAndAddItemField";
 const items = [
