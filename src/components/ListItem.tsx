@@ -1,10 +1,6 @@
 import { Paper } from "@mantine/core";
 import classes from "./ListItem.module.css";
-
-export type Item = {
-  name: string;
-  marked: boolean;
-};
+import { Item } from "../db";
 
 type Props = {
   item: Item;
@@ -18,7 +14,7 @@ export default function ListItem({ item, itemClicked }: Props) {
     }
   };
   let usedClasses = `${classes.item}`;
-  if (item.marked) {
+  if (item.active) {
     usedClasses += ` ${classes.selected}`;
   }
   return (

@@ -1,6 +1,6 @@
 import { SimpleGrid } from "@mantine/core";
-import type { Item } from "./ListItem";
 import ListItem from "./ListItem";
+import { Item } from "../db";
 
 type ItemClicked = (item: Item) => void;
 

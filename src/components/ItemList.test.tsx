@@ -5,23 +5,23 @@ import "@testing-library/jest-dom";
 import { render } from "../../tests/render";
 import ItemList from "./ItemList";
 import ListItemClasses from "./ListItem.module.css";
-import { Item } from "./ListItem";
+import { Item } from "../db";
 
 const testItem1: Item = {
   name: "Some item",
-  marked: false,
+  active: false,
 };
 const testItem2: Item = {
   name: "Another item",
-  marked: true,
+  active: true,
 };
 const testItem3: Item = {
   name: "Third item",
-  marked: true,
+  active: true,
 };
 const testItem4: Item = {
   name: "Item item",
-  marked: false,
+  active: false,
 };
 
 const testItems = [testItem1, testItem2, testItem3, testItem4];
