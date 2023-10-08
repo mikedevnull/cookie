@@ -1,4 +1,4 @@
-import { RxCollection, RxDatabase, addRxPlugin } from "rxdb";
+import { RxCollection, RxDatabase, RxStorage, addRxPlugin } from "rxdb";
 import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { createRxDatabase } from "rxdb";
@@ -18,10 +18,12 @@ type DatabaseCollections = {
 };
 export type Database = RxDatabase<DatabaseCollections>;
 
-export async function initialize(): Promise<Database> {
+export async function createDatabase(
+  storage?: RxStorage<unknown, unknown>
+): Promise<Database> {
   const database: Database = await createRxDatabase({
     name: "cookie",
-    storage: getRxStorageMemory(),
+    storage: storage || getRxStorageMemory(),
     ignoreDuplicate: true,
   });
 
@@ -47,7 +49,15 @@ export async function initialize(): Promise<Database> {
     },
   });
 
-  database.items.bulkInsert(initialItems);
-
   return database;
+}
+
+export async function insertDefaultData(database: Database) {
+  await database.items.bulkInsert(initialItems);
+}
+
+export async function initialize() {
+  const db = await createDatabase();
+  await insertDefaultData(db);
+  return db;
 }

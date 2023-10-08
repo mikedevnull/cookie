@@ -5,11 +5,27 @@ import {
 import React from "react";
 import { MantineProvider } from "@mantine/core";
 import { DEFAULT_THEME } from "@mantine/core";
+import { Database } from "@/db";
+import { Provider } from "rxdb-hooks";
 
-export function render(ui: React.ReactElement, options?: RenderOptions) {
+export function render(
+  ui: React.ReactElement,
+  db?: Database,
+  options?: RenderOptions
+) {
   const AllProviders = ({ children }: { children: React.ReactNode }) => {
-    return <MantineProvider theme={DEFAULT_THEME}>{children}</MantineProvider>;
+    return (
+      <Provider db={db}>
+        <MantineProvider theme={DEFAULT_THEME}>{children}</MantineProvider>
+      </Provider>
+    );
   };
 
   return testingLibraryRender(ui, { wrapper: AllProviders, ...options });
+}
+
+export function createRenderWithDb(db: Database) {
+  return (children: React.ReactElement) => {
+    return render(<Provider db={db}>{children}</Provider>);
+  };
 }
