@@ -1,11 +1,11 @@
+import { vi } from "vitest";
 import { getAllByRole, getByText, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { vi } from "vitest";
+import { Item } from "@/db";
 import "@testing-library/jest-dom";
-import { render } from "../../tests/render";
+import { render } from "@testing/render";
 import ItemList from "./ItemList";
 import ListItemClasses from "./ListItem.module.css";
-import { Item } from "../db";
 
 const testItem1: Item = {
   name: "Some item",

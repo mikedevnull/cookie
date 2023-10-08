@@ -1,6 +1,6 @@
 import { Paper } from "@mantine/core";
 import classes from "./ListItem.module.css";
-import { Item } from "../db";
+import { Item } from "@/db";
 
 type Props = {
   item: Item;
