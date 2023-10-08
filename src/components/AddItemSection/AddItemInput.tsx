@@ -9,7 +9,6 @@ type Props = {
 export default function AddItemInput({ addItemCallback }: Props) {
   const textInput = createRef<HTMLInputElement>();
   const onSubmit = (name: string) => {
-    console.log(addItemCallback);
     if (addItemCallback !== undefined) {
       addItemCallback(name);
     }

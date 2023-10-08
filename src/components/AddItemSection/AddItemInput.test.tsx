@@ -1,30 +1,16 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { vi, beforeEach } from "vitest";
+import { vi } from "vitest";
 import "@testing-library/jest-dom";
-import { render } from "../../../tests/render";
 import AddItemInput from "./AddItemInput";
-import { Database, initialize } from "@/db";
-import { Provider } from "rxdb-hooks";
-
-interface DbTestContext {
-  db: Database;
-}
-
-beforeEach<DbTestContext>(async (context) => {
-  context.db = await initialize();
-});
+import { DbTestContext } from "@testing/setup";
 
 test<DbTestContext>("Entering text and enter will trigger callback", async ({
-  db,
+  render,
 }) => {
   const user = userEvent.setup();
   const mockCallback = vi.fn();
-  render(
-    <Provider db={db}>
-      <AddItemInput addItemCallback={mockCallback} />
-    </Provider>
-  );
+  render(<AddItemInput addItemCallback={mockCallback} />);
 
   const input = await screen.findByPlaceholderText("Add item");
   expect(input).toBeDefined();
