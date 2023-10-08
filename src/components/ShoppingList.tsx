@@ -1,4 +1,4 @@
-import { ItemCollection } from "../db";
+import { ItemCollection } from "@/db";
 import ItemList from "./ItemList";
 import { useRxData } from "rxdb-hooks";
 
