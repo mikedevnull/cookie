@@ -1,12 +1,13 @@
 import { TextInput } from "@mantine/core";
-import { createRef } from "react";
+import { CSSProperties, createRef } from "react";
 
 type AddItemCallback = (name: string) => void;
 type Props = {
   addItemCallback?: AddItemCallback;
+  style: CSSProperties;
 };
 
-export default function AddItemInput({ addItemCallback }: Props) {
+export default function AddItemInput({ addItemCallback, style }: Props) {
   const textInput = createRef<HTMLInputElement>();
   const onSubmit = (name: string) => {
     if (addItemCallback !== undefined) {
@@ -25,6 +26,7 @@ export default function AddItemInput({ addItemCallback }: Props) {
   };
   return (
     <TextInput
+      style={style}
       ref={textInput}
       placeholder="Add item"
       onKeyDown={onKeydown}

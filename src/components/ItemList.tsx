@@ -21,7 +21,7 @@ export default function ShopItemList({ items, itemClicked }: Props) {
   });
 
   return (
-    <SimpleGrid role="list" cols={{ base: 2, sm: 4, lg: 6 }}>
+    <SimpleGrid role="list" cols={1}>
       {itemsViews}
     </SimpleGrid>
   );
