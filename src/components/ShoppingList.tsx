@@ -23,7 +23,6 @@ export default function ShoppingList() {
 
   return (
     <section>
-      <h2>Shopping list</h2>
       <ItemList items={items} itemClicked={itemSelectedCallback}></ItemList>
     </section>
   );

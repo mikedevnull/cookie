@@ -1,4 +1,3 @@
-import { Paper } from "@mantine/core";
 import classes from "./ListItem.module.css";
 import { Item } from "@/db";
 
@@ -18,14 +17,8 @@ export default function ListItem({ item, itemClicked }: Props) {
     usedClasses += ` ${classes.selected}`;
   }
   return (
-    <Paper
-      role="listitem"
-      className={usedClasses}
-      shadow="xs"
-      p="xl"
-      onClick={onClick}
-    >
+    <div role="listitem" className={usedClasses} onClick={onClick}>
       {item.name}
-    </Paper>
+    </div>
   );
 }

@@ -7,6 +7,6 @@
 }
 
 .selected {
-  border-color: var(--mantine-primary-color-light-hover);
-  background-color: var(--mantine-primary-color-light-hover);
+  border: 1px solid var(--mantine-primary-color-filled-hover);
+  /* border-color: var(--mantine-primary-color-light-hover); */
 }
