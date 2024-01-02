@@ -1,28 +1,51 @@
-import { SimpleGrid } from "@mantine/core";
-import ListItem from "./ListItem";
+import {
+  ListItemButton,
+  ListItemIcon,
+  Checkbox,
+  ListItemText,
+  ListItem,
+  List,
+} from "@mui/material";
+import { TransitionGroup } from "react-transition-group";
 import { Item } from "@/db";
 
 type ItemClicked = (item: Item) => void;
 
 type Props = {
   items: Item[];
-  itemClicked?: ItemClicked;
+  itemSelectedCallback?: ItemClicked;
 };
 
-export default function ShopItemList({ items, itemClicked }: Props) {
+export default function ShopItemList({ items, itemSelectedCallback }: Props) {
   const onClick = (item: Item) => {
-    if (itemClicked) {
-      itemClicked(item);
+    if (itemSelectedCallback) {
+      itemSelectedCallback(item);
     }
   };
 
-  const itemsViews = items.map((i) => {
-    return <ListItem item={i} key={i.name} itemClicked={onClick}></ListItem>;
-  });
+  const renderItem = (item: Item, index: number) => {
+    const labelId = `checkbox-list-label-${index}`;
+    return (
+      <ListItem disablePadding>
+        <ListItemButton onClick={() => onClick(item)}>
+          <ListItemIcon>
+            <Checkbox
+              edge="start"
+              checked={item.active === false}
+              tabIndex={-1}
+              disableRipple
+              inputProps={{ "aria-labelledby": labelId }}
+            />
+          </ListItemIcon>
+          <ListItemText id={labelId} primary={item.name} />
+        </ListItemButton>
+      </ListItem>
+    );
+  };
 
   return (
-    <SimpleGrid role="list" cols={1}>
-      {itemsViews}
-    </SimpleGrid>
+    <List>
+      <TransitionGroup>{items.map(renderItem)}</TransitionGroup>
+    </List>
   );
 }

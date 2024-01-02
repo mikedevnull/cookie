@@ -1,11 +1,10 @@
 import { vi } from "vitest";
-import { getAllByRole, getByText, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Item } from "@/db";
 import "@testing-library/jest-dom";
 import { render } from "@testing/render";
 import ItemList from "./ItemList";
-import ListItemClasses from "./ListItem.module.css";
 
 const testItem1: Item = {
   name: "Some item",
@@ -29,35 +28,21 @@ const testItems = [testItem1, testItem2, testItem3, testItem4];
 test("displays list of items with correct state", async () => {
   render(<ItemList items={testItems} />);
 
-  const itemlist = await screen.findByRole("list");
+  for (const item of testItems) {
+    const domItem = screen.getByLabelText<HTMLInputElement>(item.name);
+    expect(domItem).toBeInTheDocument();
+    expect(domItem.checked).toStrictEqual(!item.active);
+  }
 
-  expect(getByText(itemlist, testItem1.name)).toBeDefined;
-  expect(getByText(itemlist, testItem1.name)).not.toHaveClass(
-    ListItemClasses.selected
-  );
-  expect(getByText(itemlist, testItem2.name)).toBeDefined;
-  expect(getByText(itemlist, testItem2.name)).toHaveClass(
-    ListItemClasses.selected
-  );
-  expect(getByText(itemlist, testItem3.name)).toBeDefined;
-  expect(getByText(itemlist, testItem3.name)).toHaveClass(
-    ListItemClasses.selected
-  );
-  expect(getByText(itemlist, testItem4.name)).toBeDefined;
-  expect(getByText(itemlist, testItem4.name)).not.toHaveClass(
-    ListItemClasses.selected
-  );
-
-  expect(getAllByRole(itemlist, "listitem")).toHaveLength(testItems.length);
+  expect(screen.getAllByRole("listitem")).toHaveLength(testItems.length);
 });
 
 test("click on item in list triggeres callback with item", async () => {
   const user = userEvent.setup();
   const mockCallback = vi.fn();
-  render(<ItemList items={testItems} itemClicked={mockCallback} />);
+  render(<ItemList items={testItems} itemSelectedCallback={mockCallback} />);
 
-  const itemlist = await screen.findByRole("list");
-  const item2 = getByText(itemlist, testItem2.name);
+  const item2 = await screen.findByLabelText(testItem2.name);
 
   await user.click(item2);
   expect(mockCallback).toHaveBeenCalledOnce();
@@ -65,7 +50,7 @@ test("click on item in list triggeres callback with item", async () => {
 
   mockCallback.mockReset();
 
-  const item3 = getByText(itemlist, testItem3.name);
+  const item3 = await screen.findByLabelText(testItem3.name);
 
   await user.click(item3);
   expect(mockCallback).toHaveBeenCalledOnce();
