@@ -3,7 +3,7 @@ import type { Item } from "./types";
 export const initialItems: Item[] = [
   {
     name: "Apple",
-    active: false,
+    active: true,
   },
   {
     name: "Bread",
@@ -11,6 +11,6 @@ export const initialItems: Item[] = [
   },
   {
     name: "Butter",
-    active: false,
+    active: true,
   },
 ];

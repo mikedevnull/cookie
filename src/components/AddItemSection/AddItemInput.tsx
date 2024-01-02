@@ -1,13 +1,12 @@
-import { TextInput } from "@mantine/core";
-import { CSSProperties, createRef } from "react";
+import { createRef } from "react";
+import TextField from "@mui/material/TextField";
 
 type AddItemCallback = (name: string) => void;
 type Props = {
   addItemCallback?: AddItemCallback;
-  style: CSSProperties;
 };
 
-export default function AddItemInput({ addItemCallback, style }: Props) {
+export default function AddItemInput({ addItemCallback }: Props) {
   const textInput = createRef<HTMLInputElement>();
   const onSubmit = (name: string) => {
     if (addItemCallback !== undefined) {
@@ -21,15 +20,16 @@ export default function AddItemInput({ addItemCallback, style }: Props) {
 
   const onKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      onSubmit(e.currentTarget.value);
+      if (textInput.current) {
+        onSubmit(textInput.current.value);
+      }
     }
   };
   return (
-    <TextInput
-      style={style}
-      ref={textInput}
+    <TextField
+      inputRef={textInput}
       placeholder="Add item"
       onKeyDown={onKeydown}
-    ></TextInput>
+    ></TextField>
   );
 }

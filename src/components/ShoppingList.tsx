@@ -1,5 +1,15 @@
 import { Item, ItemCollection } from "@/db";
-import ItemList from "./ItemList";
+import {
+  Checkbox,
+  Collapse,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import { TransitionGroup } from "react-transition-group";
+
 import { RxDocument } from "rxdb";
 import { useRxData } from "rxdb-hooks";
 
@@ -21,9 +31,34 @@ export default function ShoppingList() {
     }
   };
 
+  const renderedItems = items.map((i, index) => {
+    const labelId = `checkbox-list-label-${index}`;
+
+    return (
+      <Collapse key={i.name}>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => itemSelectedCallback(i)}>
+            <ListItemIcon>
+              <Checkbox
+                edge="start"
+                checked={i.active === false}
+                tabIndex={-1}
+                disableRipple
+                inputProps={{ "aria-labelledby": labelId }}
+              />
+            </ListItemIcon>
+            <ListItemText id={labelId} primary={i.name} />
+          </ListItemButton>
+        </ListItem>
+      </Collapse>
+    );
+  });
+
   return (
     <section>
-      <ItemList items={items} itemClicked={itemSelectedCallback}></ItemList>
+      <List>
+        <TransitionGroup>{renderedItems}</TransitionGroup>
+      </List>
     </section>
   );
 }
