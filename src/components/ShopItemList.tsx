@@ -5,6 +5,7 @@ import {
   ListItemText,
   ListItem,
   List,
+  Collapse,
 } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
 import { Item } from "@/db";
@@ -26,20 +27,22 @@ export default function ShopItemList({ items, itemSelectedCallback }: Props) {
   const renderItem = (item: Item, index: number) => {
     const labelId = `checkbox-list-label-${index}`;
     return (
-      <ListItem disablePadding>
-        <ListItemButton onClick={() => onClick(item)}>
-          <ListItemIcon>
-            <Checkbox
-              edge="start"
-              checked={item.active === false}
-              tabIndex={-1}
-              disableRipple
-              inputProps={{ "aria-labelledby": labelId }}
-            />
-          </ListItemIcon>
-          <ListItemText id={labelId} primary={item.name} />
-        </ListItemButton>
-      </ListItem>
+      <Collapse key={item.name}>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => onClick(item)}>
+            <ListItemIcon>
+              <Checkbox
+                edge="start"
+                checked={item.active === false}
+                tabIndex={-1}
+                disableRipple
+                inputProps={{ "aria-labelledby": labelId }}
+              />
+            </ListItemIcon>
+            <ListItemText id={labelId} primary={item.name} />
+          </ListItemButton>
+        </ListItem>
+      </Collapse>
     );
   };
 

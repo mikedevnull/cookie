@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { Item } from "@/db";
 import "@testing-library/jest-dom";
 import { render } from "@testing/render";
-import ItemList from "./ItemList";
+import ShopItemList from "./ShopItemList";
 
 const testItem1: Item = {
   name: "Some item",
@@ -26,7 +26,7 @@ const testItem4: Item = {
 const testItems = [testItem1, testItem2, testItem3, testItem4];
 
 test("displays list of items with correct state", async () => {
-  render(<ItemList items={testItems} />);
+  render(<ShopItemList items={testItems} />);
 
   for (const item of testItems) {
     const domItem = screen.getByLabelText<HTMLInputElement>(item.name);
@@ -40,7 +40,9 @@ test("displays list of items with correct state", async () => {
 test("click on item in list triggeres callback with item", async () => {
   const user = userEvent.setup();
   const mockCallback = vi.fn();
-  render(<ItemList items={testItems} itemSelectedCallback={mockCallback} />);
+  render(
+    <ShopItemList items={testItems} itemSelectedCallback={mockCallback} />
+  );
 
   const item2 = await screen.findByLabelText(testItem2.name);
 

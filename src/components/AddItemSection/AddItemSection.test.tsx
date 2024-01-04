@@ -16,7 +16,7 @@ test<DbTestContext>("Adds new items to the database", async ({
     db.collections.items.findOne("Foobar").exec()
   ).resolves.toBeNull();
 
-  const input = await screen.findByPlaceholderText("Add item");
+  const input = await screen.findByLabelText("Add item");
   expect(input).toBeDefined();
 
   await user.type(input, "Foobar");
@@ -36,7 +36,7 @@ test<DbTestContext>("Modifies existing items in the database", async ({
 
   await db.collections.items.insert({ name: "Foobar", active: false });
 
-  const input = await screen.findByPlaceholderText("Add item");
+  const input = await screen.findByLabelText("Add item");
   expect(input).toBeDefined();
 
   await user.type(input, "Foobar");

@@ -4,26 +4,30 @@ import {
   Toolbar,
   Typography,
   Container,
+  Stack,
 } from "@mui/material";
 
 import ShoppingList from "./components/ShoppingList";
-import AddItemInput from "./components/AddItemSection/AddItemInput";
+import AddItemSection from "./components/AddItemSection";
 
 function App() {
   return (
     <>
       <CssBaseline />
-      <Container>
-        <AppBar position="relative">
-          <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap>
-              Cookie
-            </Typography>
-          </Toolbar>
-        </AppBar>
+
+      <AppBar position="relative">
+        <Toolbar>
+          <Typography variant="h6" color="inherit" noWrap>
+            Cookie
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Container maxWidth="sm">
         <main>
-          <AddItemInput></AddItemInput>
-          <ShoppingList></ShoppingList>
+          <Stack>
+            <AddItemSection></AddItemSection>
+            <ShoppingList></ShoppingList>
+          </Stack>
         </main>
       </Container>
     </>
