@@ -57,7 +57,6 @@ export async function insertDefaultData(database: Database) {
 }
 
 export async function initialize() {
-  console.log("a");
   const env = process.env.NODE_ENV || "development";
   const storage = env !== "development" ? getRxStorageDexie() : undefined;
   const db = await createDatabase(storage);

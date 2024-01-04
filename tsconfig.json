@@ -7,12 +7,8 @@
     "skipLibCheck": true,
 
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@testing/*": [
-        "./tests/*"
-      ]
+      "@/*": ["./src/*"],
+      "@testing/*": ["./tests/*"]
     },
 
     /* Bundler mode */
@@ -29,8 +25,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* testing */
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "vite-plugin-pwa/client"]
   },
   "include": ["src", "tests"],
   "references": [{ "path": "./tsconfig.node.json" }]
