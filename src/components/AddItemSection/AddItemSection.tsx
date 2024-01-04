@@ -68,7 +68,13 @@ export default function AddItemSection() {
           return options;
         }}
         renderOption={(props, option) => <li {...props}>{option}</li>}
-        renderInput={(params) => <TextField {...params} label="Add item" />}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            inputProps={{ ...params.inputProps, autocapitalize: "on" }}
+            label="Add item"
+          />
+        )}
       />
     </Box>
   );
