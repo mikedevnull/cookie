@@ -5,9 +5,9 @@ import "@/index.css";
 import { DatabaseProvider } from "@/db";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <DatabaseProvider>
+  <DatabaseProvider>
+    <React.StrictMode>
       <App />
-    </DatabaseProvider>
-  </React.StrictMode>
+    </React.StrictMode>
+  </DatabaseProvider>
 );
