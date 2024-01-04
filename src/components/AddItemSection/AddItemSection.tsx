@@ -30,7 +30,7 @@ export default function AddItemSection() {
     clearTimeout(searchDebounceTimeout);
     searchDebounceTimeout = setTimeout(
       () => setSearchValue(DOMPurify.sanitize(value)),
-      1000
+      250
     );
   };
 
