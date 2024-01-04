@@ -6,6 +6,7 @@ import { createRxDatabase } from "rxdb";
 import { initialItems } from "./data";
 import { Item } from "./types";
 import { getRxStorageMemory } from "rxdb/plugins/storage-memory";
+import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 
 if (import.meta.env.DEV) {
   addRxPlugin(RxDBDevModePlugin);
@@ -24,7 +25,6 @@ export async function createDatabase(
   const database: Database = await createRxDatabase({
     name: "cookie",
     storage: storage || getRxStorageMemory(),
-    ignoreDuplicate: true,
   });
 
   const itemSchema = {
@@ -57,7 +57,10 @@ export async function insertDefaultData(database: Database) {
 }
 
 export async function initialize() {
-  const db = await createDatabase();
+  console.log("a");
+  const env = process.env.NODE_ENV || "development";
+  const storage = env !== "development" ? getRxStorageDexie() : undefined;
+  const db = await createDatabase(storage);
   await insertDefaultData(db);
   return db;
 }
