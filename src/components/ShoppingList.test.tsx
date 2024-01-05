@@ -53,7 +53,7 @@ test<DbTestContext>("Clicking an item toggles state in database", async ({
   await removalFinished;
 });
 
-test<DbTestContext>("Removal from database removes from ", async ({
+test<DbTestContext>("Removal from database removes from list", async ({
   db,
   render,
 }) => {
@@ -69,4 +69,10 @@ test<DbTestContext>("Removal from database removes from ", async ({
 
   await db.collections.items.findOne("testItem2").remove();
   await removalFinished;
+});
+
+test<DbTestContext>("Empty list displays message", async ({ render }) => {
+  render(<ShoppingList />);
+  const notifyText = await screen.findByText("The list is currently empty.");
+  expect(notifyText).toBeInTheDocument();
 });
