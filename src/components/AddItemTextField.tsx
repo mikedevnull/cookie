@@ -1,12 +1,11 @@
-import { useRxCollection } from "rxdb-hooks";
-import { Item } from "@/db";
 import TextField from "@mui/material/TextField";
 
-import DOMPurify from "dompurify";
 import { useCallback, useState } from "react";
 import { Box } from "@mui/material";
 
 type Props = {
+  defaultValue?: string;
+  submitValue?: (arg0: string) => void;
   searchFilterCallback?: (arg0: string) => void;
 };
 
@@ -23,20 +22,23 @@ function createDebounceCallback(callback?: (arg0: string) => void) {
   };
 }
 
-export default function AddItemSection({ searchFilterCallback }: Props) {
-  const collection = useRxCollection<Item>("items");
-  const [value, setValue] = useState<string>("");
+export default function AddItemTextField({
+  defaultValue,
+  submitValue,
+  searchFilterCallback,
+}: Props) {
+  const [value, setValue] = useState<string>(defaultValue || "");
 
   const addItem = (name: string) => {
-    return collection?.upsert({
-      name: DOMPurify.sanitize(name),
-      active: true,
-    });
+    if (submitValue && name.length > 0) {
+      submitValue(name);
+    }
   };
 
-  const callback = useCallback(createDebounceCallback(searchFilterCallback), [
-    searchFilterCallback,
-  ]);
+  const searchCallback = useCallback(
+    createDebounceCallback(searchFilterCallback),
+    [searchFilterCallback]
+  );
 
   return (
     <Box marginTop={2}>
@@ -44,13 +46,13 @@ export default function AddItemSection({ searchFilterCallback }: Props) {
         value={value}
         onChange={(event) => {
           setValue(event.currentTarget.value);
-          callback(event.currentTarget.value);
+          searchCallback(event.currentTarget.value);
         }}
         onKeyDown={(event) => {
           if (event.key === "Enter") {
-            addItem(value);
+            addItem(value.trim());
             setValue("");
-            callback("");
+            searchCallback("");
           }
         }}
         onBlur={() => setValue("")}
