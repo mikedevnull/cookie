@@ -4,11 +4,9 @@ import {
   Toolbar,
   Typography,
   Container,
-  Stack,
 } from "@mui/material";
 
-import ShoppingList from "./components/ShoppingList";
-import AddItemSection from "./components/AddItemSection";
+import ShoppingList from "@/pages/ShoppingList";
 
 function App() {
   return (
@@ -24,10 +22,7 @@ function App() {
       </AppBar>
       <Container maxWidth="sm">
         <main>
-          <Stack>
-            <AddItemSection></AddItemSection>
-            <ShoppingList></ShoppingList>
-          </Stack>
+          <ShoppingList></ShoppingList>
         </main>
       </Container>
     </>
