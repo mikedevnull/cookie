@@ -76,3 +76,41 @@ test<DbTestContext>("Empty list displays message", async ({ render }) => {
   const notifyText = await screen.findByText("The list is currently empty.");
   expect(notifyText).toBeInTheDocument();
 });
+
+test<DbTestContext>("Entering new item name adds item to database", async ({
+  db,
+  render,
+}) => {
+  const user = userEvent.setup();
+
+  render(<ShoppingList />);
+  const input = await screen.findByLabelText("Add item");
+
+  await expect(
+    db.collections.items.findOne("Foobar").exec()
+  ).resolves.toBeNull();
+
+  await user.type(input, "Foobar");
+  await user.type(input, "{Enter}");
+  const newItem = await db.collections.items.findOne("Foobar").exec();
+  expect(newItem).not.toBeNull();
+  expect(newItem).toMatchObject({ name: "Foobar", active: true });
+});
+
+test<DbTestContext>("Entering existing item name updates item in database", async ({
+  db,
+  render,
+}) => {
+  const user = userEvent.setup();
+  await setupTestData(db);
+  render(<ShoppingList />);
+
+  const input = await screen.findByLabelText("Add item");
+
+  await user.type(input, "testItem1");
+  await user.type(input, "{Enter}");
+
+  const updatedItem = await db.collections.items.findOne("testItem1").exec();
+  expect(updatedItem).not.toBeNull();
+  expect(updatedItem).toMatchObject({ name: "testItem1", active: true });
+});

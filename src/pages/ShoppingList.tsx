@@ -1,12 +1,15 @@
 import { Item, ItemCollection } from "@/db";
 
 import { RxDocument } from "rxdb";
-import { useRxData } from "rxdb-hooks";
+import { useRxCollection, useRxData } from "rxdb-hooks";
 import ShopItemList from "@/components/ShopItemList";
 import { Stack, Typography } from "@mui/material";
-import AddItemSection from "@/components/AddItemSection";
+import AddItemTextField from "@/components/AddItemTextField";
+
+type ItemSelectedCallback = (item: Item) => void;
 
 export default function ShoppingList() {
+  const collection = useRxCollection<Item>("items");
   const { result: items } = useRxData("items", (collection: ItemCollection) =>
     collection?.find({
       selector: {
@@ -15,7 +18,14 @@ export default function ShoppingList() {
     })
   );
 
-  const itemSelectedCallback = (item: Item) => {
+  const addOrUpdateItem = (name: string) => {
+    collection?.upsert({
+      name,
+      active: true,
+    });
+  };
+
+  const itemSelectedCallback: ItemSelectedCallback = (item: Item) => {
     const document = items.find(
       (doc: RxDocument<Item>) => doc.name === item.name
     );
@@ -24,17 +34,26 @@ export default function ShoppingList() {
     }
   };
 
+  return (
+    <Stack>
+      <AddItemTextField submitValue={addOrUpdateItem}></AddItemTextField>
+      {renderListSection(items, itemSelectedCallback)}
+    </Stack>
+  );
+}
+
+function renderListSection(
+  items: Item[],
+  itemSelectedCallback: ItemSelectedCallback
+) {
   if (items.length === 0) {
     return renderEmptyListHint();
   } else {
     return (
-      <Stack>
-        <AddItemSection></AddItemSection>
-        <ShopItemList
-          items={items}
-          itemSelectedCallback={itemSelectedCallback}
-        ></ShopItemList>
-      </Stack>
+      <ShopItemList
+        items={items}
+        itemSelectedCallback={itemSelectedCallback}
+      ></ShopItemList>
     );
   }
 }
