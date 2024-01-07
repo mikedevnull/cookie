@@ -18,6 +18,10 @@ export default function ShoppingList() {
     })
   );
 
+  items.sort(function (a, b) {
+    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+  });
+
   const addOrUpdateItem = (name: string) => {
     collection?.upsert({
       name,
