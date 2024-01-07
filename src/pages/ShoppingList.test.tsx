@@ -15,7 +15,11 @@ async function setupTestData(db: Database) {
       active: true,
     },
     {
-      name: "testItem3",
+      name: "TestItem3",
+      active: true,
+    },
+    {
+      name: "testItem4",
       active: true,
     },
   ]);
@@ -29,9 +33,10 @@ test<DbTestContext>("Render items in database", async ({ db, render }) => {
   await screen.findAllByRole("listitem");
 
   const items = await screen.getAllByRole("listitem");
-  expect(items.length).toBe(2);
+  expect(items.length).toBe(3);
   expect(items.at(0)).toHaveTextContent("testItem2");
-  expect(items.at(1)).toHaveTextContent("testItem3");
+  expect(items.at(1)).toHaveTextContent("TestItem3");
+  expect(items.at(2)).toHaveTextContent("testItem4");
 });
 
 test<DbTestContext>("Clicking an item toggles state in database", async ({
