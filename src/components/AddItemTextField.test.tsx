@@ -83,3 +83,23 @@ test("Updates search input with more than three character entered", async () => 
   expect(mockSearchCallback).toHaveBeenCalledOnce();
   expect(mockSearchCallback).toHaveBeenCalledWith("1234567");
 });
+
+test("Clicking the clear icon removes all input text", async () => {
+  const user = userEvent.setup();
+  const mockSearchCallback = vi.fn();
+
+  render(<AddItemTextField searchFilterCallback={mockSearchCallback} />);
+
+  const input = await screen.findByPlaceholderText<HTMLInputElement>(
+    "Add item"
+  );
+  const clearButton = await screen.findByTestId("input-clear-button");
+  await user.type(input, "123");
+
+  await user.click(clearButton);
+  await sleepForMs(400);
+
+  expect(input.value).toBe("");
+  expect(mockSearchCallback).toHaveBeenCalled();
+  expect(mockSearchCallback).toHaveBeenLastCalledWith("");
+});
