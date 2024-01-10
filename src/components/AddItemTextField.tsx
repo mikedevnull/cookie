@@ -70,6 +70,7 @@ export default function AddItemTextField({
                 setValue("");
                 searchCallback("");
               }}
+              data-testid="input-clear-button"
             >
               <Clear />
             </IconButton>
