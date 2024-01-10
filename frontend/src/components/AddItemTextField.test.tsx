@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import { vi, expect } from "vitest";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import AddItemTextField from "./AddItemTextField";
@@ -15,9 +16,8 @@ test("Enter text and press enter submits and resets", async () => {
 
   render(<AddItemTextField submitValue={submit} />);
 
-  const input = await screen.findByPlaceholderText<HTMLInputElement>(
-    "Add item"
-  );
+  const input =
+    await screen.findByPlaceholderText<HTMLInputElement>("Add item");
   expect(input).toBeInTheDocument();
 
   await user.type(input, "Foobar");
@@ -32,9 +32,8 @@ test("Enter text and press enter submits and resets", async () => {
 test("Does use default value as text", async () => {
   render(<AddItemTextField defaultValue="MyNiceValue" />);
 
-  const input = await screen.findByPlaceholderText<HTMLInputElement>(
-    "Add item"
-  );
+  const input =
+    await screen.findByPlaceholderText<HTMLInputElement>("Add item");
   expect(input).toBeInTheDocument();
   expect(input.value).toBe("MyNiceValue");
 });
@@ -44,9 +43,8 @@ test("Does not submit on empty texts", async () => {
   const submit = vi.fn();
 
   render(<AddItemTextField submitValue={submit} />);
-  const input = await screen.findByPlaceholderText<HTMLInputElement>(
-    "Add item"
-  );
+  const input =
+    await screen.findByPlaceholderText<HTMLInputElement>("Add item");
   expect(input).toBeInTheDocument();
 
   await user.type(input, "{Enter}");
@@ -90,9 +88,8 @@ test("Clicking the clear icon removes all input text", async () => {
 
   render(<AddItemTextField searchFilterCallback={mockSearchCallback} />);
 
-  const input = await screen.findByPlaceholderText<HTMLInputElement>(
-    "Add item"
-  );
+  const input =
+    await screen.findByPlaceholderText<HTMLInputElement>("Add item");
   const clearButton = await screen.findByTestId("input-clear-button");
   await user.type(input, "123");
 
