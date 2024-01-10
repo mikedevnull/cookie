@@ -1,9 +1,10 @@
-import { vi } from "vitest";
+import { vi, expect } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Item } from "@/db";
 import "@testing-library/jest-dom";
 import { render } from "@testing/render";
+
 import ShopItemList from "./ShopItemList";
 
 const testItem1: Item = {

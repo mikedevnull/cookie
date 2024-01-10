@@ -3,6 +3,7 @@ import ShoppingList from "./ShoppingList";
 import userEvent from "@testing-library/user-event";
 import { Database } from "@/db";
 import { DbTestContext } from "@testing/setup";
+import { test } from "vitest";
 
 async function setupTestData(db: Database) {
   await db.collections.items.bulkInsert([
