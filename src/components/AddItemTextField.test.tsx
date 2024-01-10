@@ -15,7 +15,9 @@ test("Enter text and press enter submits and resets", async () => {
 
   render(<AddItemTextField submitValue={submit} />);
 
-  const input = await screen.findByLabelText<HTMLInputElement>("Add item");
+  const input = await screen.findByPlaceholderText<HTMLInputElement>(
+    "Add item"
+  );
   expect(input).toBeInTheDocument();
 
   await user.type(input, "Foobar");
@@ -30,7 +32,9 @@ test("Enter text and press enter submits and resets", async () => {
 test("Does use default value as text", async () => {
   render(<AddItemTextField defaultValue="MyNiceValue" />);
 
-  const input = await screen.findByLabelText<HTMLInputElement>("Add item");
+  const input = await screen.findByPlaceholderText<HTMLInputElement>(
+    "Add item"
+  );
   expect(input).toBeInTheDocument();
   expect(input.value).toBe("MyNiceValue");
 });
@@ -40,7 +44,9 @@ test("Does not submit on empty texts", async () => {
   const submit = vi.fn();
 
   render(<AddItemTextField submitValue={submit} />);
-  const input = await screen.findByLabelText<HTMLInputElement>("Add item");
+  const input = await screen.findByPlaceholderText<HTMLInputElement>(
+    "Add item"
+  );
   expect(input).toBeInTheDocument();
 
   await user.type(input, "{Enter}");
@@ -52,7 +58,7 @@ test("Updates search input with more than three character entered", async () => 
   const mockSearchCallback = vi.fn();
 
   render(<AddItemTextField searchFilterCallback={mockSearchCallback} />);
-  const input = await screen.findByLabelText("Add item");
+  const input = await screen.findByPlaceholderText("Add item");
   await user.type(input, "123");
 
   // wait for any debounce interval to happen
@@ -66,7 +72,7 @@ test("Updates search input with more than three character entered", async () => 
 
   render(<AddItemTextField searchFilterCallback={mockSearchCallback} />);
 
-  const input = await screen.findByLabelText("Add item");
+  const input = await screen.findByPlaceholderText("Add item");
   await user.type(input, "123");
 
   await user.type(input, "45");

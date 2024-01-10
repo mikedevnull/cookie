@@ -39,7 +39,17 @@ export default function ShopItemList({ items, itemSelectedCallback }: Props) {
                 inputProps={{ "aria-labelledby": labelId }}
               />
             </ListItemIcon>
-            <ListItemText id={labelId} primary={item.name} />
+            <ListItemText
+              id={labelId}
+              primary={item.name}
+              primaryTypographyProps={
+                item.active === false
+                  ? {
+                      style: { textDecoration: "line-through" },
+                    }
+                  : {}
+              }
+            />
           </ListItemButton>
         </ListItem>
       </Collapse>

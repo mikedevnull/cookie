@@ -5,11 +5,14 @@ import { useRxCollection, useRxData } from "rxdb-hooks";
 import ShopItemList from "@/components/ShopItemList";
 import { Stack, Typography } from "@mui/material";
 import AddItemTextField from "@/components/AddItemTextField";
+import { useState } from "react";
+import { ItemSuggestions } from "@/components/ItemSuggestions";
 
 type ItemSelectedCallback = (item: Item) => void;
 
 export default function ShoppingList() {
   const collection = useRxCollection<Item>("items");
+  const [searchFilter, setSearchFilter] = useState<string>("");
   const { result: items } = useRxData("items", (collection: ItemCollection) =>
     collection?.find({
       selector: {
@@ -17,6 +20,24 @@ export default function ShoppingList() {
       },
     })
   );
+
+  let { result: suggestedItems } = useRxData(
+    "items",
+    (collection: ItemCollection) => {
+      if (searchFilter.trim().length > 0) {
+        return collection.find({
+          selector: {
+            active: false,
+            name: { $regex: `${searchFilter}.*`, $options: "i" },
+          },
+          limit: 5,
+        });
+      }
+    }
+  );
+  if (searchFilter.trim().length === 0) {
+    suggestedItems = [];
+  }
 
   items.sort(function (a, b) {
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
@@ -40,7 +61,11 @@ export default function ShoppingList() {
 
   return (
     <Stack>
-      <AddItemTextField submitValue={addOrUpdateItem}></AddItemTextField>
+      <AddItemTextField
+        submitValue={addOrUpdateItem}
+        searchFilterCallback={setSearchFilter}
+      ></AddItemTextField>
+      <ItemSuggestions items={suggestedItems}></ItemSuggestions>
       {renderListSection(items, itemSelectedCallback)}
     </Stack>
   );

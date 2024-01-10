@@ -89,7 +89,7 @@ test<DbTestContext>("Entering new item name adds item to database", async ({
   const user = userEvent.setup();
 
   render(<ShoppingList />);
-  const input = await screen.findByLabelText("Add item");
+  const input = await screen.findByPlaceholderText("Add item");
 
   await expect(
     db.collections.items.findOne("Foobar").exec()
@@ -110,7 +110,7 @@ test<DbTestContext>("Entering existing item name updates item in database", asyn
   await setupTestData(db);
   render(<ShoppingList />);
 
-  const input = await screen.findByLabelText("Add item");
+  const input = await screen.findByPlaceholderText("Add item");
 
   await user.type(input, "testItem1");
   await user.type(input, "{Enter}");
@@ -118,4 +118,20 @@ test<DbTestContext>("Entering existing item name updates item in database", asyn
   const updatedItem = await db.collections.items.findOne("testItem1").exec();
   expect(updatedItem).not.toBeNull();
   expect(updatedItem).toMatchObject({ name: "testItem1", active: true });
+});
+
+test<DbTestContext>("Typing an existing item name not already in the list suggests it", async ({
+  db,
+  render,
+}) => {
+  const user = userEvent.setup();
+  await setupTestData(db);
+  render(<ShoppingList />);
+
+  const input = await screen.findByPlaceholderText("Add item");
+  expect(screen.queryByText("testItem1")).not.toBeInTheDocument();
+
+  await user.type(input, "test");
+  const suggestedItem = await screen.findByText("testItem1");
+  expect(suggestedItem).toBeInTheDocument();
 });
