@@ -1,7 +1,6 @@
-import TextField from "@mui/material/TextField";
-
 import { useCallback, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
+import Clear from "@mui/icons-material/Clear";
 
 type Props = {
   defaultValue?: string;
@@ -42,7 +41,7 @@ export default function AddItemTextField({
 
   return (
     <Box marginTop={2}>
-      <TextField
+      <OutlinedInput
         value={value}
         onChange={(event) => {
           setValue(event.currentTarget.value);
@@ -55,15 +54,27 @@ export default function AddItemTextField({
             searchCallback("");
           }
         }}
-        onBlur={() => setValue("")}
         fullWidth
         inputProps={{
           autoCapitalize: "on",
           enterKeyHint: "done",
         }}
-        label="Add item"
+        placeholder="Add item"
         type="text"
-        variant="outlined"
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton
+              aria-label="Clear text for adding new items"
+              edge="end"
+              onClick={() => {
+                setValue("");
+                searchCallback("");
+              }}
+            >
+              <Clear />
+            </IconButton>
+          </InputAdornment>
+        }
       />
     </Box>
   );
