@@ -1,9 +1,7 @@
-import { vi, expect } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Item } from "@/db";
 import "@testing-library/jest-dom";
-import { render } from "@testing/render";
 
 import ShopItemList from "./ShopItemList";
 
@@ -40,7 +38,7 @@ test("displays list of items with correct state", async () => {
 
 test("click on item in list triggeres callback with item", async () => {
   const user = userEvent.setup();
-  const mockCallback = vi.fn();
+  const mockCallback = jest.fn();
   render(
     <ShopItemList items={testItems} itemSelectedCallback={mockCallback} />
   );
@@ -48,7 +46,7 @@ test("click on item in list triggeres callback with item", async () => {
   const item2 = await screen.findByLabelText(testItem2.name);
 
   await user.click(item2);
-  expect(mockCallback).toHaveBeenCalledOnce();
+  expect(mockCallback).toHaveBeenCalledTimes(1);
   expect(mockCallback).toHaveBeenCalledWith(testItem2);
 
   mockCallback.mockReset();
@@ -56,6 +54,6 @@ test("click on item in list triggeres callback with item", async () => {
   const item3 = await screen.findByLabelText(testItem3.name);
 
   await user.click(item3);
-  expect(mockCallback).toHaveBeenCalledOnce();
+  expect(mockCallback).toHaveBeenCalledTimes(1);
   expect(mockCallback).toHaveBeenCalledWith(testItem3);
 });

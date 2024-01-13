@@ -1,5 +1,4 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { vi, expect } from "vitest";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import AddItemTextField from "./AddItemTextField";
@@ -12,7 +11,7 @@ function sleepForMs(ms: number): Promise<void> {
 
 test("Enter text and press enter submits and resets", async () => {
   const user = userEvent.setup();
-  const submit = vi.fn();
+  const submit = jest.fn();
 
   render(<AddItemTextField submitValue={submit} />);
 
@@ -25,7 +24,7 @@ test("Enter text and press enter submits and resets", async () => {
   await user.type(input, "{Enter}");
   await waitFor(() => expect(input.value).toBe(""));
 
-  expect(submit).toHaveBeenCalledOnce();
+  expect(submit).toHaveBeenCalledTimes(1);
   expect(submit).toHaveBeenCalledWith("Foobar");
 });
 
@@ -40,7 +39,7 @@ test("Does use default value as text", async () => {
 
 test("Does not submit on empty texts", async () => {
   const user = userEvent.setup();
-  const submit = vi.fn();
+  const submit = jest.fn();
 
   render(<AddItemTextField submitValue={submit} />);
   const input =
@@ -53,7 +52,7 @@ test("Does not submit on empty texts", async () => {
 
 test("Updates search input with more than three character entered", async () => {
   const user = userEvent.setup();
-  const mockSearchCallback = vi.fn();
+  const mockSearchCallback = jest.fn();
 
   render(<AddItemTextField searchFilterCallback={mockSearchCallback} />);
   const input = await screen.findByPlaceholderText("Add item");
@@ -66,7 +65,7 @@ test("Updates search input with more than three character entered", async () => 
 
 test("Updates search input with more than three character entered", async () => {
   const user = userEvent.setup();
-  const mockSearchCallback = vi.fn();
+  const mockSearchCallback = jest.fn();
 
   render(<AddItemTextField searchFilterCallback={mockSearchCallback} />);
 
@@ -78,13 +77,13 @@ test("Updates search input with more than three character entered", async () => 
   await user.type(input, "67");
 
   await sleepForMs(400);
-  expect(mockSearchCallback).toHaveBeenCalledOnce();
+  expect(mockSearchCallback).toHaveBeenCalledTimes(1);
   expect(mockSearchCallback).toHaveBeenCalledWith("1234567");
 });
 
 test("Clicking the clear icon removes all input text", async () => {
   const user = userEvent.setup();
-  const mockSearchCallback = vi.fn();
+  const mockSearchCallback = jest.fn();
 
   render(<AddItemTextField searchFilterCallback={mockSearchCallback} />);
 

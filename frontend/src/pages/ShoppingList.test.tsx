@@ -1,9 +1,10 @@
 import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import ShoppingList from "./ShoppingList";
 import userEvent from "@testing-library/user-event";
-import { Database } from "@/db";
-import { DbTestContext } from "@testing/setup";
-import { test } from "vitest";
+import { Database, createDatabase } from "@/db";
+import { renderWithDb } from "@testing/render";
+import { describe, expect, test, beforeEach, afterEach } from "@jest/globals";
+import "@testing-library/jest-dom/jest-globals";
 
 async function setupTestData(db: Database) {
   await db.collections.items.bulkInsert([
@@ -26,113 +27,109 @@ async function setupTestData(db: Database) {
   ]);
 }
 
-test<DbTestContext>("Render items in database", async ({ db, render }) => {
-  await setupTestData(db);
+describe("ShoppingList with database", function () {
+  let db: Database;
 
-  render(<ShoppingList />);
+  beforeEach(async function () {
+    db = await createDatabase();
+  });
 
-  await screen.findAllByRole("listitem");
+  afterEach(async function () {
+    await db?.remove();
+  });
 
-  const items = await screen.getAllByRole("listitem");
-  expect(items.length).toBe(3);
-  expect(items.at(0)).toHaveTextContent("testItem2");
-  expect(items.at(1)).toHaveTextContent("TestItem3");
-  expect(items.at(2)).toHaveTextContent("testItem4");
-});
+  test("Render items in database", async () => {
+    await setupTestData(db);
+    renderWithDb(db, <ShoppingList />);
 
-test<DbTestContext>("Clicking an item toggles state in database", async ({
-  db,
-  render,
-}) => {
-  await setupTestData(db);
+    await screen.findAllByRole("listitem");
 
-  render(<ShoppingList />);
+    const items = await screen.getAllByRole("listitem");
+    expect(items.length).toBe(3);
+    expect(items.at(0)).toHaveTextContent("testItem2");
+    expect(items.at(1)).toHaveTextContent("TestItem3");
+    expect(items.at(2)).toHaveTextContent("testItem4");
+  });
 
-  await screen.findByText("testItem2");
+  test("Clicking an item toggles state in database", async () => {
+    await setupTestData(db);
+    renderWithDb(db, <ShoppingList />);
 
-  const item = screen.getByText("testItem2");
-  assert(item !== undefined);
-  const removalFinished = waitForElementToBeRemoved(
-    screen.getByText("testItem2")
-  );
-  await userEvent.click(item);
-  await removalFinished;
-});
+    await screen.findByText("testItem2");
 
-test<DbTestContext>("Removal from database removes from list", async ({
-  db,
-  render,
-}) => {
-  await setupTestData(db);
+    const item = screen.getByText("testItem2");
+    expect(item).not.toBeUndefined;
+    const removalFinished = waitForElementToBeRemoved(
+      screen.getByText("testItem2")
+    );
+    await userEvent.click(item);
+    await removalFinished;
+  });
 
-  render(<ShoppingList />);
+  test("Removal from database removes from list", async () => {
+    await setupTestData(db);
+    renderWithDb(db, <ShoppingList />);
 
-  await screen.findByText("testItem2");
+    await screen.findByText("testItem2");
 
-  const removalFinished = waitForElementToBeRemoved(
-    screen.getByText("testItem2")
-  );
+    const removalFinished = waitForElementToBeRemoved(
+      screen.getByText("testItem2")
+    );
 
-  await db.collections.items.findOne("testItem2").remove();
-  await removalFinished;
-});
+    await db.collections.items.findOne("testItem2").remove();
+    await removalFinished;
+  });
 
-test<DbTestContext>("Empty list displays message", async ({ render }) => {
-  render(<ShoppingList />);
-  const notifyText = await screen.findByText("The list is currently empty.");
-  expect(notifyText).toBeInTheDocument();
-});
+  test("Empty list displays message", async () => {
+    renderWithDb(db, <ShoppingList />);
 
-test<DbTestContext>("Entering new item name adds item to database", async ({
-  db,
-  render,
-}) => {
-  const user = userEvent.setup();
+    const notifyText = await screen.findByText("The list is currently empty.");
+    expect(notifyText).toBeInTheDocument();
+  });
 
-  render(<ShoppingList />);
-  const input = await screen.findByPlaceholderText("Add item");
+  test("Entering new item name adds item to database", async () => {
+    const user = userEvent.setup();
 
-  await expect(
-    db.collections.items.findOne("Foobar").exec()
-  ).resolves.toBeNull();
+    renderWithDb(db, <ShoppingList />);
+    const input = await screen.findByPlaceholderText("Add item");
 
-  await user.type(input, "Foobar");
-  await user.type(input, "{Enter}");
-  const newItem = await db.collections.items.findOne("Foobar").exec();
-  expect(newItem).not.toBeNull();
-  expect(newItem).toMatchObject({ name: "Foobar", active: true });
-});
+    await expect(
+      db.collections.items.findOne("Foobar").exec()
+    ).resolves.toBeNull();
 
-test<DbTestContext>("Entering existing item name updates item in database", async ({
-  db,
-  render,
-}) => {
-  const user = userEvent.setup();
-  await setupTestData(db);
-  render(<ShoppingList />);
+    await user.type(input, "Foobar");
+    await user.type(input, "{Enter}");
+    const newItem = await db.collections.items.findOne("Foobar").exec();
+    expect(newItem).not.toBeNull();
+    expect(newItem).toMatchObject({ name: "Foobar", active: true });
+  });
 
-  const input = await screen.findByPlaceholderText("Add item");
+  test("Entering existing item name updates item in database", async () => {
+    const user = userEvent.setup();
 
-  await user.type(input, "testItem1");
-  await user.type(input, "{Enter}");
+    renderWithDb(db, <ShoppingList />);
 
-  const updatedItem = await db.collections.items.findOne("testItem1").exec();
-  expect(updatedItem).not.toBeNull();
-  expect(updatedItem).toMatchObject({ name: "testItem1", active: true });
-});
+    const input = await screen.findByPlaceholderText("Add item");
 
-test<DbTestContext>("Typing an existing item name not already in the list suggests it", async ({
-  db,
-  render,
-}) => {
-  const user = userEvent.setup();
-  await setupTestData(db);
-  render(<ShoppingList />);
+    await user.type(input, "testItem1");
+    await user.type(input, "{Enter}");
 
-  const input = await screen.findByPlaceholderText("Add item");
-  expect(screen.queryByText("testItem1")).not.toBeInTheDocument();
+    const updatedItem = await db.collections.items.findOne("testItem1").exec();
+    expect(updatedItem).not.toBeNull();
+    expect(updatedItem).toMatchObject({ name: "testItem1", active: true });
+  });
 
-  await user.type(input, "test");
-  const suggestedItem = await screen.findByText("testItem1");
-  expect(suggestedItem).toBeInTheDocument();
+  test("Typing an existing item name not already in the list suggests it", async () => {
+    const user = userEvent.setup();
+    await setupTestData(db);
+
+    renderWithDb(db, <ShoppingList />);
+
+    const input = await screen.findByPlaceholderText("Add item");
+    expect(screen.queryByText("testItem1")).not.toBeInTheDocument();
+
+    await user.type(input, "test");
+    const suggestedItem = await screen.findByText("testItem1");
+    expect(suggestedItem).toBeInTheDocument();
+  });
 });
