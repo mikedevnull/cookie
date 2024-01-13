@@ -8,7 +8,9 @@ import { Item } from "./types";
 import { getRxStorageMemory } from "rxdb/plugins/storage-memory";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 
-if (import.meta.env.DEV) {
+const env = process.env.NODE_ENV || "development";
+
+if (env === "development") {
   addRxPlugin(RxDBDevModePlugin);
 }
 addRxPlugin(RxDBQueryBuilderPlugin);
@@ -57,7 +59,6 @@ export async function insertDefaultData(database: Database) {
 }
 
 export async function initialize() {
-  const env = process.env.NODE_ENV || "development";
   const storage = env !== "development" ? getRxStorageDexie() : undefined;
   const db = await createDatabase(storage);
   await insertDefaultData(db);
