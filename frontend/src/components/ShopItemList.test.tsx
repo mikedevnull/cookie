@@ -7,18 +7,22 @@ import ShopItemList from "./ShopItemList";
 const testItem1: Item = {
   name: "Some item",
   active: false,
+  rankOrder: 0,
 };
 const testItem2: Item = {
   name: "Another item",
   active: true,
+  rankOrder: 0,
 };
 const testItem3: Item = {
   name: "Third item",
   active: true,
+  rankOrder: 0,
 };
 const testItem4: Item = {
   name: "Item item",
   active: false,
+  rankOrder: 0,
 };
 
 const testItems = [testItem1, testItem2, testItem3, testItem4];
