@@ -10,18 +10,22 @@ async function setupTestData(db: Database) {
     {
       name: "testItem1",
       active: false,
+      rankOrder: 0,
     },
     {
       name: "testItem2",
       active: true,
+      rankOrder: 0,
     },
     {
       name: "TestItem3",
       active: true,
+      rankOrder: 0,
     },
     {
       name: "testItem4",
       active: true,
+      rankOrder: 0,
     },
   ]);
 }
