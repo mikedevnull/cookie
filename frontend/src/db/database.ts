@@ -1,19 +1,20 @@
 import { RxCollection, RxDatabase, RxStorage, addRxPlugin } from "rxdb";
 import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
+import { getRxStorageMemory } from "rxdb/plugins/storage-memory";
+import { RxDBMigrationPlugin } from "rxdb/plugins/migration-schema";
+import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase } from "rxdb";
 
 import { initialItems } from "./data";
 import { Item } from "./types";
-import { getRxStorageMemory } from "rxdb/plugins/storage-memory";
-import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
-
 const env = process.env.NODE_ENV || "development";
 
 if (env === "development") {
   addRxPlugin(RxDBDevModePlugin);
 }
 addRxPlugin(RxDBQueryBuilderPlugin);
+addRxPlugin(RxDBMigrationPlugin);
 
 export type ItemCollection = RxCollection<Item>;
 type DatabaseCollections = {
@@ -30,7 +31,7 @@ export async function createDatabase(
   });
 
   const itemSchema = {
-    version: 0,
+    version: 1,
     primaryKey: "name",
     type: "object",
     properties: {
@@ -41,6 +42,9 @@ export async function createDatabase(
       active: {
         type: "boolean",
       },
+      rankOrder: {
+        type: "number",
+      },
     },
     required: ["name", "active"],
   } as const;
@@ -48,6 +52,12 @@ export async function createDatabase(
   await database.addCollections({
     items: {
       schema: itemSchema,
+      migrationStrategies: {
+        1: function (oldDoc) {
+          oldDoc.rankOrder = 0;
+          return oldDoc;
+        },
+      },
     },
   });
 
@@ -61,6 +71,8 @@ export async function insertDefaultData(database: Database) {
 export async function initialize() {
   const storage = env !== "development" ? getRxStorageDexie() : undefined;
   const db = await createDatabase(storage);
-  await insertDefaultData(db);
+  if (env === "development") {
+    await insertDefaultData(db);
+  }
   return db;
 }
