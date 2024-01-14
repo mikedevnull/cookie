@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event";
 import { Database, createDatabase } from "@/db";
 import { renderWithDb } from "@testing/render";
 import { describe, expect, test, beforeEach, afterEach } from "@jest/globals";
-import "@testing-library/jest-dom/jest-globals";
 
 async function setupTestData(db: Database) {
   await db.collections.items.bulkInsert([

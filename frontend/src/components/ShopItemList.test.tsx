@@ -1,7 +1,6 @@
 import { screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Item } from "@/db";
-import "@testing-library/jest-dom";
 
 import ShopItemList from "./ShopItemList";
 
