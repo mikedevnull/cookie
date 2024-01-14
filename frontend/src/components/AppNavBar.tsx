@@ -1,12 +1,14 @@
 import { AppBar, Toolbar, Typography } from "@mui/material";
+import { PropsWithChildren } from "react";
 
-export function AppNavBar() {
+export function AppNavBar({ children }: PropsWithChildren) {
   return (
-    <AppBar position="relative">
+    <AppBar position="sticky">
       <Toolbar>
-        <Typography variant="h6" color="inherit" noWrap>
+        <Typography variant="h6" color="inherit" sx={{ flexGrow: 1 }} noWrap>
           Cookie
         </Typography>
+        {children}
       </Toolbar>
     </AppBar>
   );

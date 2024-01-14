@@ -3,21 +3,26 @@ import { Item, ItemCollection } from "@/db";
 import { RxDocument } from "rxdb";
 import { useRxCollection, useRxData } from "rxdb-hooks";
 import ShopItemList from "@/components/ShopItemList";
-import { Stack, Typography } from "@mui/material";
+import { Container, Stack, Typography } from "@mui/material";
 import AddItemTextField from "@/components/AddItemTextField";
 import { useState } from "react";
 import { ItemSuggestions } from "@/components/ItemSuggestions";
+import { AppNavBar } from "@/components/AppNavBar";
+import { PageMenu } from "./PageMenu";
 
 type ItemSelectedCallback = (item: Item) => void;
 
 export default function ShoppingList() {
   const collection = useRxCollection<Item>("items");
+  const [showInactive, setShowInactive] = useState<boolean>(false);
   const [searchFilter, setSearchFilter] = useState<string>("");
   const { result: items } = useRxData("items", (collection: ItemCollection) =>
     collection?.find({
-      selector: {
-        active: true,
-      },
+      selector: showInactive
+        ? {}
+        : {
+            active: true,
+          },
     })
   );
 
@@ -60,14 +65,25 @@ export default function ShoppingList() {
   };
 
   return (
-    <Stack>
-      <AddItemTextField
-        submitValue={addOrUpdateItem}
-        searchFilterCallback={setSearchFilter}
-      ></AddItemTextField>
-      <ItemSuggestions items={suggestedItems}></ItemSuggestions>
-      {renderListSection(items, itemSelectedCallback)}
-    </Stack>
+    <>
+      <AppNavBar>
+        <PageMenu
+          showInactive={{ value: showInactive, callback: setShowInactive }}
+        ></PageMenu>
+      </AppNavBar>
+      <Container maxWidth="sm">
+        <main>
+          <Stack>
+            <AddItemTextField
+              submitValue={addOrUpdateItem}
+              searchFilterCallback={setSearchFilter}
+            ></AddItemTextField>
+            <ItemSuggestions items={suggestedItems}></ItemSuggestions>
+            {renderListSection(items, itemSelectedCallback)}
+          </Stack>
+        </main>
+      </Container>
+    </>
   );
 }
 
