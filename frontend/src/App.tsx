@@ -1,25 +1,13 @@
-import {
-  CssBaseline,
-  AppBar,
-  Toolbar,
-  Typography,
-  Container,
-} from "@mui/material";
+import { CssBaseline, Container } from "@mui/material";
 
 import ShoppingList from "@/pages/ShoppingList";
+import { AppNavBar } from "@/components/AppNavBar";
 
 function App() {
   return (
     <>
       <CssBaseline />
-
-      <AppBar position="relative">
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            Cookie
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <AppNavBar />
       <Container maxWidth="sm">
         <main>
           <ShoppingList></ShoppingList>
