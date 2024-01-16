@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from "node:url";
-import { defineConfig } from "vite";
+import { defineConfig, splitVendorChunkPlugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
@@ -11,6 +11,17 @@ export default defineConfig({
       "@testing": fileURLToPath(new URL("./tests", import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          mui: ["@mui/material"],
+          rxdb: ["rxdb", "rxdb/plugins/storage-dexie"],
+        },
+      },
+    },
+  },
+
   plugins: [
     react(),
     VitePWA({
@@ -34,5 +45,6 @@ export default defineConfig({
         ],
       },
     }),
+    // splitVendorChunkPlugin(),
   ],
 });
