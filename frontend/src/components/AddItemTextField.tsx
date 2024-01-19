@@ -40,8 +40,12 @@ export default function AddItemTextField({
   );
 
   return (
-    <Box marginTop={2}>
+    <Box sx={{ flexGrow: 1, maxWidth: "sm" }}>
       <OutlinedInput
+        size="small"
+        sx={{
+          backgroundColor: "background.default",
+        }}
         value={value}
         onChange={(event) => {
           setValue(event.currentTarget.value);

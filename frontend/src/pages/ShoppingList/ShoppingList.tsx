@@ -67,6 +67,10 @@ export default function ShoppingList() {
   return (
     <>
       <AppNavBar>
+        <AddItemTextField
+          submitValue={addOrUpdateItem}
+          searchFilterCallback={setSearchFilter}
+        ></AddItemTextField>
         <PageMenu
           showInactive={{ value: showInactive, callback: setShowInactive }}
         ></PageMenu>
@@ -74,10 +78,6 @@ export default function ShoppingList() {
       <Container maxWidth="sm">
         <main>
           <Stack>
-            <AddItemTextField
-              submitValue={addOrUpdateItem}
-              searchFilterCallback={setSearchFilter}
-            ></AddItemTextField>
             <ItemSuggestions items={suggestedItems}></ItemSuggestions>
             {renderListSection(items, itemSelectedCallback)}
           </Stack>
