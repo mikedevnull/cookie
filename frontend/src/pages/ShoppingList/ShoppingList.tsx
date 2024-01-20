@@ -5,48 +5,62 @@ import { useRxCollection, useRxData } from "rxdb-hooks";
 import ShopItemList from "@/components/ShopItemList";
 import { Container, Stack, Typography } from "@mui/material";
 import AddItemTextField from "@/components/AddItemTextField";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ItemSuggestions } from "@/components/ItemSuggestions";
 import { AppNavBar } from "@/components/AppNavBar";
 import { PageMenu } from "./PageMenu";
 
 type ItemSelectedCallback = (item: Item) => void;
 
-export default function ShoppingList() {
-  const collection = useRxCollection<Item>("items");
-  const [showInactive, setShowInactive] = useState<boolean>(false);
-  const [searchFilter, setSearchFilter] = useState<string>("");
-  const { result: items } = useRxData("items", (collection: ItemCollection) =>
-    collection?.find({
-      selector: showInactive
-        ? {}
-        : {
-            active: true,
-          },
-    })
+function useShopListItems(showInactive: boolean) {
+  const queryFactory = useCallback(
+    (collection: ItemCollection) =>
+      collection?.find({
+        selector: showInactive
+          ? {}
+          : {
+              active: true,
+            },
+      }),
+    [showInactive]
   );
+  const { result: items } = useRxData("items", queryFactory);
+  items.sort(function (a, b) {
+    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+  });
+  return items;
+}
 
-  let { result: suggestedItems } = useRxData(
-    "items",
+function useSuggestedItems(searchFilter: string) {
+  const trimmedSearchFilter = searchFilter.trim();
+  const queryFactory = useCallback(
     (collection: ItemCollection) => {
-      if (searchFilter.trim().length > 0) {
+      if (trimmedSearchFilter.length > 0) {
         return collection.find({
           selector: {
             active: false,
-            name: { $regex: `${searchFilter}.*`, $options: "i" },
+            name: { $regex: `${trimmedSearchFilter}`, $options: "i" },
           },
           limit: 5,
         });
       }
-    }
+      return undefined;
+    },
+    [trimmedSearchFilter]
   );
-  if (searchFilter.trim().length === 0) {
-    suggestedItems = [];
+  const { result: items } = useRxData("items", queryFactory);
+  if (trimmedSearchFilter.length === 0) {
+    return [];
   }
+  return items;
+}
 
-  items.sort(function (a, b) {
-    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-  });
+export default function ShoppingList() {
+  const collection = useRxCollection<Item>("items");
+  const [showInactive, setShowInactive] = useState<boolean>(false);
+  const [searchFilter, setSearchFilter] = useState<string>("");
+  const items = useShopListItems(showInactive);
+  const suggestedItems = useSuggestedItems(searchFilter);
 
   const addOrUpdateItem = (name: string) => {
     collection?.upsert({
