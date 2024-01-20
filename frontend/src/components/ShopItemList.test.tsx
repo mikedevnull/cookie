@@ -1,5 +1,5 @@
-import { screen, render } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { screen, render, act } from "@testing-library/react";
+import userEvent, { UserEvent } from "@testing-library/user-event";
 import { Item } from "@/db";
 
 import ShopItemList from "./ShopItemList";
@@ -38,25 +38,38 @@ test("displays list of items with correct state", async () => {
 
   expect(screen.getAllByRole("listitem")).toHaveLength(testItems.length);
 });
+describe("ShopItemList user interaction", () => {
+  let user: UserEvent;
+  beforeEach(() => {
+    jest.useFakeTimers();
+    user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+  });
 
-test("click on item in list triggeres callback with item", async () => {
-  const user = userEvent.setup();
-  const mockCallback = jest.fn();
-  render(
-    <ShopItemList items={testItems} itemSelectedCallback={mockCallback} />
-  );
+  afterEach(() => {
+    act(() => jest.runOnlyPendingTimers());
+    jest.useRealTimers();
+  });
 
-  const item2 = await screen.findByLabelText(testItem2.name);
+  test("click on item in list triggeres callback with item", async () => {
+    const mockCallback = jest.fn();
+    render(
+      <ShopItemList items={testItems} itemSelectedCallback={mockCallback} />
+    );
 
-  await user.click(item2);
-  expect(mockCallback).toHaveBeenCalledTimes(1);
-  expect(mockCallback).toHaveBeenCalledWith(testItem2);
+    const item2 = await screen.findByLabelText(testItem2.name);
 
-  mockCallback.mockReset();
+    await user.click(item2);
+    act(() => jest.runOnlyPendingTimers());
+    expect(mockCallback).toHaveBeenCalledTimes(1);
+    expect(mockCallback).toHaveBeenCalledWith(testItem2);
 
-  const item3 = await screen.findByLabelText(testItem3.name);
+    mockCallback.mockReset();
 
-  await user.click(item3);
-  expect(mockCallback).toHaveBeenCalledTimes(1);
-  expect(mockCallback).toHaveBeenCalledWith(testItem3);
+    const item3 = await screen.findByLabelText(testItem3.name);
+
+    await user.click(item3);
+    act(() => jest.runOnlyPendingTimers());
+    expect(mockCallback).toHaveBeenCalledTimes(1);
+    expect(mockCallback).toHaveBeenCalledWith(testItem3);
+  });
 });

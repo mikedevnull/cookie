@@ -1,6 +1,6 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { act, screen, waitForElementToBeRemoved } from "@testing-library/react";
 import ShoppingList from "./ShoppingList";
-import userEvent from "@testing-library/user-event";
+import { userEvent, UserEvent } from "@testing-library/user-event";
 import { Database, createDatabase } from "@/db";
 import { renderWithDb } from "@testing/render";
 import { describe, expect, test, beforeEach, afterEach } from "@jest/globals";
@@ -54,19 +54,34 @@ describe("ShoppingList with database", function () {
     expect(items.at(2)).toHaveTextContent("testItem4");
   });
 
-  test("Clicking an item toggles state in database", async () => {
-    await setupTestData(db);
-    renderWithDb(db, <ShoppingList />);
+  describe("User interaction", () => {
+    let user: UserEvent;
 
-    await screen.findByText("testItem2");
+    beforeEach(() => {
+      jest.useFakeTimers();
+      user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+    });
+    afterEach(() => {
+      jest.runOnlyPendingTimers();
+      jest.useRealTimers();
+    });
 
-    const item = screen.getByText("testItem2");
-    expect(item).not.toBeUndefined;
-    const removalFinished = waitForElementToBeRemoved(
-      screen.getByText("testItem2")
-    );
-    await userEvent.click(item);
-    await removalFinished;
+    test("Clicking an item toggles state in database", async () => {
+      await setupTestData(db);
+      renderWithDb(db, <ShoppingList />);
+
+      await screen.findByText("testItem2");
+
+      const item = screen.getByText("testItem2");
+      expect(item).not.toBeUndefined;
+      expect(item).toBeInTheDocument();
+
+      await user.click(item);
+      act(() => jest.advanceTimersByTime(1500));
+      await waitForElementToBeRemoved(() => {
+        return screen.queryByText("testItem2");
+      });
+    });
   });
 
   test("Removal from database removes from list", async () => {

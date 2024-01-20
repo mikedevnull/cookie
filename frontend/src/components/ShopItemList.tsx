@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
 import { Item } from "@/db";
+import ShopItemListItem from "./ShopItemListItem";
 
 type ItemClicked = (item: Item) => void;
 
@@ -24,41 +25,15 @@ export default function ShopItemList({ items, itemSelectedCallback }: Props) {
     }
   };
 
-  const renderItem = (item: Item, index: number) => {
-    const labelId = `checkbox-list-label-${index}`;
-    return (
-      <Collapse key={item.name}>
-        <ListItem disablePadding>
-          <ListItemButton onClick={() => onClick(item)}>
-            <ListItemIcon>
-              <Checkbox
-                edge="start"
-                checked={item.active === false}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ "aria-labelledby": labelId }}
-              />
-            </ListItemIcon>
-            <ListItemText
-              id={labelId}
-              primary={item.name}
-              primaryTypographyProps={
-                item.active === false
-                  ? {
-                      style: { textDecoration: "line-through" },
-                    }
-                  : {}
-              }
-            />
-          </ListItemButton>
-        </ListItem>
-      </Collapse>
-    );
-  };
-
   return (
     <List>
-      <TransitionGroup>{items.map(renderItem)}</TransitionGroup>
+      <TransitionGroup>
+        {items.map((i) => (
+          <Collapse key={i.name}>
+            <ShopItemListItem item={i} onToggle={() => onClick(i)} />
+          </Collapse>
+        ))}
+      </TransitionGroup>
     </List>
   );
 }
