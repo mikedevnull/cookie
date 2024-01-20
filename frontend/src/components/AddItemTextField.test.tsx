@@ -1,15 +1,19 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { act, render, screen, waitFor } from "@testing-library/react";
+import userEvent, { UserEvent } from "@testing-library/user-event";
 import AddItemTextField from "./AddItemTextField";
 
-function sleepForMs(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
+let user: UserEvent;
+beforeEach(() => {
+  jest.useFakeTimers();
+  user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+});
+
+afterEach(() => {
+  act(() => jest.runOnlyPendingTimers());
+  jest.useRealTimers();
+});
 
 test("Enter text and press enter submits and resets", async () => {
-  const user = userEvent.setup();
   const submit = jest.fn();
 
   render(<AddItemTextField submitValue={submit} />);
@@ -37,7 +41,6 @@ test("Does use default value as text", async () => {
 });
 
 test("Does not submit on empty texts", async () => {
-  const user = userEvent.setup();
   const submit = jest.fn();
 
   render(<AddItemTextField submitValue={submit} />);
@@ -50,20 +53,17 @@ test("Does not submit on empty texts", async () => {
 });
 
 test("Updates search input with more than three character entered", async () => {
-  const user = userEvent.setup();
   const mockSearchCallback = jest.fn();
 
   render(<AddItemTextField searchFilterCallback={mockSearchCallback} />);
   const input = await screen.findByPlaceholderText("Add item");
   await user.type(input, "123");
 
-  // wait for any debounce interval to happen
-  await sleepForMs(100);
+  act(() => jest.advanceTimersByTime(100));
   expect(mockSearchCallback).not.toHaveBeenCalled();
 });
 
 test("Updates search input with more than three character entered", async () => {
-  const user = userEvent.setup();
   const mockSearchCallback = jest.fn();
 
   render(<AddItemTextField searchFilterCallback={mockSearchCallback} />);
@@ -72,16 +72,15 @@ test("Updates search input with more than three character entered", async () => 
   await user.type(input, "123");
 
   await user.type(input, "45");
-  await sleepForMs(50);
+  act(() => jest.advanceTimersByTime(50));
   await user.type(input, "67");
 
-  await sleepForMs(400);
+  act(() => jest.runOnlyPendingTimers());
   expect(mockSearchCallback).toHaveBeenCalledTimes(1);
   expect(mockSearchCallback).toHaveBeenCalledWith("1234567");
 });
 
 test("Clicking the clear icon removes all input text", async () => {
-  const user = userEvent.setup();
   const mockSearchCallback = jest.fn();
 
   render(<AddItemTextField searchFilterCallback={mockSearchCallback} />);
@@ -92,7 +91,7 @@ test("Clicking the clear icon removes all input text", async () => {
   await user.type(input, "123");
 
   await user.click(clearButton);
-  await sleepForMs(400);
+  act(() => jest.advanceTimersByTime(400));
 
   expect(input.value).toBe("");
   expect(mockSearchCallback).toHaveBeenCalled();
