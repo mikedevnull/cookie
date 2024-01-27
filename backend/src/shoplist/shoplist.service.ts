@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { ShopListItem } from './shoplistitem.entity';
+import { ShopListItemEntity } from './shoplistitem.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThan, Repository } from 'typeorm';
+import { ShopListItem } from './shoplistitem.interface';
 
 @Injectable()
 export default class ShoplistService {
   constructor(
-    @InjectRepository(ShopListItem)
-    private _itemRepository: Repository<ShopListItem>,
+    @InjectRepository(ShopListItemEntity)
+    private _itemRepository: Repository<ShopListItemEntity>,
   ) {}
 
-  async findAllAfter(
+  async findAllBefore(
     updatedAt: number,
     id: string,
     limit?: number,
