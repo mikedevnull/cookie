@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ShoplistController } from './shoplist.controller';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { ShopListItem } from './shoplistitem.entity';
+
 import ShoplistService from './shoplist.service';
 
 describe('ShoplistController', () => {
@@ -13,10 +12,7 @@ describe('ShoplistController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ShoplistService,
-        { provide: getRepositoryToken(ShopListItem), useValue: 'FIXME' },
-      ],
+      providers: [{ provide: ShoplistService, useValue: mockedService }],
       controllers: [ShoplistController],
     }).compile();
 
