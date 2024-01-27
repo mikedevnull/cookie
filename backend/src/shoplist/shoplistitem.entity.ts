@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
-@Entity()
-export class ShopListItem {
+@Entity('ShopListItem')
+export class ShopListItemEntity {
   @PrimaryColumn()
   name: string;
 

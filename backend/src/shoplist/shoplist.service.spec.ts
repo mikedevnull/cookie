@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import ShoplistService from './shoplist.service';
-import { ShopListItem } from './shoplistitem.entity';
+import { ShopListItemEntity } from './shoplistitem.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('ShoplistService', () => {
@@ -10,7 +10,7 @@ describe('ShoplistService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ShoplistService,
-        { provide: getRepositoryToken(ShopListItem), useValue: 'FIXME' },
+        { provide: getRepositoryToken(ShopListItemEntity), useValue: 'FIXME' },
       ],
     }).compile();
 

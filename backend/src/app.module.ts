@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ShoplistModule } from './shoplist/shoplist.module';
-import { ShopListItem } from './shoplist/shoplistitem.entity';
+import { ShopListItemEntity } from './shoplist/shoplistitem.entity';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { ShopListItem } from './shoplist/shoplistitem.entity';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'cookie.db',
-      entities: [ShopListItem],
+      entities: [ShopListItemEntity],
       synchronize: true,
     }),
     ShoplistModule,

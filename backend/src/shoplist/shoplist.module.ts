@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { ShoplistController } from './shoplist.controller';
 import ShoplistService from './shoplist.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ShopListItem } from './shoplistitem.entity';
+import { ShopListItemEntity } from './shoplistitem.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ShopListItem])],
+  imports: [TypeOrmModule.forFeature([ShopListItemEntity])],
   controllers: [ShoplistController],
   providers: [ShoplistService],
 })
