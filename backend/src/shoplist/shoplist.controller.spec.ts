@@ -36,4 +36,26 @@ describe('ShoplistController', () => {
     expect(result.documents).toEqual(fakeSearchResult);
     expect(result.checkpoint).toEqual({ updatedAt: 14, id: 'E' });
   });
+
+  it('Should return conflicitng items found by service when pushing items', async () => {
+    const fakeConflicts = [
+      { name: 'A', rank: 100, _deleted: false, active: false, lastUpdate: 10 },
+      { name: 'B', rank: 90, _deleted: false, active: false, lastUpdate: 11 },
+    ];
+    mockedService.createOrUpdate.mockResolvedValueOnce(fakeConflicts);
+
+    const fakePushDocuments = [
+      { name: 'A', rank: 100, _deleted: false, active: false, lastUpdate: 10 },
+      { name: 'B', rank: 90, _deleted: false, active: false, lastUpdate: 11 },
+      { name: 'C', rank: 80, _deleted: true, active: true, lastUpdate: 12 },
+    ];
+
+    const result = await controller.push(fakePushDocuments);
+
+    expect(mockedService.createOrUpdate).toHaveBeenCalledTimes(1);
+    expect(mockedService.createOrUpdate).toHaveBeenCalledWith(
+      expect.arrayContaining(fakePushDocuments),
+    );
+    expect(result).toEqual(fakeConflicts);
+  });
 });
