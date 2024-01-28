@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ShoplistController } from './shoplist.controller';
 
 import ShoplistService from './shoplist.service';
+import { DocumentChangeRow } from 'src/replication';
+import { ShopListItem } from './shoplistitem.interface';
 
 describe('ShoplistController', () => {
   let controller: ShoplistController;
@@ -44,10 +46,55 @@ describe('ShoplistController', () => {
     ];
     mockedService.createOrUpdate.mockResolvedValueOnce(fakeConflicts);
 
-    const fakePushDocuments = [
-      { name: 'A', rank: 100, _deleted: false, active: false, lastUpdate: 10 },
-      { name: 'B', rank: 90, _deleted: false, active: false, lastUpdate: 11 },
-      { name: 'C', rank: 80, _deleted: true, active: true, lastUpdate: 12 },
+    const fakePushDocuments: DocumentChangeRow<ShopListItem>[] = [
+      {
+        newDocumentState: {
+          name: 'A',
+          rank: 100,
+          _deleted: false,
+          active: true,
+          lastUpdate: 10,
+        },
+        assumedMasterState: {
+          name: 'A',
+          rank: 100,
+          _deleted: false,
+          active: false,
+          lastUpdate: 10,
+        },
+      },
+      {
+        newDocumentState: {
+          name: 'B',
+          rank: 80,
+          _deleted: false,
+          active: true,
+          lastUpdate: 11,
+        },
+        assumedMasterState: {
+          name: 'B',
+          rank: 90,
+          _deleted: false,
+          active: false,
+          lastUpdate: 11,
+        },
+      },
+      {
+        newDocumentState: {
+          name: 'C',
+          rank: 80,
+          _deleted: true,
+          active: false,
+          lastUpdate: 12,
+        },
+        assumedMasterState: {
+          name: 'C',
+          rank: 80,
+          _deleted: true,
+          active: true,
+          lastUpdate: 12,
+        },
+      },
     ];
 
     const result = await controller.push(fakePushDocuments);

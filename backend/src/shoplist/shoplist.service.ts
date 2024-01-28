@@ -3,6 +3,7 @@ import { ShopListItemEntity } from './shoplistitem.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThan, Repository } from 'typeorm';
 import { ShopListItem } from './shoplistitem.interface';
+import { DocumentChangeRow } from 'src/replication';
 
 @Injectable()
 export default class ShoplistService {
@@ -11,7 +12,7 @@ export default class ShoplistService {
     private _itemRepository: Repository<ShopListItemEntity>,
   ) {}
 
-  async findAllBefore(
+  async findAllAfter(
     updatedAt: number,
     id: string,
     limit?: number,
@@ -26,7 +27,7 @@ export default class ShoplistService {
     });
   }
 
-  async createOrUpdate(updateDocuments: ShopListItem[]) {
+  async createOrUpdate(updateDocuments: DocumentChangeRow<ShopListItem>[]) {
     return updateDocuments;
   }
 }
