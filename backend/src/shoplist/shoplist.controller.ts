@@ -1,6 +1,11 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import ShoplistService from './shoplist.service';
 import { ShopListItem } from './shoplistitem.interface';
+import {
+  Checkpoint,
+  DocumentChangeRow,
+  DocumentUpdates,
+} from 'src/replication';
 
 @Controller('shoplist')
 export class ShoplistController {
@@ -11,9 +16,9 @@ export class ShoplistController {
     @Query('updatedAt') updatedAt: number,
     @Query('id') id?: string,
     @Query('limit') limit?: number,
-  ) {
+  ): Promise<DocumentUpdates<ShopListItem>> {
     const results = await this._service.findAllAfter(updatedAt, id, limit);
-    const newCheckpoint =
+    const newCheckpoint: Checkpoint =
       results.length === 0
         ? { id, updatedAt }
         : {
@@ -24,7 +29,7 @@ export class ShoplistController {
   }
 
   @Post('/push')
-  async push(@Body() updatedDocuments: ShopListItem[]) {
+  async push(@Body() updatedDocuments: DocumentChangeRow<ShopListItem>[]) {
     return this._service.createOrUpdate(updatedDocuments);
   }
 }
