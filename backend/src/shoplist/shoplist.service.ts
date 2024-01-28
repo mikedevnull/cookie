@@ -5,20 +5,8 @@ import { In, MoreThan, Repository } from 'typeorm';
 import { ShopListItem } from './shoplistitem.interface';
 import { DocumentChangeRow } from 'src/replication';
 
-export interface ShopListServiceInterface {
-  findAllAfter: (
-    updatedAt: number,
-    id: string,
-    limit?: number,
-  ) => Promise<ShopListItem[]>;
-
-  createOrUpdate: (
-    changedRows: DocumentChangeRow<ShopListItem>[],
-  ) => Promise<ShopListItem[]>;
-}
-
 @Injectable()
-export default class ShoplistService implements ShopListServiceInterface {
+export default class ShoplistService {
   constructor(
     @InjectRepository(ShopListItemEntity)
     private _itemRepository: Repository<ShopListItemEntity>,
