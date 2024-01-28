@@ -1,5 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import ShoplistService from './shoplist.service';
+import { ShopListItem } from './shoplistitem.interface';
 
 @Controller('shoplist')
 export class ShoplistController {
@@ -20,5 +21,10 @@ export class ShoplistController {
             updatedAt: results.at(-1).lastUpdate,
           };
     return { documents: results, checkpoint: newCheckpoint };
+  }
+
+  @Post('/push')
+  async push(@Body() updatedDocuments: ShopListItem[]) {
+    return this._service.createOrUpdate(updatedDocuments);
   }
 }

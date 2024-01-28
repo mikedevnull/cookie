@@ -25,4 +25,8 @@ export default class ShoplistService {
       order: { lastUpdate: 'ASC', name: 'ASC' },
     });
   }
+
+  async createOrUpdate(updateDocuments: ShopListItem[]) {
+    return updateDocuments;
+  }
 }
