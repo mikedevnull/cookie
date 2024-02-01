@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 export type Checkpoint = {
   id: string;
   updatedAt: number;
@@ -16,3 +18,7 @@ export type DocumentChangeRow<T> = {
   newDocumentState: T;
   assumedMasterState?: T;
 };
+
+export interface UpdateEventSource<T> {
+  events: Observable<DocumentUpdates<T>>;
+}
