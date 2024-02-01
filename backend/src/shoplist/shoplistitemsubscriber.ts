@@ -8,10 +8,13 @@ import {
 import { ShopListItemEntity } from './shoplistitem.entity';
 import { Subject, bufferTime, filter, map } from 'rxjs';
 import { ShopListItem } from './shoplistitem.interface';
+import { UpdateEventSource } from 'src/replication';
 
 @EventSubscriber()
 export class ShopListItemSubscriber
-  implements EntitySubscriberInterface<ShopListItemEntity>
+  implements
+    EntitySubscriberInterface<ShopListItemEntity>,
+    UpdateEventSource<ShopListItem>
 {
   private _input = new Subject<ShopListItem>();
 
