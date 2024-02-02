@@ -12,6 +12,19 @@ import { PageMenu } from "./PageMenu";
 
 type ItemSelectedCallback = (item: Item) => void;
 
+function createDebounceCallback(callback?: (arg0: string) => void) {
+  let debounceTimeout: NodeJS.Timeout | undefined;
+  if (!callback) {
+    return () => {};
+  }
+  return (value: string) => {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+      callback(value);
+    }, 250);
+  };
+}
+
 function useShopListItems(showInactive: boolean) {
   const queryFactory = useCallback(
     (collection: ItemCollection) =>
@@ -61,6 +74,7 @@ export default function ShoppingList() {
   const [searchFilter, setSearchFilter] = useState<string>("");
   const items = useShopListItems(showInactive);
   const suggestedItems = useSuggestedItems(searchFilter);
+  const [textInputValue, setTextInputValue] = useState<string>("");
 
   const addOrUpdateItem = (name: string) => {
     collection?.upsert({
@@ -69,8 +83,8 @@ export default function ShoppingList() {
     });
   };
 
-  const itemSelectedCallback: ItemSelectedCallback = (item: Item) => {
-    const document = items.find(
+  const _findAndActivateItem = (item: Item, choices: RxDocument<Item>[]) => {
+    const document = choices.find(
       (doc: RxDocument<Item>) => doc.name === item.name
     );
     if (document) {
@@ -78,12 +92,29 @@ export default function ShoppingList() {
     }
   };
 
+  const itemSelectedCallback: ItemSelectedCallback = useCallback(
+    (item: Item) => _findAndActivateItem(item, items),
+    [items]
+  );
+
+  const suggestedItemSelectedCallback: ItemSelectedCallback = (item: Item) => {
+    _findAndActivateItem(item, suggestedItems);
+    setTextInputValue("");
+    setSearchFilter("");
+  };
+
+  const updateSearchFilter = createDebounceCallback(setSearchFilter);
+
   return (
     <>
       <AppNavBar>
         <AddItemTextField
+          value={textInputValue}
+          onChange={(v) => {
+            setTextInputValue(v);
+            updateSearchFilter(v);
+          }}
           submitValue={addOrUpdateItem}
-          searchFilterCallback={setSearchFilter}
         ></AddItemTextField>
         <PageMenu
           showInactive={{ value: showInactive, callback: setShowInactive }}
@@ -92,7 +123,10 @@ export default function ShoppingList() {
       <Container maxWidth="sm">
         <main>
           <Stack>
-            <ItemSuggestions items={suggestedItems}></ItemSuggestions>
+            <ItemSuggestions
+              items={suggestedItems}
+              itemSelectedCallback={suggestedItemSelectedCallback}
+            ></ItemSuggestions>
             {renderListSection(items, itemSelectedCallback)}
           </Stack>
         </main>

@@ -1,12 +1,4 @@
-import {
-  ListItemButton,
-  ListItemIcon,
-  Checkbox,
-  ListItemText,
-  ListItem,
-  List,
-  Collapse,
-} from "@mui/material";
+import { List, Collapse } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
 import { Item } from "@/db";
 import ShopItemListItem from "./ShopItemListItem";

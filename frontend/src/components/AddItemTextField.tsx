@@ -1,43 +1,22 @@
-import { useCallback, useState } from "react";
 import { Box, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import Clear from "@mui/icons-material/Clear";
 
 type Props = {
-  defaultValue?: string;
+  value: string;
+  onChange: (arg0: string) => void;
   submitValue?: (arg0: string) => void;
-  searchFilterCallback?: (arg0: string) => void;
 };
 
-function createDebounceCallback(callback?: (arg0: string) => void) {
-  let debounceTimeout: NodeJS.Timeout | undefined;
-  if (!callback) {
-    return () => {};
-  }
-  return (value: string) => {
-    clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(() => {
-      callback(value);
-    }, 250);
-  };
-}
-
 export default function AddItemTextField({
-  defaultValue,
+  value,
+  onChange,
   submitValue,
-  searchFilterCallback,
 }: Props) {
-  const [value, setValue] = useState<string>(defaultValue || "");
-
   const addItem = (name: string) => {
     if (submitValue && name.length > 0) {
       submitValue(name);
     }
   };
-
-  const searchCallback = useCallback(
-    createDebounceCallback(searchFilterCallback),
-    [searchFilterCallback]
-  );
 
   return (
     <Box sx={{ flexGrow: 1, maxWidth: "sm" }}>
@@ -48,14 +27,12 @@ export default function AddItemTextField({
         }}
         value={value}
         onChange={(event) => {
-          setValue(event.currentTarget.value);
-          searchCallback(event.currentTarget.value);
+          onChange(event.currentTarget.value);
         }}
         onKeyDown={(event) => {
           if (event.key === "Enter") {
             addItem(value.trim());
-            setValue("");
-            searchCallback("");
+            onChange("");
           }
         }}
         fullWidth
@@ -71,8 +48,7 @@ export default function AddItemTextField({
               aria-label="Clear text for adding new items"
               edge="end"
               onClick={() => {
-                setValue("");
-                searchCallback("");
+                onChange("");
               }}
               data-testid="input-clear-button"
             >
