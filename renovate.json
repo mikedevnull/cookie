@@ -19,5 +19,6 @@
       "matchManagers": ["github-actions"],
       "groupName": "Github actions"
     }
-  ]
+  ],
+  schedule: ["every weekend"]
 }
