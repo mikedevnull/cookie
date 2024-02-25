@@ -14,21 +14,17 @@ describe("ShopItemListItem", () => {
   });
 
   it("Should render active items correctly", () => {
-    const renderedItem = render(
-      <ShopItemListItem item={{ name: "Foo", active: true }} />
-    );
+    const renderedItem = render(<ShopItemListItem name="Foo" active={true} />);
     expect(renderedItem).toMatchSnapshot();
   });
 
   it("Should render inactive items correctly", () => {
-    const renderedItem = render(
-      <ShopItemListItem item={{ name: "Foo", active: false }} />
-    );
+    const renderedItem = render(<ShopItemListItem name="Foo" active={false} />);
     expect(renderedItem).toMatchSnapshot();
   });
 
   it("Clicking an active item should change appearence to inactive immediately", async () => {
-    render(<ShopItemListItem item={{ name: "Foo", active: true }} />);
+    render(<ShopItemListItem name="Foo" active={true} />);
     const listItem = await screen.findByText("Foo");
     await user.click(listItem);
     const checkBox = await screen.findByLabelText<HTMLInputElement>("Foo");
@@ -36,7 +32,7 @@ describe("ShopItemListItem", () => {
   });
 
   it("Clicking an inactive item should change appearence to active immediately", async () => {
-    render(<ShopItemListItem item={{ name: "Foo", active: false }} />);
+    render(<ShopItemListItem name="Foo" active={false} />);
     const listItem = await screen.findByText("Foo");
     await user.click(listItem);
     const checkBox = await screen.findByLabelText<HTMLInputElement>("Foo");
@@ -47,9 +43,7 @@ describe("ShopItemListItem", () => {
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     jest.useFakeTimers();
     const cb = jest.fn();
-    render(
-      <ShopItemListItem item={{ name: "Foo", active: true }} onToggle={cb} />
-    );
+    render(<ShopItemListItem name="Foo" active={true} onToggle={cb} />);
 
     const listItem = await screen.findByText("Foo");
     await user.click(listItem);
@@ -63,9 +57,7 @@ describe("ShopItemListItem", () => {
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     jest.useFakeTimers();
     const cb = jest.fn();
-    render(
-      <ShopItemListItem item={{ name: "Foo", active: true }} onToggle={cb} />
-    );
+    render(<ShopItemListItem name="Foo" active={true} onToggle={cb} />);
 
     const listItem = await screen.findByText("Foo");
     await user.click(listItem);
