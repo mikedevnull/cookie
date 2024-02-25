@@ -11,7 +11,7 @@ import { useEffect, useId, useState } from "react";
 type Props = {
   name: string;
   active: boolean;
-  onToggle?: (item: Pick<Item, "name" | "active">) => void;
+  onToggle?: () => void;
 };
 
 const TOGGLE_DELAY_IN_MS = 1000 as const;
@@ -26,7 +26,7 @@ export default function ShopItemListItem({ name, active, onToggle }: Props) {
     if (itemState === "transitioning") {
       const timer = setTimeout(() => {
         if (onToggle) {
-          onToggle({ name, active });
+          onToggle();
         }
       }, TOGGLE_DELAY_IN_MS);
       return () => {
@@ -40,7 +40,7 @@ export default function ShopItemListItem({ name, active, onToggle }: Props) {
       setItemState("transitioning");
     } else {
       if (!active && onToggle) {
-        onToggle({ name, active });
+        onToggle();
       }
       setItemState("active");
     }
