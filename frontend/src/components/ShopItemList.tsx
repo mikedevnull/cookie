@@ -22,7 +22,11 @@ export default function ShopItemList({ items, itemSelectedCallback }: Props) {
       <TransitionGroup>
         {items.map((i) => (
           <Collapse key={i.name}>
-            <ShopItemListItem item={i} onToggle={() => onClick(i)} />
+            <ShopItemListItem
+              name={i.name}
+              active={i.active}
+              onToggle={() => onClick(i)}
+            />
           </Collapse>
         ))}
       </TransitionGroup>
