@@ -3,27 +3,14 @@ import { Item, ItemCollection } from "@/db";
 import { RxDocument } from "rxdb";
 import { useRxCollection, useRxData } from "rxdb-hooks";
 import ShopItemList from "@/components/ShopItemList";
-import { Container, Stack, Typography } from "@mui/material";
-import AddItemTextField from "@/components/AddItemTextField";
+import { Container, Fab, Snackbar, Stack, Typography } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import { useCallback, useState } from "react";
-import { ItemSuggestions } from "@/components/ItemSuggestions";
 import { AppNavBar } from "@/components/AppNavBar";
 import { PageMenu } from "./PageMenu";
+import AddItemDialog from "@/components/AddItemDialog";
 
 type ItemSelectedCallback = (item: Item) => void;
-
-function createDebounceCallback(callback?: (arg0: string) => void) {
-  let debounceTimeout: NodeJS.Timeout | undefined;
-  if (!callback) {
-    return () => {};
-  }
-  return (value: string) => {
-    clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(() => {
-      callback(value);
-    }, 250);
-  };
-}
 
 function useShopListItems(showInactive: boolean) {
   const queryFactory = useCallback(
@@ -44,37 +31,11 @@ function useShopListItems(showInactive: boolean) {
   return items;
 }
 
-function useSuggestedItems(searchFilter: string) {
-  const trimmedSearchFilter = searchFilter.trim();
-  const queryFactory = useCallback(
-    (collection: ItemCollection) => {
-      if (trimmedSearchFilter.length > 0) {
-        return collection.find({
-          selector: {
-            active: false,
-            name: { $regex: `${trimmedSearchFilter}`, $options: "i" },
-          },
-          limit: 5,
-        });
-      }
-      return undefined;
-    },
-    [trimmedSearchFilter]
-  );
-  const { result: items } = useRxData("items", queryFactory);
-  if (trimmedSearchFilter.length === 0) {
-    return [];
-  }
-  return items;
-}
-
 export default function ShoppingList() {
   const collection = useRxCollection<Item>("items");
   const [showInactive, setShowInactive] = useState<boolean>(false);
-  const [searchFilter, setSearchFilter] = useState<string>("");
   const items = useShopListItems(showInactive);
-  const suggestedItems = useSuggestedItems(searchFilter);
-  const [textInputValue, setTextInputValue] = useState<string>("");
+  const suggestedItems = useShopListItems(false);
 
   const addOrUpdateItem = (name: string) => {
     collection?.upsert({
@@ -97,38 +58,51 @@ export default function ShoppingList() {
     [items]
   );
 
-  const suggestedItemSelectedCallback: ItemSelectedCallback = (item: Item) => {
-    _findAndActivateItem(item, suggestedItems);
-    setTextInputValue("");
-    setSearchFilter("");
-  };
-
-  const updateSearchFilter = createDebounceCallback(setSearchFilter);
+  const [showAddItemDialog, setShowAddItemDialog] = useState<boolean>(false);
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
 
   return (
     <>
       <AppNavBar>
-        <AddItemTextField
-          value={textInputValue}
-          onChange={(v) => {
-            setTextInputValue(v);
-            updateSearchFilter(v);
-          }}
-          submitValue={addOrUpdateItem}
-        ></AddItemTextField>
         <PageMenu
           showInactive={{ value: showInactive, callback: setShowInactive }}
         ></PageMenu>
       </AppNavBar>
       <Container maxWidth="sm">
         <main>
-          <Stack>
-            <ItemSuggestions
-              items={suggestedItems}
-              itemSelectedCallback={suggestedItemSelectedCallback}
-            ></ItemSuggestions>
-            {renderListSection(items, itemSelectedCallback)}
-          </Stack>
+          <Stack>{renderListSection(items, itemSelectedCallback)}</Stack>
+          <AddItemDialog
+            open={showAddItemDialog}
+            onClose={() => setShowAddItemDialog(false)}
+            onAdd={(name) => {
+              setSnackbarOpen(true);
+              addOrUpdateItem(name);
+            }}
+            options={suggestedItems}
+          />
+          <Snackbar
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            open={snackbarOpen}
+            autoHideDuration={2000}
+            onClose={() => {
+              setSnackbarOpen(false);
+            }}
+            message="Item added to list"
+          />
+          <Fab
+            color="primary"
+            aria-label="add"
+            sx={{
+              position: "fixed",
+              bottom: 0,
+              right: 0,
+              marginRight: 2,
+              marginBottom: 2,
+            }}
+            onClick={() => setShowAddItemDialog(true)}
+          >
+            <AddIcon />
+          </Fab>
         </main>
       </Container>
     </>

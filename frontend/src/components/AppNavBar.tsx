@@ -11,7 +11,7 @@ export function AppNavBar({ children }: PropsWithChildren) {
           sx={{
             flexShrink: 0,
             paddingX: 2,
-            display: { xs: "none", sm: "flex" },
+            display: "flex",
           }}
           noWrap
         >
