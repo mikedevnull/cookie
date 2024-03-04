@@ -1,6 +1,7 @@
 {
   "folders": [
     {
+      "name": "ROOT",
       "path": ".",
     },
     {
@@ -21,5 +22,6 @@
       "frontend": true,
       "backend": true,
     },
+    "jest.disabledWorkspaceFolders": ["ROOT"],
   },
 }
