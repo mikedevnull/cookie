@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import ShoppingList from "@/pages/ShoppingList";
 import { createDatabase, insertDefaultData } from "@/db";
 import { Provider } from "rxdb-hooks";
+import { BrowserRouter } from "react-router-dom";
 
 const meta = {
   title: "Pages/ShoppingList",
@@ -12,9 +13,11 @@ const meta = {
   },
   decorators: [
     (Story, { loaded: { db } }) => (
-      <Provider db={db}>
-        <Story />
-      </Provider>
+      <BrowserRouter>
+        <Provider db={db}>
+          <Story />
+        </Provider>
+      </BrowserRouter>
     ),
   ],
 } satisfies Meta<typeof ShoppingList>;
