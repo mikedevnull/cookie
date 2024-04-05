@@ -22,12 +22,19 @@ type DatabaseCollections = {
 };
 export type Database = RxDatabase<DatabaseCollections>;
 
-export async function createDatabase(
-  storage?: RxStorage<unknown, unknown>
-): Promise<Database> {
+type DatabaseCreationOptions = {
+  ignoreDuplicate?: boolean;
+  storage?: RxStorage<unknown, unknown>;
+};
+
+export async function createDatabase({
+  storage,
+  ignoreDuplicate = false,
+}: DatabaseCreationOptions = {}): Promise<Database> {
   const database: Database = await createRxDatabase({
     name: "cookie",
     storage: storage || getRxStorageMemory(),
+    ignoreDuplicate,
   });
 
   const itemSchema = {
@@ -70,7 +77,7 @@ export async function insertDefaultData(database: Database) {
 
 export async function initialize() {
   const storage = env !== "development" ? getRxStorageDexie() : undefined;
-  const db = await createDatabase(storage);
+  const db = await createDatabase({ storage });
   if (env === "development") {
     await insertDefaultData(db);
   }
