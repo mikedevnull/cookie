@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { withRouter } from "storybook-addon-remix-react-router";
 
 import ShoppingList from "@/pages/ShoppingList";
 import { Database, createDatabase, insertDefaultData } from "@/db";
 import { Provider } from "rxdb-hooks";
-import { BrowserRouter } from "react-router-dom";
+import { CssBaseline } from "@mui/material";
 
 const meta = {
   title: "Pages/ShoppingList",
@@ -12,12 +13,12 @@ const meta = {
     layout: "fullscreen",
   },
   decorators: [
+    withRouter,
     (Story, { loaded: { db } }) => (
-      <BrowserRouter>
-        <Provider db={db}>
-          <Story />
-        </Provider>
-      </BrowserRouter>
+      <Provider db={db}>
+        <CssBaseline />
+        <Story />
+      </Provider>
     ),
   ],
 } satisfies Meta<typeof ShoppingList>;
