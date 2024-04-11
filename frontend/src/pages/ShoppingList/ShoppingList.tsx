@@ -1,14 +1,13 @@
 import { Item, ItemCollection } from "@/db";
 
 import { RxDocument } from "rxdb";
-import { useRxCollection, useRxData } from "rxdb-hooks";
+import { useRxData } from "rxdb-hooks";
 import ShopItemList from "@/components/ShopItemList";
-import { Container, Fab, Snackbar, Stack, Typography } from "@mui/material";
+import { Container, Fab, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useCallback, useState } from "react";
 import { AppNavBar } from "@/components/AppNavBar";
 import { PageMenu } from "./PageMenu";
-import AddItemDialog from "@/components/AddItemDialog";
 import { Link } from "react-router-dom";
 
 type ItemSelectedCallback = (item: Item) => void;
@@ -33,17 +32,8 @@ function useShopListItems(showInactive: boolean) {
 }
 
 export default function ShoppingList() {
-  const collection = useRxCollection<Item>("items");
   const [showInactive, setShowInactive] = useState<boolean>(false);
   const items = useShopListItems(showInactive);
-  const suggestedItems = useShopListItems(false);
-
-  const addOrUpdateItem = (name: string) => {
-    collection?.upsert({
-      name,
-      active: true,
-    });
-  };
 
   const _findAndActivateItem = (item: Item, choices: RxDocument<Item>[]) => {
     const document = choices.find(
@@ -59,9 +49,6 @@ export default function ShoppingList() {
     [items]
   );
 
-  const [showAddItemDialog, setShowAddItemDialog] = useState<boolean>(false);
-  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
-
   return (
     <>
       <AppNavBar>
@@ -72,24 +59,6 @@ export default function ShoppingList() {
       <Container maxWidth="sm">
         <main>
           <Stack>{renderListSection(items, itemSelectedCallback)}</Stack>
-          <AddItemDialog
-            open={showAddItemDialog}
-            onClose={() => setShowAddItemDialog(false)}
-            onAdd={(name) => {
-              setSnackbarOpen(true);
-              addOrUpdateItem(name);
-            }}
-            options={suggestedItems}
-          />
-          <Snackbar
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            open={snackbarOpen}
-            autoHideDuration={2000}
-            onClose={() => {
-              setSnackbarOpen(false);
-            }}
-            message="Item added to list"
-          />
           <Fab
             color="primary"
             aria-label="add"
