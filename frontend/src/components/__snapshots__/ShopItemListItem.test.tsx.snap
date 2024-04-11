@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ShopItemListItem Should render active items correctly 1`] = `
+exports[`ShopItemListItem > Should render active items correctly 1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -161,7 +161,7 @@ exports[`ShopItemListItem Should render active items correctly 1`] = `
 }
 `;
 
-exports[`ShopItemListItem Should render inactive items correctly 1`] = `
+exports[`ShopItemListItem > Should render inactive items correctly 1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
