@@ -1,10 +1,16 @@
 import { AppBar, Toolbar, Typography } from "@mui/material";
-import { PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 
-export function AppNavBar({ children }: PropsWithChildren) {
+type AppNavBarProps = {
+  leftAction?: React.ReactNode;
+  title?: string;
+} & PropsWithChildren;
+
+export function AppNavBar({ leftAction, title, children }: AppNavBarProps) {
   return (
     <AppBar position="sticky">
       <Toolbar sx={{ justifyContent: "space-between" }}>
+        {leftAction}
         <Typography
           variant="h6"
           color="inherit"
@@ -15,7 +21,7 @@ export function AppNavBar({ children }: PropsWithChildren) {
           }}
           noWrap
         >
-          Cookie
+          {title ?? "Cookie"}
         </Typography>
         {children}
       </Toolbar>

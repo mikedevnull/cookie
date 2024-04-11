@@ -9,6 +9,7 @@ import { useCallback, useState } from "react";
 import { AppNavBar } from "@/components/AppNavBar";
 import { PageMenu } from "./PageMenu";
 import AddItemDialog from "@/components/AddItemDialog";
+import { Link } from "react-router-dom";
 
 type ItemSelectedCallback = (item: Item) => void;
 
@@ -99,7 +100,8 @@ export default function ShoppingList() {
               marginRight: 2,
               marginBottom: 2,
             }}
-            onClick={() => setShowAddItemDialog(true)}
+            component={Link}
+            to="/add"
           >
             <AddIcon />
           </Fab>

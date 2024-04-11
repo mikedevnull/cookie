@@ -3,7 +3,7 @@ import ShoppingList from "./ShoppingList";
 import { userEvent } from "@testing-library/user-event";
 import { Database, createDatabase } from "@/db";
 import { renderWithDb } from "@testing/render";
-
+import { MemoryRouter } from "react-router-dom";
 
 async function setupTestData(db: Database) {
   await db.collections.items.bulkInsert([
@@ -43,7 +43,12 @@ describe("ShoppingList with database", function () {
 
   test("Render items in database", async () => {
     await setupTestData(db);
-    renderWithDb(db, <ShoppingList />);
+    renderWithDb(
+      db,
+      <MemoryRouter>
+        <ShoppingList />
+      </MemoryRouter>
+    );
 
     const items = await screen.findAllByRole("listitem");
 
@@ -55,7 +60,12 @@ describe("ShoppingList with database", function () {
 
   test("Removal from database removes from list", async () => {
     await setupTestData(db);
-    renderWithDb(db, <ShoppingList />);
+    renderWithDb(
+      db,
+      <MemoryRouter>
+        <ShoppingList />
+      </MemoryRouter>
+    );
 
     await screen.findByText("testItem2");
 
@@ -68,51 +78,26 @@ describe("ShoppingList with database", function () {
   });
 
   test("Empty list displays message", async () => {
-    renderWithDb(db, <ShoppingList />);
+    renderWithDb(
+      db,
+      <MemoryRouter>
+        <ShoppingList />
+      </MemoryRouter>
+    );
 
     const notifyText = await screen.findByText("The list is currently empty.");
     expect(notifyText).toBeInTheDocument();
   });
 
-  test("Entering new item name adds item to database", async () => {
-    const user = userEvent.setup();
-
-    renderWithDb(db, <ShoppingList />);
-    const addButton = await screen.findByLabelText("add");
-    await user.click(addButton);
-    const input = await screen.findByLabelText("Add new or existing item");
-
-    await expect(
-      db.collections.items.findOne("Foobar").exec()
-    ).resolves.toBeNull();
-
-    await user.type(input, "Foobar");
-    await user.type(input, "{Enter}");
-    const newItem = await db.collections.items.findOne("Foobar").exec();
-    expect(newItem).not.toBeNull();
-    expect(newItem).toMatchObject({ name: "Foobar", active: true });
-  });
-
-  test("Entering existing item name updates item in database", async () => {
-    const user = userEvent.setup();
-
-    renderWithDb(db, <ShoppingList />);
-    const addButton = await screen.findByLabelText("add");
-    await user.click(addButton);
-    const input = await screen.findByLabelText("Add new or existing item");
-
-    await user.type(input, "testItem1");
-    await user.type(input, "{Enter}");
-
-    const updatedItem = await db.collections.items.findOne("testItem1").exec();
-    expect(updatedItem).not.toBeNull();
-    expect(updatedItem).toMatchObject({ name: "testItem1", active: true });
-  });
-
   test("Clicking an item toggles state in database", async () => {
     const user = userEvent.setup();
     await setupTestData(db);
-    renderWithDb(db, <ShoppingList />);
+    renderWithDb(
+      db,
+      <MemoryRouter>
+        <ShoppingList />
+      </MemoryRouter>
+    );
 
     const item = await screen.findByText("testItem2");
 
