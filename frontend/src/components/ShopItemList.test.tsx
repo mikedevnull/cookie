@@ -1,3 +1,5 @@
+import { vi } from "vitest";
+
 import { screen, render, act } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import { Item } from "@/db";
@@ -41,17 +43,17 @@ test("displays list of items with correct state", async () => {
 describe("ShopItemList user interaction", () => {
   let user: UserEvent;
   beforeEach(() => {
-    jest.useFakeTimers();
-    user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+    vi.useFakeTimers();
+    user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
   });
 
   afterEach(() => {
-    act(() => jest.runOnlyPendingTimers());
-    jest.useRealTimers();
+    act(() => vi.runOnlyPendingTimers());
+    vi.useRealTimers();
   });
 
   test("click on item in list triggeres callback with item", async () => {
-    const mockCallback = jest.fn();
+    const mockCallback = vi.fn();
     render(
       <ShopItemList items={testItems} itemSelectedCallback={mockCallback} />
     );
@@ -59,7 +61,7 @@ describe("ShopItemList user interaction", () => {
     const item2 = await screen.findByLabelText(testItem2.name);
 
     await user.click(item2);
-    act(() => jest.runOnlyPendingTimers());
+    act(() => vi.runOnlyPendingTimers());
     expect(mockCallback).toHaveBeenCalledTimes(1);
     expect(mockCallback).toHaveBeenCalledWith(testItem2);
 
@@ -68,7 +70,7 @@ describe("ShopItemList user interaction", () => {
     const item3 = await screen.findByLabelText(testItem3.name);
 
     await user.click(item3);
-    act(() => jest.runOnlyPendingTimers());
+    act(() => vi.runOnlyPendingTimers());
     expect(mockCallback).toHaveBeenCalledTimes(1);
     expect(mockCallback).toHaveBeenCalledWith(testItem3);
   });
