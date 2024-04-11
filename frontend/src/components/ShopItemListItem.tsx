@@ -32,7 +32,7 @@ export default function ShopItemListItem({ name, active, onToggle }: Props) {
         clearTimeout(timer);
       };
     }
-  }, [itemState, { name, active }, onToggle]);
+  }, [itemState, onToggle]);
 
   const onClick = () => {
     if (itemState === "active") {
