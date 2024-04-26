@@ -115,4 +115,15 @@ describe("AddItem page with database", function () {
     await user.click(button);
     expect(router.state.location.pathname).toBe("/");
   });
+
+  test("Clicking on existing item updates item in database", async () => {
+    const user = userEvent.setup();
+    const item = await screen.findByText("testItem1");
+
+    await user.click(item);
+    const dbItem = await db.collections.items.findOne("testItem1").exec();
+    expect(dbItem).not.toBeNull();
+    expect(dbItem).toMatchObject({ name: "testItem1", active: true });
+    expect(router.state.location.pathname).toBe("/");
+  });
 });
