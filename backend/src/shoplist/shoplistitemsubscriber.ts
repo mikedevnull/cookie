@@ -5,10 +5,10 @@ import {
   InsertEvent,
   UpdateEvent,
 } from 'typeorm';
-import { ShopListItemEntity } from './shoplistitem.entity';
+import { ShopListItemEntity } from './shoplistitem.entity.js';
 import { Subject, bufferTime, filter, map } from 'rxjs';
-import { ShopListItem } from './shoplistitem.interface';
-import { UpdateEventSource } from 'src/replication';
+import { ShopListItem } from './shoplistitem.interface.js';
+import { UpdateEventSource } from 'src/replication.js';
 
 @EventSubscriber()
 export class ShopListItemSubscriber

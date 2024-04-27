@@ -1,6 +1,6 @@
 import { Controller, Sse, MessageEvent } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
-import { ShopListItemSubscriber } from '../shoplist/shoplistitemsubscriber';
+import { ShopListItemSubscriber } from '../shoplist/shoplistitemsubscriber.js';
 
 @Controller('pull-stream')
 export class PullStreamController {

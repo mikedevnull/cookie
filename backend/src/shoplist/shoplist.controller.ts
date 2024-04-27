@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import ShoplistService from './shoplist.service';
-import { ShopListItem } from './shoplistitem.interface';
+import ShoplistService from './shoplist.service.js';
+import { ShopListItem } from './shoplistitem.interface.js';
 import {
   Checkpoint,
   DocumentChangeRow,
   DocumentUpdates,
-} from 'src/replication';
+} from 'src/replication.js';
 
 @Controller('shoplist')
 export class ShoplistController {

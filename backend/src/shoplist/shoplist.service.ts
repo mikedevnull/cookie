@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ShopListItemEntity } from './shoplistitem.entity';
+import { ShopListItemEntity } from './shoplistitem.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, MoreThan, Repository } from 'typeorm';
-import { ShopListItem } from './shoplistitem.interface';
-import { DocumentChangeRow } from 'src/replication';
+import { ShopListItem } from './shoplistitem.interface.js';
+import { DocumentChangeRow } from 'src/replication.js';
 
 @Injectable()
 export default class ShoplistService {

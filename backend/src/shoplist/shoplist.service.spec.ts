@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import ShoplistService from './shoplist.service';
-import { ShopListItemEntity } from './shoplistitem.entity';
+import ShoplistService from './shoplist.service.js';
+import { ShopListItemEntity } from './shoplistitem.entity.js';
 import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ShopListItem } from './shoplistitem.interface';
-import { ShopListItemSubscriber } from './shoplistitemsubscriber';
+import { ShopListItem } from './shoplistitem.interface.js';
+import { ShopListItemSubscriber } from './shoplistitemsubscriber.js';
 import { firstValueFrom, throwError, timeout } from 'rxjs';
 
 const itemA400 = {

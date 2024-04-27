@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ShoplistController } from './shoplist.controller';
+import { ShoplistController } from './shoplist.controller.js';
 
-import ShoplistService from './shoplist.service';
-import { DocumentChangeRow } from 'src/replication';
-import { ShopListItem } from './shoplistitem.interface';
+import ShoplistService from './shoplist.service.js';
+import { DocumentChangeRow } from 'src/replication.js';
+import { ShopListItem } from './shoplistitem.interface.js';
 
 describe('ShoplistController', () => {
   let controller: ShoplistController;
