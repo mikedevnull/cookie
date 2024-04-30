@@ -10,6 +10,9 @@
     {
       "path": "backend",
     },
+    {
+      "path": "common",
+    },
   ],
   "settings": {
     "files.exclude": {
@@ -22,6 +25,5 @@
       "frontend": true,
       "backend": true,
     },
-    "jest.disabledWorkspaceFolders": ["ROOT"],
   },
 }

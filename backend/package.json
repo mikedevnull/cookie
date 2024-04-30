@@ -1,5 +1,5 @@
 {
-  "name": "cookie-backend",
+  "name": "@cookie/backend",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -28,7 +28,8 @@
     "@nestjs/typeorm": "^10.0.1",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.7",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "@cookie/common": "*"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

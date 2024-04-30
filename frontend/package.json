@@ -1,5 +1,5 @@
 {
-  "name": "cookie-frontend",
+  "name": "@cookie/frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -26,7 +26,8 @@
     "react-router-dom": "^6.22.0",
     "rxdb": "^15.0.0",
     "rxdb-hooks": "^5.0.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "@cookie/common": "*"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.0.4",
