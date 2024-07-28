@@ -11,7 +11,7 @@ export function createAddItemAction(collection: RxCollection<Item> | null) {
 
     const itemName = formData.get("itemName")?.toString();
     if (itemName && itemName !== "") {
-      collection.upsert({ name: itemName.toString(), active: true });
+      collection.upsert({ name: itemName.toString(), state: "active" });
     }
 
     return redirect("/");

@@ -1,5 +1,7 @@
+export type ItemState = "active" | "done" | "hidden";
+
 export type Item = {
   name: string;
-  active: boolean;
+  state: ItemState;
   rankOrder: number;
 };

@@ -19,7 +19,7 @@ export default function SuggestedItemList({
     >
       <ListItemText
         primary={item.name}
-        secondary={item.active ? "" : "Not on list"}
+        secondary={item.state === "active" ? "" : "Not on list"}
       />
     </ListItemButton>
   ));
