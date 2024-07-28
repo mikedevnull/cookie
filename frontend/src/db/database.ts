@@ -38,7 +38,7 @@ export async function createDatabase({
   });
 
   const itemSchema = {
-    version: 1,
+    version: 2,
     primaryKey: "name",
     type: "object",
     properties: {
@@ -46,8 +46,8 @@ export async function createDatabase({
         type: "string",
         maxLength: 200, // <- the primary key must have set maxLength
       },
-      active: {
-        type: "boolean",
+      state: {
+        enum: ["active", "done", "hidden"],
       },
       rankOrder: {
         type: "number",
@@ -62,6 +62,10 @@ export async function createDatabase({
       migrationStrategies: {
         1: function (oldDoc) {
           oldDoc.rankOrder = 0;
+          return oldDoc;
+        },
+        2: function (oldDoc) {
+          oldDoc.state = oldDoc.active ? "active" : "hidden";
           return oldDoc;
         },
       },

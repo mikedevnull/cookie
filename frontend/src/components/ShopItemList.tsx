@@ -24,7 +24,7 @@ export default function ShopItemList({ items, itemSelectedCallback }: Props) {
           <Collapse key={i.name}>
             <ShopItemListItem
               name={i.name}
-              active={i.active}
+              active={i.state === "active"}
               onToggle={() => onClick(i)}
             />
           </Collapse>

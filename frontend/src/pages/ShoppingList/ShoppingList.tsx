@@ -19,7 +19,7 @@ function useShopListItems(showInactive: boolean) {
         selector: showInactive
           ? {}
           : {
-              active: true,
+              state: "active",
             },
       }),
     [showInactive]
@@ -40,7 +40,7 @@ export default function ShoppingList() {
       (doc: RxDocument<Item>) => doc.name === item.name
     );
     if (document) {
-      document.patch({ active: !item.active });
+      document.patch({ state: item.state === "active" ? "hidden" : "active" });
     }
   };
 

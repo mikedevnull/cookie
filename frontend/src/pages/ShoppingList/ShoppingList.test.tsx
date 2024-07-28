@@ -9,22 +9,22 @@ async function setupTestData(db: Database) {
   await db.collections.items.bulkInsert([
     {
       name: "testItem1",
-      active: false,
+      state: "hidden",
       rankOrder: 0,
     },
     {
       name: "testItem2",
-      active: true,
+      state: "active",
       rankOrder: 0,
     },
     {
       name: "testItem3",
-      active: true,
+      state: "active",
       rankOrder: 0,
     },
     {
       name: "testItem4",
-      active: true,
+      state: "active",
       rankOrder: 0,
     },
   ]);

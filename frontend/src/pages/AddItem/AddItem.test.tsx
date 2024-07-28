@@ -7,7 +7,7 @@ import {
   createMemoryRouter,
 } from "react-router-dom";
 import { Router } from "@remix-run/router";
-import { Database, createDatabase } from "@/db";
+import { Database, Item, createDatabase } from "@/db";
 import AddItem from "./AddItem";
 import { createAddItemAction } from "./action";
 
@@ -15,22 +15,22 @@ async function setupTestData(db: Database) {
   await db.collections.items.bulkInsert([
     {
       name: "testItem1",
-      active: false,
+      state: "hidden",
       rankOrder: 0,
     },
     {
       name: "testItem2",
-      active: true,
+      state: "active",
       rankOrder: 0,
     },
     {
       name: "testItem3",
-      active: true,
+      state: "active",
       rankOrder: 0,
     },
     {
       name: "testItem4",
-      active: true,
+      state: "active",
       rankOrder: 0,
     },
   ]);
@@ -73,7 +73,10 @@ describe("AddItem page with database", function () {
     await user.type(input, "{Enter}");
     const newItem = await db.collections.items.findOne("Foobar").exec();
     expect(newItem).not.toBeNull();
-    expect(newItem).toMatchObject({ name: "Foobar", active: true });
+    expect(newItem).toMatchObject({
+      name: "Foobar",
+      state: "active",
+    } satisfies Partial<Item>);
     expect(router.state.location.pathname).toBe("/");
   });
 
@@ -87,7 +90,10 @@ describe("AddItem page with database", function () {
 
     const updatedItem = await db.collections.items.findOne("testItem1").exec();
     expect(updatedItem).not.toBeNull();
-    expect(updatedItem).toMatchObject({ name: "testItem1", active: true });
+    expect(updatedItem).toMatchObject({
+      name: "testItem1",
+      state: "active",
+    } satisfies Partial<Item>);
     expect(router.state.location.pathname).toBe("/");
   });
 
@@ -104,7 +110,10 @@ describe("AddItem page with database", function () {
     await user.click(button);
     const newItem = await db.collections.items.findOne("Foobar").exec();
     expect(newItem).not.toBeNull();
-    expect(newItem).toMatchObject({ name: "Foobar", active: true });
+    expect(newItem).toMatchObject({
+      name: "Foobar",
+      state: "active",
+    } satisfies Partial<Item>);
     expect(router.state.location.pathname).toBe("/");
   });
 
@@ -123,7 +132,10 @@ describe("AddItem page with database", function () {
     await user.click(item);
     const dbItem = await db.collections.items.findOne("testItem1").exec();
     expect(dbItem).not.toBeNull();
-    expect(dbItem).toMatchObject({ name: "testItem1", active: true });
+    expect(dbItem).toMatchObject({
+      name: "testItem1",
+      state: "active",
+    } satisfies Partial<Item>);
     expect(router.state.location.pathname).toBe("/");
   });
 });

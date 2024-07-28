@@ -5,7 +5,7 @@ import {
   Checkbox,
   ListItemText,
 } from "@mui/material";
-import { useEffect, useId, useState } from "react";
+import { useId } from "react";
 
 type Props = {
   name: string;
@@ -13,35 +13,10 @@ type Props = {
   onToggle?: () => void;
 };
 
-const TOGGLE_DELAY_IN_MS = 1000 as const;
-
-type ItemState = "active" | "transitioning" | "inactive";
-
 export default function ShopItemListItem({ name, active, onToggle }: Props) {
-  const [itemState, setItemState] = useState<ItemState>(
-    active ? "active" : "inactive"
-  );
-  useEffect(() => {
-    if (itemState === "transitioning") {
-      const timer = setTimeout(() => {
-        if (onToggle) {
-          onToggle();
-        }
-      }, TOGGLE_DELAY_IN_MS);
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, [itemState, onToggle]);
-
   const onClick = () => {
-    if (itemState === "active") {
-      setItemState("transitioning");
-    } else {
-      if (!active && onToggle) {
-        onToggle();
-      }
-      setItemState("active");
+    if (onToggle) {
+      onToggle();
     }
   };
 
@@ -52,7 +27,7 @@ export default function ShopItemListItem({ name, active, onToggle }: Props) {
         <ListItemIcon>
           <Checkbox
             edge="start"
-            checked={itemState !== "active"}
+            checked={!active}
             tabIndex={-1}
             disableRipple
             inputProps={{ "aria-labelledby": labelId }}
@@ -62,7 +37,7 @@ export default function ShopItemListItem({ name, active, onToggle }: Props) {
           id={labelId}
           primary={name}
           primaryTypographyProps={
-            itemState !== "active"
+            !active
               ? {
                   style: { textDecoration: "line-through" },
                 }

@@ -1,25 +1,26 @@
 import { render } from "@testing-library/react";
 import SuggestedItemList from "./SuggestedItemList";
+import { Item } from "@/db";
 
-const fakeItems = [
+const fakeItems: Item[] = [
   {
     name: "testItem1",
-    active: false,
+    state: "hidden",
     rankOrder: 0,
   },
   {
     name: "testItem2",
-    active: true,
+    state: "active",
     rankOrder: 0,
   },
   {
     name: "testItem3",
-    active: true,
+    state: "active",
     rankOrder: 0,
   },
   {
     name: "testItem4",
-    active: true,
+    state: "active",
     rankOrder: 0,
   },
 ];

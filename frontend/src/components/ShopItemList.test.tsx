@@ -8,22 +8,22 @@ import ShopItemList from "./ShopItemList";
 
 const testItem1: Item = {
   name: "Some item",
-  active: false,
+  state: "hidden",
   rankOrder: 0,
 };
 const testItem2: Item = {
   name: "Another item",
-  active: true,
+  state: "active",
   rankOrder: 0,
 };
 const testItem3: Item = {
   name: "Third item",
-  active: true,
+  state: "active",
   rankOrder: 0,
 };
 const testItem4: Item = {
   name: "Item item",
-  active: false,
+  state: "hidden",
   rankOrder: 0,
 };
 
@@ -35,7 +35,7 @@ test("displays list of items with correct state", async () => {
   for (const item of testItems) {
     const domItem = screen.getByLabelText<HTMLInputElement>(item.name);
     expect(domItem).toBeInTheDocument();
-    expect(domItem.checked).toStrictEqual(!item.active);
+    expect(domItem.checked).toStrictEqual(item.state !== "active");
   }
 
   expect(screen.getAllByRole("listitem")).toHaveLength(testItems.length);
