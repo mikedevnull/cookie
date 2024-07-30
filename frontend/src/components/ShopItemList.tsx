@@ -1,4 +1,4 @@
-import { List, Collapse } from "@mui/material";
+import { List, Collapse, ListSubheader } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
 import { Item } from "@/db";
 import ShopItemListItem from "./ShopItemListItem";
@@ -8,9 +8,14 @@ type ItemClicked = (item: Item) => void;
 type Props = {
   items: Item[];
   itemSelectedCallback?: ItemClicked;
+  header?: string;
 };
 
-export default function ShopItemList({ items, itemSelectedCallback }: Props) {
+export default function ShopItemList({
+  items,
+  itemSelectedCallback,
+  header,
+}: Props) {
   const onClick = (item: Item) => {
     if (itemSelectedCallback) {
       itemSelectedCallback(item);
@@ -19,6 +24,9 @@ export default function ShopItemList({ items, itemSelectedCallback }: Props) {
 
   return (
     <List>
+      {header !== undefined ? (
+        <ListSubheader>{header}</ListSubheader>
+      ) : undefined}
       <TransitionGroup>
         {items.map((i) => (
           <Collapse key={i.name}>
