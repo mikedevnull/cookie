@@ -1,6 +1,6 @@
 import { vi } from "vitest";
 
-import { screen, render, act } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import { Item } from "@/db";
 
@@ -40,17 +40,20 @@ test("displays list of items with correct state", async () => {
 
   expect(screen.getAllByRole("listitem")).toHaveLength(testItems.length);
 });
+
+test("displays header if specified as prop", async () => {
+  render(<ShopItemList items={testItems} header="Foobar" />);
+
+  expect(screen.getByText("Foobar")).toBeInTheDocument();
+});
+
 describe("ShopItemList user interaction", () => {
   let user: UserEvent;
   beforeEach(() => {
-    vi.useFakeTimers();
-    user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    user = userEvent.setup();
   });
 
-  afterEach(() => {
-    act(() => vi.runOnlyPendingTimers());
-    vi.useRealTimers();
-  });
+  afterEach(() => {});
 
   test("click on item in list triggeres callback with item", async () => {
     const mockCallback = vi.fn();
@@ -61,7 +64,7 @@ describe("ShopItemList user interaction", () => {
     const item2 = await screen.findByLabelText(testItem2.name);
 
     await user.click(item2);
-    act(() => vi.runOnlyPendingTimers());
+
     expect(mockCallback).toHaveBeenCalledTimes(1);
     expect(mockCallback).toHaveBeenCalledWith(testItem2);
 
@@ -70,7 +73,7 @@ describe("ShopItemList user interaction", () => {
     const item3 = await screen.findByLabelText(testItem3.name);
 
     await user.click(item3);
-    act(() => vi.runOnlyPendingTimers());
+
     expect(mockCallback).toHaveBeenCalledTimes(1);
     expect(mockCallback).toHaveBeenCalledWith(testItem3);
   });
