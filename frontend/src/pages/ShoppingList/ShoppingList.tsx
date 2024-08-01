@@ -5,21 +5,21 @@ import { useRxData } from "rxdb-hooks";
 import ShopItemList from "@/components/ShopItemList";
 import { Container, Fab, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { useCallback, useState } from "react";
+import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
+import { useCallback } from "react";
 import { AppNavBar } from "@/components/AppNavBar";
-import { PageMenu } from "./PageMenu";
 import { Link } from "react-router-dom";
 
 type ItemSelectedCallback = (item: Item) => void;
 
-function useShopListItems(showInactive: boolean) {
+function useShopListItems(showInactive: boolean = false) {
   const queryFactory = useCallback(
     (collection: ItemCollection) =>
       collection?.find({
         selector: showInactive
           ? {}
           : {
-              state: "active",
+              state: { $ne: "hidden" },
             },
       }),
     [showInactive]
@@ -32,15 +32,14 @@ function useShopListItems(showInactive: boolean) {
 }
 
 export default function ShoppingList() {
-  const [showInactive, setShowInactive] = useState<boolean>(false);
-  const items = useShopListItems(showInactive);
+  const items = useShopListItems();
 
   const _findAndActivateItem = (item: Item, choices: RxDocument<Item>[]) => {
     const document = choices.find(
       (doc: RxDocument<Item>) => doc.name === item.name
     );
     if (document) {
-      document.patch({ state: item.state === "active" ? "hidden" : "active" });
+      document.patch({ state: item.state === "active" ? "done" : "active" });
     }
   };
 
@@ -49,51 +48,99 @@ export default function ShoppingList() {
     [items]
   );
 
+  const activeItems = items.filter((i) => i.state === "active");
+  const doneItems = items.filter((i) => i.state === "done");
+
+  const onRemoveItems = () => {
+    doneItems.forEach((i) => i.patch({ state: "hidden" }));
+  };
+
   return (
     <>
-      <AppNavBar>
-        <PageMenu
-          showInactive={{ value: showInactive, callback: setShowInactive }}
-        ></PageMenu>
-      </AppNavBar>
+      <AppNavBar></AppNavBar>
       <Container maxWidth="sm">
         <main>
-          <Stack>{renderListSection(items, itemSelectedCallback)}</Stack>
-          <Fab
-            color="primary"
-            aria-label="add"
-            sx={{
-              position: "fixed",
-              bottom: 0,
-              right: 0,
-              marginRight: 2,
-              marginBottom: 2,
-            }}
-            component={Link}
-            to="/add"
-          >
-            <AddIcon />
-          </Fab>
+          <Stack>
+            {renderListSection(activeItems, doneItems, itemSelectedCallback)}
+          </Stack>
+          {renderFab(doneItems.length > 0, onRemoveItems)}
         </main>
       </Container>
     </>
   );
 }
 
+function renderFab(haveDoneItems: boolean, onRemoveItems: () => void) {
+  const addFab = (
+    <Fab
+      color="primary"
+      aria-label="add"
+      sx={{
+        position: "fixed",
+        bottom: 0,
+        right: 0,
+        marginRight: 2,
+        marginBottom: 2,
+      }}
+      component={Link}
+      to="/add"
+    >
+      <AddIcon />
+    </Fab>
+  );
+  const removeDoneFab = (
+    <Fab
+      color="primary"
+      aria-label="remove done items"
+      sx={{
+        position: "fixed",
+        bottom: 0,
+        right: 0,
+        marginRight: 2,
+        marginBottom: 10,
+      }}
+      onClick={onRemoveItems}
+    >
+      <DeleteSweepIcon />
+    </Fab>
+  );
+
+  return (
+    <>
+      {addFab}
+      {haveDoneItems && removeDoneFab}
+    </>
+  );
+}
+
 function renderListSection(
-  items: Item[],
+  activeItems: Item[],
+  doneItems: Item[],
   itemSelectedCallback: ItemSelectedCallback
 ) {
-  if (items.length === 0) {
+  if (activeItems.length + doneItems.length === 0) {
     return renderEmptyListHint();
-  } else {
-    return (
-      <ShopItemList
-        items={items}
-        itemSelectedCallback={itemSelectedCallback}
-      ></ShopItemList>
-    );
   }
+  const activeList = (
+    <ShopItemList
+      items={activeItems}
+      itemSelectedCallback={itemSelectedCallback}
+    ></ShopItemList>
+  );
+  const optionalDoneList = (
+    <ShopItemList
+      items={doneItems}
+      header="Done"
+      itemSelectedCallback={itemSelectedCallback}
+    ></ShopItemList>
+  );
+
+  return (
+    <>
+      {activeList}
+      {doneItems.length > 0 && optionalDoneList}
+    </>
+  );
 }
 
 function renderEmptyListHint() {
