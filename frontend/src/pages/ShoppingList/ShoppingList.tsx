@@ -125,6 +125,7 @@ function renderListSection(
     <ShopItemList
       items={activeItems}
       itemSelectedCallback={itemSelectedCallback}
+      dataTestId="main-list"
     ></ShopItemList>
   );
   const optionalDoneList = (
@@ -132,6 +133,7 @@ function renderListSection(
       items={doneItems}
       header="Done"
       itemSelectedCallback={itemSelectedCallback}
+      dataTestId="done-list"
     ></ShopItemList>
   );
 

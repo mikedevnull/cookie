@@ -1,4 +1,8 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import {
+  screen,
+  waitForElementToBeRemoved,
+  findByText,
+} from "@testing-library/react";
 import ShoppingList from "./ShoppingList";
 import { userEvent } from "@testing-library/user-event";
 import { Database, createDatabase } from "@/db";
@@ -108,5 +112,39 @@ describe("ShoppingList with database", function () {
     await waitForElementToBeRemoved(item, {
       timeout: 1500,
     });
+    const dbItem = await db.collections.items.findOne("testItem2").exec();
+    expect(dbItem?.state).toBe("done");
+  });
+
+  test("Items move first to done section and disappears when clicked two times", async () => {
+    await setupTestData(db);
+    renderWithDb(
+      db,
+      <MemoryRouter>
+        <ShoppingList />
+      </MemoryRouter>
+    );
+
+    const mainList = await screen.findByTestId("main-list");
+    const item = await findByText(mainList, "testItem2");
+    await userEvent.click(item);
+    await waitForElementToBeRemoved(item, {
+      timeout: 1500,
+    });
+    const dbItem = await db.collections.items.findOne("testItem2").exec();
+    expect(dbItem?.state).toBe("done");
+
+    const doneList = await screen.findByTestId("done-list");
+    const doneItem = await findByText(doneList, "testItem2");
+    expect(doneItem).toBeInTheDocument();
+
+    const removeDone = screen.getByRole("button", {
+      name: "remove done items",
+    });
+    expect(removeDone).toBeInTheDocument();
+    await userEvent.click(removeDone);
+
+    const dbItem2 = await db.collections.items.findOne("testItem2").exec();
+    expect(dbItem2?.state).toBe("hidden");
   });
 });

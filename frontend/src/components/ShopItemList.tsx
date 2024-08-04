@@ -9,12 +9,14 @@ type Props = {
   items: Item[];
   itemSelectedCallback?: ItemClicked;
   header?: string;
+  dataTestId?: string;
 };
 
 export default function ShopItemList({
   items,
   itemSelectedCallback,
   header,
+  dataTestId,
 }: Props) {
   const onClick = (item: Item) => {
     if (itemSelectedCallback) {
@@ -23,7 +25,7 @@ export default function ShopItemList({
   };
 
   return (
-    <List>
+    <List data-testid={dataTestId}>
       {header !== undefined ? (
         <ListSubheader>{header}</ListSubheader>
       ) : undefined}
