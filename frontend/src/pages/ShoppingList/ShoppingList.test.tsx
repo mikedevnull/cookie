@@ -105,7 +105,7 @@ describe("ShoppingList with database", function () {
 
     const item = await screen.findByText("testItem2");
 
-    expect(item).not.toBeUndefined;
+    expect(item).not.toBeUndefined();
     expect(item).toBeInTheDocument();
 
     await user.click(item);
