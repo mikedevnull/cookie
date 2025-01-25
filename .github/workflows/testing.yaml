@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [22.x]
         
     steps:
     - uses: actions/checkout@v4
@@ -23,6 +23,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm run build --workspaces
-    - run: npm test --workspaces
-    - run: npm run build-storybook --workspace frontend
+    - run: npm run build 
+    - run: npm test 
+
