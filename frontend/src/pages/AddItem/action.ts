@@ -1,5 +1,5 @@
 import { Item } from "@/db";
-import { ActionFunctionArgs, redirect } from "react-router-dom";
+import { ActionFunctionArgs, redirect } from "react-router";
 import { RxCollection } from "rxdb";
 
 export function createAddItemAction(collection: RxCollection<Item> | null) {

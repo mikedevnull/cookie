@@ -1,5 +1,5 @@
 import { CssBaseline } from "@mui/material";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import ShoppingList from "@/pages/ShoppingList";
 import AddItem from "@/pages/AddItem";
 import { createAddItemAction } from "@/pages/AddItem";

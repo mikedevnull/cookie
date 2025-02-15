@@ -1,7 +1,7 @@
 import { IconButton, Button, Container, TextField } from "@mui/material";
 
 import BackIcon from "@mui/icons-material/ArrowBack";
-import { Form, Link, useSubmit } from "react-router-dom";
+import { Form, Link, useSubmit } from "react-router";
 import { AppNavBar } from "@/components/AppNavBar";
 import SuggestedItemList from "@/components/SuggestedItemList";
 import debounce from "lodash.debounce";

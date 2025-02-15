@@ -8,7 +8,7 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { useCallback } from "react";
 import { AppNavBar } from "@/components/AppNavBar";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 type ItemSelectedCallback = (item: Item) => void;
 
