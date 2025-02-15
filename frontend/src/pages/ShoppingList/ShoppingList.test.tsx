@@ -7,7 +7,7 @@ import ShoppingList from "./ShoppingList";
 import { userEvent } from "@testing-library/user-event";
 import { Database, createDatabase } from "@/db";
 import { renderWithDb } from "@testing/render";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 
 async function setupTestData(db: Database) {
   await db.collections.items.bulkInsert([
