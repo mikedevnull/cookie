@@ -24,6 +24,11 @@ concurrency:
   cancel-in-progress: true
     
 jobs:
+  waitAndDebounce:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflow Run Debounce
+        uses: zachary95/github-action-debounce@v0.1.0
   validate:
     runs-on: ubuntu-latest
     steps:
