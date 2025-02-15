@@ -1,12 +1,7 @@
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/react";
 import { renderWithDb } from "@testing/render";
-import {
-  RouteObject,
-  RouterProvider,
-  createMemoryRouter,
-} from "react-router-dom";
-import { Router } from "@remix-run/router";
+import { RouteObject, RouterProvider, createMemoryRouter } from "react-router";
 import { Database, Item, createDatabase } from "@/db";
 import AddItem from "./AddItem";
 import { createAddItemAction } from "./action";
@@ -38,7 +33,7 @@ async function setupTestData(db: Database) {
 
 describe("AddItem page with database", function () {
   let db: Database;
-  let router: Router;
+  let router: ReturnType<typeof createMemoryRouter>;
 
   beforeEach(async function () {
     db = await createDatabase();
