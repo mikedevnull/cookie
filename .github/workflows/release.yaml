@@ -32,6 +32,7 @@ jobs:
         with:
           wait: 600
   validate:
+    needs: [waitAndDebounce]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -46,6 +47,7 @@ jobs:
     - run: npm test --workspaces
     - run: npm run build-storybook --workspace frontend
   release:
+    needs: [validate]
     name: Release
     runs-on: ubuntu-latest
     permissions:
@@ -71,7 +73,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
-  deploy:  
+  deploy:
+    needs: [validate]
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
