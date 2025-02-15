@@ -1,5 +1,5 @@
 # Step 1: Build the page
-FROM node:22-alpine AS builder
+FROM node:lts-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
 WORKDIR /app/frontend
@@ -11,7 +11,7 @@ COPY frontend .
 RUN npm run build 
 
 # Step 2: Set up nestjs to server static page
-FROM node:22-alpine as backend
+FROM node:lts-alpine as backend
 RUN apk add --no-cache tini
 
 WORKDIR /app
