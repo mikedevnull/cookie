@@ -6,186 +6,162 @@ exports[`SuggestedItemList > Should render active and inactive items correctly 1
   "baseElement": <body>
     <div>
       <ul
-        class="MuiList-root MuiList-padding css-h4y409-MuiList-root"
+        class="MuiList-root MuiList-padding css-b7dj7n-MuiList-root"
       >
         <div
-          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
           role="button"
           tabindex="0"
         >
           <div
-            class="MuiListItemText-root MuiListItemText-multiline css-konndc-MuiListItemText-root"
+            class="MuiListItemText-root MuiListItemText-multiline css-14ln1j6-MuiListItemText-root"
           >
             <span
-              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
             >
               testItem1
             </span>
             <p
-              class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-83ijpv-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-1a1whku-MuiTypography-root"
             >
               Not on list
             </p>
           </div>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </div>
         <div
-          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
           role="button"
           tabindex="0"
         >
           <div
-            class="MuiListItemText-root css-tlelie-MuiListItemText-root"
+            class="MuiListItemText-root css-cfq8qh-MuiListItemText-root"
           >
             <span
-              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
             >
               testItem2
             </span>
             <p
-              class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-83ijpv-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-1a1whku-MuiTypography-root"
             />
           </div>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </div>
         <div
-          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
           role="button"
           tabindex="0"
         >
           <div
-            class="MuiListItemText-root css-tlelie-MuiListItemText-root"
+            class="MuiListItemText-root css-cfq8qh-MuiListItemText-root"
           >
             <span
-              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
             >
               testItem3
             </span>
             <p
-              class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-83ijpv-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-1a1whku-MuiTypography-root"
             />
           </div>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </div>
         <div
-          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
           role="button"
           tabindex="0"
         >
           <div
-            class="MuiListItemText-root css-tlelie-MuiListItemText-root"
+            class="MuiListItemText-root css-cfq8qh-MuiListItemText-root"
           >
             <span
-              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
             >
               testItem4
             </span>
             <p
-              class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-83ijpv-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-1a1whku-MuiTypography-root"
             />
           </div>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </div>
       </ul>
     </div>
   </body>,
   "container": <div>
     <ul
-      class="MuiList-root MuiList-padding css-h4y409-MuiList-root"
+      class="MuiList-root MuiList-padding css-b7dj7n-MuiList-root"
     >
       <div
-        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
         role="button"
         tabindex="0"
       >
         <div
-          class="MuiListItemText-root MuiListItemText-multiline css-konndc-MuiListItemText-root"
+          class="MuiListItemText-root MuiListItemText-multiline css-14ln1j6-MuiListItemText-root"
         >
           <span
-            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
           >
             testItem1
           </span>
           <p
-            class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-83ijpv-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-1a1whku-MuiTypography-root"
           >
             Not on list
           </p>
         </div>
-        <span
-          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-        />
       </div>
       <div
-        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
         role="button"
         tabindex="0"
       >
         <div
-          class="MuiListItemText-root css-tlelie-MuiListItemText-root"
+          class="MuiListItemText-root css-cfq8qh-MuiListItemText-root"
         >
           <span
-            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
           >
             testItem2
           </span>
           <p
-            class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-83ijpv-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-1a1whku-MuiTypography-root"
           />
         </div>
-        <span
-          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-        />
       </div>
       <div
-        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
         role="button"
         tabindex="0"
       >
         <div
-          class="MuiListItemText-root css-tlelie-MuiListItemText-root"
+          class="MuiListItemText-root css-cfq8qh-MuiListItemText-root"
         >
           <span
-            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
           >
             testItem3
           </span>
           <p
-            class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-83ijpv-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-1a1whku-MuiTypography-root"
           />
         </div>
-        <span
-          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-        />
       </div>
       <div
-        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
         role="button"
         tabindex="0"
       >
         <div
-          class="MuiListItemText-root css-tlelie-MuiListItemText-root"
+          class="MuiListItemText-root css-cfq8qh-MuiListItemText-root"
         >
           <span
-            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
           >
             testItem4
           </span>
           <p
-            class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-83ijpv-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-1a1whku-MuiTypography-root"
           />
         </div>
-        <span
-          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-        />
       </div>
     </ul>
   </div>,
