@@ -6,29 +6,29 @@ exports[`ShopItemListItem > Should render active items correctly 1`] = `
   "baseElement": <body>
     <div>
       <li
-        class="MuiListItem-root MuiListItem-gutters css-1nxmd3h-MuiListItem-root"
+        class="MuiListItem-root MuiListItem-gutters css-19f6boz-MuiListItem-root"
       >
         <div
-          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
           role="button"
           tabindex="0"
         >
           <div
-            class="MuiListItemIcon-root css-cveggr-MuiListItemIcon-root"
+            class="MuiListItemIcon-root css-cokf1l-MuiListItemIcon-root"
           >
             <span
-              class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-edgeStart MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-zkqepn-MuiButtonBase-root-MuiCheckbox-root"
+              class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-edgeStart MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-5ghhmd-MuiButtonBase-root-MuiCheckbox-root"
             >
               <input
                 aria-labelledby=":r0:"
-                class="PrivateSwitchBase-input css-1m9pwf3"
+                class="PrivateSwitchBase-input css-j8yymo"
                 data-indeterminate="false"
                 tabindex="-1"
                 type="checkbox"
               />
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="CheckBoxOutlineBlankIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -40,47 +40,44 @@ exports[`ShopItemListItem > Should render active items correctly 1`] = `
             </span>
           </div>
           <div
-            class="MuiListItemText-root css-tlelie-MuiListItemText-root"
+            class="MuiListItemText-root css-cfq8qh-MuiListItemText-root"
             id=":r0:"
           >
             <span
-              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
             >
               Foo
             </span>
           </div>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </div>
       </li>
     </div>
   </body>,
   "container": <div>
     <li
-      class="MuiListItem-root MuiListItem-gutters css-1nxmd3h-MuiListItem-root"
+      class="MuiListItem-root MuiListItem-gutters css-19f6boz-MuiListItem-root"
     >
       <div
-        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
         role="button"
         tabindex="0"
       >
         <div
-          class="MuiListItemIcon-root css-cveggr-MuiListItemIcon-root"
+          class="MuiListItemIcon-root css-cokf1l-MuiListItemIcon-root"
         >
           <span
-            class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-edgeStart MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-zkqepn-MuiButtonBase-root-MuiCheckbox-root"
+            class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-edgeStart MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-5ghhmd-MuiButtonBase-root-MuiCheckbox-root"
           >
             <input
               aria-labelledby=":r0:"
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               data-indeterminate="false"
               tabindex="-1"
               type="checkbox"
             />
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
               data-testid="CheckBoxOutlineBlankIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -92,18 +89,15 @@ exports[`ShopItemListItem > Should render active items correctly 1`] = `
           </span>
         </div>
         <div
-          class="MuiListItemText-root css-tlelie-MuiListItemText-root"
+          class="MuiListItemText-root css-cfq8qh-MuiListItemText-root"
           id=":r0:"
         >
           <span
-            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
           >
             Foo
           </span>
         </div>
-        <span
-          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-        />
       </div>
     </li>
   </div>,
@@ -167,30 +161,30 @@ exports[`ShopItemListItem > Should render inactive items correctly 1`] = `
   "baseElement": <body>
     <div>
       <li
-        class="MuiListItem-root MuiListItem-gutters css-1nxmd3h-MuiListItem-root"
+        class="MuiListItem-root MuiListItem-gutters css-19f6boz-MuiListItem-root"
       >
         <div
-          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+          class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
           role="button"
           tabindex="0"
         >
           <div
-            class="MuiListItemIcon-root css-cveggr-MuiListItemIcon-root"
+            class="MuiListItemIcon-root css-cokf1l-MuiListItemIcon-root"
           >
             <span
-              class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium Mui-checked PrivateSwitchBase-edgeStart MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-zkqepn-MuiButtonBase-root-MuiCheckbox-root"
+              class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium Mui-checked PrivateSwitchBase-edgeStart MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-5ghhmd-MuiButtonBase-root-MuiCheckbox-root"
             >
               <input
                 aria-labelledby=":r1:"
                 checked=""
-                class="PrivateSwitchBase-input css-1m9pwf3"
+                class="PrivateSwitchBase-input css-j8yymo"
                 data-indeterminate="false"
                 tabindex="-1"
                 type="checkbox"
               />
               <svg
                 aria-hidden="true"
-                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
                 data-testid="CheckBoxIcon"
                 focusable="false"
                 viewBox="0 0 24 24"
@@ -202,49 +196,46 @@ exports[`ShopItemListItem > Should render inactive items correctly 1`] = `
             </span>
           </div>
           <div
-            class="MuiListItemText-root css-tlelie-MuiListItemText-root"
+            class="MuiListItemText-root css-cfq8qh-MuiListItemText-root"
             id=":r1:"
           >
             <span
-              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
               style="text-decoration: line-through;"
             >
               Foo
             </span>
           </div>
-          <span
-            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-          />
         </div>
       </li>
     </div>
   </body>,
   "container": <div>
     <li
-      class="MuiListItem-root MuiListItem-gutters css-1nxmd3h-MuiListItem-root"
+      class="MuiListItem-root MuiListItem-gutters css-19f6boz-MuiListItem-root"
     >
       <div
-        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-16ac5r2-MuiButtonBase-root-MuiListItemButton-root"
+        class="MuiButtonBase-root MuiListItemButton-root MuiListItemButton-gutters MuiListItemButton-root MuiListItemButton-gutters css-4bx69l-MuiButtonBase-root-MuiListItemButton-root"
         role="button"
         tabindex="0"
       >
         <div
-          class="MuiListItemIcon-root css-cveggr-MuiListItemIcon-root"
+          class="MuiListItemIcon-root css-cokf1l-MuiListItemIcon-root"
         >
           <span
-            class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium Mui-checked PrivateSwitchBase-edgeStart MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-zkqepn-MuiButtonBase-root-MuiCheckbox-root"
+            class="MuiButtonBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium Mui-checked PrivateSwitchBase-edgeStart MuiCheckbox-root MuiCheckbox-colorPrimary MuiCheckbox-sizeMedium css-5ghhmd-MuiButtonBase-root-MuiCheckbox-root"
           >
             <input
               aria-labelledby=":r1:"
               checked=""
-              class="PrivateSwitchBase-input css-1m9pwf3"
+              class="PrivateSwitchBase-input css-j8yymo"
               data-indeterminate="false"
               tabindex="-1"
               type="checkbox"
             />
             <svg
               aria-hidden="true"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1umw9bq-MuiSvgIcon-root"
               data-testid="CheckBoxIcon"
               focusable="false"
               viewBox="0 0 24 24"
@@ -256,19 +247,16 @@ exports[`ShopItemListItem > Should render inactive items correctly 1`] = `
           </span>
         </div>
         <div
-          class="MuiListItemText-root css-tlelie-MuiListItemText-root"
+          class="MuiListItemText-root css-cfq8qh-MuiListItemText-root"
           id=":r1:"
         >
           <span
-            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-10hburv-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-rizt0-MuiTypography-root"
             style="text-decoration: line-through;"
           >
             Foo
           </span>
         </div>
-        <span
-          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-        />
       </div>
     </li>
   </div>,
