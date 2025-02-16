@@ -2,6 +2,7 @@ import { RxCollection, RxDatabase, RxStorage, addRxPlugin } from "rxdb";
 import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { getRxStorageMemory } from "rxdb/plugins/storage-memory";
+import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv';
 import { RxDBMigrationPlugin } from "rxdb/plugins/migration-schema";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase } from "rxdb";
@@ -53,7 +54,7 @@ export async function createDatabase({
         type: "number",
       },
     },
-    required: ["name", "active"],
+    required: ["name", "state"],
   } as const;
 
   await database.addCollections({
@@ -80,7 +81,8 @@ export async function insertDefaultData(database: Database) {
 }
 
 export async function initialize() {
-  const storage = env !== "development" ? getRxStorageDexie() : undefined;
+  const storage = env !== "development" ? getRxStorageDexie() : wrappedValidateAjvStorage({storage: getRxStorageMemory()})
+  
   const db = await createDatabase({ storage });
   if (env === "development") {
     await insertDefaultData(db);
