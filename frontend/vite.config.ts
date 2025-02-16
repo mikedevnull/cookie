@@ -1,5 +1,7 @@
+/// <reference types="node" />
 import { fileURLToPath, URL } from "node:url";
-import { defineConfig } from "vitest/config";
+/// <reference types="vitest/config" />
+import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
