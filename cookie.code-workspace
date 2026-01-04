@@ -5,10 +5,10 @@
       "path": ".",
     },
     {
-      "path": "frontend",
+      "path": "packages/frontend",
     },
     {
-      "path": "backend",
+      "path": "packages/backend",
     },
   ],
   "settings": {
@@ -19,8 +19,7 @@
       "**/CVS": true,
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
-      "frontend": true,
-      "backend": true,
+      "packages/**": true,
     },
     "jest.disabledWorkspaceFolders": ["ROOT"],
   },

@@ -90,14 +90,14 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build -- --base=/cookie/
-        working-directory: frontend
+        working-directory: packages/frontend
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist repository
-          path: './frontend/dist'
+          path: './packages/frontend/dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

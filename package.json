@@ -1,8 +1,8 @@
 {
   "private": true,
   "workspaces": [
-    "frontend",
-    "backend"
+    "packages/frontend",
+    "packages/backend"
   ],
   "scripts": {
     "semantic-release": "semantic-release"

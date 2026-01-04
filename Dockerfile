@@ -2,11 +2,11 @@
 FROM node:lts-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
-WORKDIR /app/frontend
-COPY ./frontend/package.json  ./
+WORKDIR /app/packages/frontend
+COPY ./packages/frontend/package.json  ./
 RUN npm ci 
 
-COPY frontend .
+COPY packages/frontend .
 
 RUN npm run build 
 
@@ -16,14 +16,14 @@ RUN apk add --no-cache tini
 
 WORKDIR /app
 COPY package.json package-lock.json ./
-WORKDIR /app/backend
-COPY ./backend/package.json  ./
+WORKDIR /app/packages/backend
+COPY ./packages/backend/package.json  ./
 RUN npm ci 
 
-COPY backend .
+COPY packages/backend .
 RUN npm run build 
 
-COPY --from=builder /app/frontend/dist /app/frontend
+COPY --from=builder /app/packages/frontend/dist /app/frontend
 
 
 
