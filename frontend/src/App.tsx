@@ -1,37 +1,37 @@
-import { CssBaseline } from "@mui/material";
-import { createBrowserRouter, RouterProvider } from "react-router";
-import ShoppingList from "@/pages/ShoppingList";
-import AddItem from "@/pages/AddItem";
-import { createAddItemAction } from "@/pages/AddItem";
-import { useRxDB } from "rxdb-hooks";
-import { Database } from "./db";
-import { useMemo } from "react";
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import appLogo from '/favicon.svg'
+import PWABadge from './PWABadge.tsx'
+import './App.css'
 
 function App() {
-  const db: Database = useRxDB();
-  const collection = db?.items;
-  const addItemAction = useMemo(() => {
-    console.log("foo ", collection);
-    return createAddItemAction(collection);
-  }, [collection]);
-
-  const router = createBrowserRouter(
-    [
-      {
-        path: "/",
-        element: <ShoppingList />,
-      },
-      { path: "/add", element: <AddItem />, action: addItemAction },
-    ],
-    { basename: import.meta.env.BASE_URL }
-  );
+  const [count, setCount] = useState(0)
 
   return (
     <>
-      <CssBaseline />
-      <RouterProvider router={router} />
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={appLogo} className="logo" alt="cookie logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>cookie</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+      <PWABadge />
     </>
-  );
+  )
 }
 
-export default App;
+export default App
