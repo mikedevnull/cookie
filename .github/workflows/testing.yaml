@@ -25,4 +25,3 @@ jobs:
     - run: npm ci
     - run: npm run build --workspaces
     - run: npm test --workspaces
-    - run: npm run build-storybook --workspace frontend
