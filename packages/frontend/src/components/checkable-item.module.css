@@ -43,16 +43,8 @@
 }
 
 .container input[type="checkbox"]:checked:after {
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border: 1px solid;
-  border-radius: 50%;
   border-color: #ae4500;
   background-color: #ff6600;
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
 }
 
 .container input[type="text"] {
@@ -72,4 +64,12 @@
   border-color: #aaa;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
+}
+
+.container .fakeCheckbox {
+  width: 16px;
+  height: 16px;
+  border: 1px dashed;
+  border-radius: 50%;
+  border-color: #aaa;
 }
