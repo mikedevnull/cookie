@@ -14,15 +14,21 @@ function CheckableItem(props: CheckableItemProps) {
     }
   };
 
-  const onLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onLabelChange = (label: string) => {
     if (props.changeCallback) {
-      const effectiveValue =
-        e.target.value.length === 0 ? undefined : e.target.value;
+      const effectiveValue = label.length === 0 ? undefined : label;
+      console.log(effectiveValue);
       if (effectiveValue !== props.label)
         props.changeCallback({
           checked: isChecked,
           label: effectiveValue,
         });
+    }
+  };
+
+  const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onLabelChange(event.currentTarget.value);
     }
   };
 
@@ -41,8 +47,10 @@ function CheckableItem(props: CheckableItemProps) {
       {checkbox}
       <input
         type="text"
-        onChange={(e) => onLabelChange(e)}
-        value={props.label}
+        onFocus={(e) => e.currentTarget.select()}
+        onBlur={(e) => onLabelChange(e.target.value)}
+        onKeyDown={onKeyPress}
+        defaultValue={props.label}
         className={props.label ? undefined : classes.newItem}
       />
     </div>
