@@ -62,6 +62,11 @@
   flex-grow: 1;
 }
 
+.container input[type="text"].newItem {
+  border-bottom: 1px dashed;
+  border-color: #aaa;
+}
+
 .container input[type="text"]:focus {
   border-bottom: 1px solid;
   border-color: #aaa;
