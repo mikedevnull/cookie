@@ -1,0 +1,58 @@
+import { render, type RenderResult } from "vitest-browser-react";
+import NewItemInput from "./new-item-input";
+import { userEvent } from "vitest/browser";
+
+describe("New Item Input", () => {
+  const cb = vi.fn();
+  let renderResult: RenderResult;
+
+  beforeEach(async () => {
+    renderResult = await render(<NewItemInput onNewItemCallback={cb} />);
+    cb.mockReset();
+  });
+
+  test("No real checkbox is present", async () => {
+    const checkbox = renderResult.getByRole("checkbox");
+    expect(checkbox).not.toBeInTheDocument();
+  });
+
+  test("Entering a new label and loosing focus will trigger callback", async () => {
+    const labelEdit = renderResult.getByRole("textbox");
+    expect(labelEdit).toBeInTheDocument();
+    expect(labelEdit).toHaveValue("");
+
+    await labelEdit.fill("New item");
+    await userEvent.tab();
+    expect(cb).toHaveBeenCalledExactlyOnceWith("New item");
+  });
+
+  test("Entering a new label and pressing enter will trigger callback", async () => {
+    const labelEdit = renderResult.getByRole("textbox");
+    expect(labelEdit).toBeInTheDocument();
+    expect(labelEdit).toHaveValue("");
+
+    await labelEdit.fill("New item");
+    await userEvent.keyboard("{Enter}");
+    expect(cb).toHaveBeenCalledExactlyOnceWith("New item");
+  });
+
+  test("Entering an empty label will not trigger callback", async () => {
+    const labelEdit = renderResult.getByRole("textbox");
+    expect(labelEdit).toBeInTheDocument();
+    expect(labelEdit).toHaveValue("");
+
+    await labelEdit.fill("");
+    await userEvent.tab();
+    expect(cb).not.toHaveBeenCalled();
+  });
+
+  test("Entering an empty label and pressing enter will not trigger callback", async () => {
+    const labelEdit = renderResult.getByRole("textbox");
+    expect(labelEdit).toBeInTheDocument();
+    expect(labelEdit).toHaveValue("");
+
+    await labelEdit.fill("");
+    await userEvent.keyboard("{Enter}");
+    expect(cb).not.toHaveBeenCalled();
+  });
+});
