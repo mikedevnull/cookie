@@ -4,7 +4,7 @@ import CheckableItem from "./components/checkable-item.tsx";
 import { useState } from "react";
 
 type Item = {
-  name: string;
+  name?: string;
   checked: boolean;
 };
 
