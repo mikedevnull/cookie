@@ -1,15 +1,20 @@
 import { expect, test, vi } from "vitest";
 import { render, type RenderResult } from "vitest-browser-react";
 import CheckableItem from "./checkable-item";
+import { userEvent } from "vitest/browser";
 
 describe("With valid item", () => {
+  const label = "Test Label";
+  const cb = vi.fn();
+
+  beforeEach(() => {
+    cb.mockReset();
+  });
+
   test("renders the unchecked checkbox correctly", async () => {
-    const label = "Test Label";
-    const cb = vi.fn();
     const { getByRole } = await render(
       <CheckableItem label={label} changeCallback={cb} checked={false} />
     );
-
     const checkbox = getByRole("checkbox", { name: label });
     expect(checkbox).toBeInTheDocument();
     expect(checkbox).not.toBeChecked();
@@ -19,8 +24,6 @@ describe("With valid item", () => {
   });
 
   test("renders the checked checkbox correctly", async () => {
-    const label = "Test Label";
-    const cb = vi.fn();
     const { getByRole } = await render(
       <CheckableItem label={label} changeCallback={cb} checked={true} />
     );
@@ -37,8 +40,6 @@ describe("With valid item", () => {
   });
 
   test("changing label calls callback with new label", async () => {
-    const label = "Test Label";
-    const cb = vi.fn();
     const { getByRole } = await render(
       <CheckableItem label={label} changeCallback={cb} checked={false} />
     );
@@ -48,6 +49,7 @@ describe("With valid item", () => {
     expect(labelEdit).toHaveValue(label);
 
     await labelEdit.fill("A new label");
+    await userEvent.tab();
     expect(cb).toHaveBeenCalledExactlyOnceWith({
       checked: false,
       label: "A new label",
@@ -55,8 +57,6 @@ describe("With valid item", () => {
   });
 
   test("changing label to empty will call callback with undefined label", async () => {
-    const label = "Test Label";
-    const cb = vi.fn();
     const { getByRole } = await render(
       <CheckableItem label={label} changeCallback={cb} checked={false} />
     );
@@ -66,6 +66,7 @@ describe("With valid item", () => {
     expect(labelEdit).toHaveValue(label);
 
     await labelEdit.fill("");
+    await userEvent.tab();
     expect(cb).toHaveBeenCalledExactlyOnceWith({
       checked: false,
       label: undefined,
@@ -73,8 +74,6 @@ describe("With valid item", () => {
   });
 
   test("Editing label without changing actual value does not call callback", async () => {
-    const label = "Test Label";
-    const cb = vi.fn();
     const { getByRole } = await render(
       <CheckableItem label={label} changeCallback={cb} checked={true} />
     );
@@ -84,7 +83,20 @@ describe("With valid item", () => {
     expect(labelEdit).toHaveValue(label);
 
     await labelEdit.fill(label);
+    await userEvent.tab();
+
     expect(cb).not.toHaveBeenCalled();
+  });
+
+  test("Focusing label, entering text and pressing enter changes label", async () => {
+    const { getByRole } = await render(
+      <CheckableItem label={label} changeCallback={cb} checked={true} />
+    );
+    const labelEdit = getByRole("textbox");
+    await labelEdit.click();
+    await userEvent.keyboard("foo{Enter}");
+
+    expect(cb).toHaveBeenCalledExactlyOnceWith({ label: "foo", checked: true });
   });
 });
 
@@ -112,6 +124,7 @@ describe("Without valid item", () => {
     expect(labelEdit).toHaveValue("");
 
     await labelEdit.fill("New item");
+    await userEvent.tab();
     expect(cb).toHaveBeenCalledExactlyOnceWith({
       checked: false,
       label: "New item",
