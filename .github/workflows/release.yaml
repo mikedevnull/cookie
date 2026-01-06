@@ -42,6 +42,8 @@ jobs:
         node-version: "lts/*"
         cache: 'npm'
     - run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
     - run: npm run lint --workspaces
     - run: npm run build --workspaces
     - run: npm test --workspaces
