@@ -8,13 +8,30 @@ import { playwright } from '@vitest/browser-playwright'
 export default defineConfig({
   test: {
     globals: true,
-     browser: {
+    browser: {
       enabled: true,
       provider: playwright(),
       // https://vitest.dev/config/browser/playwright
       instances: [
         { browser: 'chromium' },
       ],
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if(id.includes('rxdb') || id.includes('rxjs')) {
+              return 'rxdb'
+            }
+            if(id.includes('react')) {
+              return 'react'
+            }
+            return 'vendor'; // Split vendor libraries
+          }
+        }
+      },
     },
   },
   plugins: [react(), VitePWA({
