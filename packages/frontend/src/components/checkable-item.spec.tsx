@@ -1,5 +1,5 @@
 import { expect, test, vi } from "vitest";
-import { render, type RenderResult } from "vitest-browser-react";
+import { render } from "vitest-browser-react";
 import CheckableItem from "./checkable-item";
 import { userEvent } from "vitest/browser";
 
