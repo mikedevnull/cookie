@@ -30,7 +30,7 @@ function CheckableItem(props: CheckableItemProps) {
 
   const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      onLabelChange(event.currentTarget.value);
+      event.currentTarget.blur();
     }
   };
 
@@ -50,6 +50,7 @@ function CheckableItem(props: CheckableItemProps) {
     <div className={classes.container}>
       {checkbox}
       <input
+        className={props.checked ? classes.checked : ""}
         id={checkboxLabelId}
         type="text"
         onFocus={(e) => e.currentTarget.select()}
