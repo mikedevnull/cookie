@@ -4,10 +4,6 @@ name: Validate, release and deploy frontend
 
 # Controls when the workflow will run
 on:
-  push:
-    branches: [ "main" ]
-
-  
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -24,15 +20,7 @@ concurrency:
   cancel-in-progress: true
     
 jobs:
-  waitAndDebounce:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Wait for 10 minutes
-        uses: zachary95/github-action-debounce@v0.1.0
-        with:
-          wait: 600
   validate:
-    needs: [waitAndDebounce]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
