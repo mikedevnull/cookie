@@ -28,9 +28,8 @@ export const itemListSchema = {
                         type: "string",
                     },
                 },
-
+                required: ["id", "label"]
             },
-            required: ["id", "label", "items"]
         }
     },
     required: ["label", "id", "categories"],
@@ -38,17 +37,29 @@ export const itemListSchema = {
 
 export const itemSchema = {
     version: 0,
-    primaryKey: "name",
+    primaryKey: {
+        key: 'id',
+        fields: [
+            'name',
+            'listId'
+        ],
+        // separator which is used to concat the fields values.
+        separator: '|'
+    },
     type: "object",
     properties: {
+        id: {
+            type: "string",
+            maxLength: 255
+        },
         name: {
             type: "string",
-            maxLength: 255,
+            maxLength: 200,
         },
         listId: {
             type: "string",
-            maxLength: 255,
-
+            maxLength: 50,
+            final: true,
         },
         checked: {
             type: "boolean",
@@ -62,7 +73,7 @@ export const itemSchema = {
             type: "number",
         }
     },
-    required: ["name", "listId", "checked", "category", "rankOrder"]
+    required: ["id", "name", "listId", "checked", "category", "rankOrder"]
 } as const;
 
 
