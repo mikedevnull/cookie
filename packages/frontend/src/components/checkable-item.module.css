@@ -13,38 +13,38 @@
   -moz-appearance: none;
   appearance: none;
   position: relative;
-  width: 16px;
-  height: 16px;
-  bottom: 1px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #007aff; /* Primary blue color */
+  border-radius: 50%; /* Circular shape */
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.container input[type="checkbox"]:after {
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border: 1px solid;
-  border-radius: 50%;
-  border-color: #aaa;
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
+.container input[type="checkbox"]:hover {
+  box-shadow: 0 0 5px rgba(0, 122, 255, 0.5);
 }
 
-.container input[type="checkbox"]:focus:after {
-  border-color: #000000;
-  -webkit-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
-}
-
-.container input[type="checkbox"]:hover:after {
-  border-color: #000000;
-  -webkit-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
+.container input[type="checkbox"]:checked {
+  background-color: #007aff; /* Primary blue fill */
+  border-color: #005bb5; /* Slightly darker blue border */
 }
 
 .container input[type="checkbox"]:checked:after {
-  border-color: #ae4500;
-  background-color: #ff6600;
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%; /* Circular checkmark */
+  transition: all 0.3s ease;
+}
+
+.container input[type="checkbox"]:focus {
+  outline: 2px solid rgba(0, 122, 255, 0.5);
+  outline-offset: 2px;
 }
 
 .container input[type="text"] {
@@ -54,11 +54,6 @@
   flex-grow: 1;
 }
 
-.container input[type="text"].newItem {
-  border-bottom: 1px dashed;
-  border-color: #aaa;
-}
-
 .container input[type="text"]:focus {
   border-bottom: 1px solid;
   border-color: #aaa;
@@ -66,10 +61,31 @@
   transition: all 0.2s ease-in-out;
 }
 
+.container input[type="text"].checked {
+  text-decoration: line-through;
+}
+
+.container input[type="text"].newItem {
+  border-bottom: 1px dashed;
+  border-color: #aaa;
+}
+
+.container input[type="text"].newItem:focus {
+  border-bottom: 1px solid;
+}
+
 .container .fakeCheckbox {
   width: 16px;
   height: 16px;
   border: 1px dashed;
+  border-radius: 50%;
+  border-color: #aaa;
+}
+
+.container .fakeCheckbox {
+  width: 17px;
+  height: 17px;
+  border: 1.5px dashed;
   border-radius: 50%;
   border-color: #aaa;
 }
