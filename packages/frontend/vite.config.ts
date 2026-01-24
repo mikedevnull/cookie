@@ -3,13 +3,18 @@ import { VitePWA } from "vite-plugin-pwa";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { playwright } from "@vitest/browser-playwright";
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from "@tailwindcss/vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   test: {
+    setupFiles: ["./test/browser.setup.ts"],
     globals: true,
+    css: {
+      include: /.+/,
+    },
     browser: {
       enabled: true,
+      headless: true,
       provider: playwright(),
       // https://vitest.dev/config/browser/playwright
       instances: [{ browser: "chromium" }],
