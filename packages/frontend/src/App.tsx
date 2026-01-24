@@ -2,30 +2,22 @@ import PWABadge from "./PWABadge.tsx";
 import "./App.css";
 
 import { DatabaseProvider } from "./db/provider.tsx";
-import { clearDatabase } from "./db/database.ts";
 import ShopList from "./pages/ShopList.tsx";
+import { ErrorBoundary } from "react-error-boundary";
+
+function renderError(error: unknown) {
+  return <div>Something went wrong: {String(error)}</div>;
+}
 
 function App() {
-  let resetDatabaseButton;
-  if (import.meta.env.DEV) {
-    resetDatabaseButton = (
-      <button
-        onClick={() => {
-          clearDatabase();
-          window.location.reload();
-        }}
-      >
-        Clear database
-      </button>
-    );
-  }
-
   return (
     <>
       <DatabaseProvider>
-        <ShopList />
+        <ErrorBoundary fallbackRender={({ error }) => renderError(error)}>
+          <ShopList />
+        </ErrorBoundary>
       </DatabaseProvider>
-      {resetDatabaseButton}
+
       <PWABadge />
     </>
   );
