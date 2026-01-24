@@ -1,5 +1,6 @@
 import { useId } from "react";
 import classes from "./checkable-item.module.css";
+import ThreeDotMenu from "./three-dot-menu";
 
 export type CheckableItemData = {
   label: string;
@@ -58,6 +59,7 @@ function CheckableItem(props: CheckableItemProps) {
         onKeyDown={onKeyPress}
         defaultValue={props.label}
       />
+      <ThreeDotMenu />
     </div>
   );
 }
