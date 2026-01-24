@@ -3,6 +3,7 @@ import {
   type RxDatabase,
   type RxStorage,
   addRxPlugin,
+  nativeSha256,
   removeRxDatabase,
 } from "rxdb";
 import { RxDBQueryBuilderPlugin } from "rxdb/plugins/query-builder";
@@ -13,7 +14,7 @@ import { RxDBMigrationPlugin } from "rxdb/plugins/migration-schema";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { createRxDatabase } from "rxdb";
 import { itemListSchema, itemSchema, type Item, type ItemList } from "./schema";
-
+import { hash } from "ohash";
 if (import.meta.env.DEV) {
   addRxPlugin(RxDBDevModePlugin);
 }
@@ -33,6 +34,11 @@ type DatabaseCreationOptions = {
   storage?: RxStorage<unknown, unknown>;
 };
 
+const hashFunction: (input: string) => Promise<string> =
+  crypto?.subtle?.digest === undefined
+    ? nativeSha256
+    : (input) => Promise.resolve(hash(input));
+
 export async function createDatabase({
   storage,
   ignoreDuplicate = false,
@@ -42,6 +48,7 @@ export async function createDatabase({
     storage: storage || getRxStorageMemory(),
     ignoreDuplicate,
     closeDuplicates: true,
+    hashFunction,
   });
 
   await database.addCollections({
