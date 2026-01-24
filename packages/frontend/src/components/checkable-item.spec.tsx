@@ -7,6 +7,14 @@ describe("Checkable Item Editor", () => {
   const label = "Test Label";
   const cb = vi.fn();
 
+  beforeAll(() => {
+    vi.useFakeTimers()
+  })
+
+  afterAll(() => {
+    vi.useRealTimers()
+  })
+
   beforeEach(() => {
     cb.mockReset();
   });
@@ -20,6 +28,8 @@ describe("Checkable Item Editor", () => {
     expect(checkbox).not.toBeChecked();
 
     await checkbox.click();
+    await vi.advanceTimersByTimeAsync(500)
+
     expect(cb).toHaveBeenCalledExactlyOnceWith({ checked: true, label: label });
   });
 
@@ -33,6 +43,8 @@ describe("Checkable Item Editor", () => {
     expect(checkbox).toBeChecked();
 
     await checkbox.click();
+    await vi.advanceTimersByTimeAsync(500);
+
     expect(cb).toHaveBeenCalledExactlyOnceWith({
       checked: false,
       label: label,
