@@ -12,13 +12,21 @@ function renderError(error: unknown) {
 function App() {
   return (
     <>
-      <DatabaseProvider>
-        <ErrorBoundary fallbackRender={({ error }) => renderError(error)}>
-          <ShopList />
-        </ErrorBoundary>
-      </DatabaseProvider>
-
-      <PWABadge />
+      <div className="flex flex-col h-full justify-between">
+        <header>
+          <div className="navbar bg-base-100 shadow-sm">
+            <a className="btn btn-ghost text-xl">Cookie</a>
+          </div>
+        </header>
+        <main className="p-4 grow self-center w-full md:w-3xl">
+          <ErrorBoundary fallbackRender={({ error }) => renderError(error)}>
+            <DatabaseProvider>
+              <ShopList />
+            </DatabaseProvider>
+          </ErrorBoundary>
+        </main>
+        <PWABadge />
+      </div >
     </>
   );
 }

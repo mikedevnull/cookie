@@ -21,7 +21,7 @@ export const DatabaseProvider = ({
   let resetDatabaseButton;
   if (import.meta.env.DEV) {
     resetDatabaseButton = (
-      <button
+      <button className="btn"
         onClick={() => {
           clearDatabase(db);
           window.location.reload();

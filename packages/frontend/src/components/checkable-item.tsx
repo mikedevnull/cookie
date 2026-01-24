@@ -1,6 +1,4 @@
-import { useId } from "react";
-import classes from "./checkable-item.module.css";
-import ThreeDotMenu from "./three-dot-menu";
+import { startTransition, useId, useOptimistic } from "react";
 
 export type CheckableItemData = {
   label: string;
@@ -12,10 +10,14 @@ type CheckableItemProps = CheckableItemData & {
 };
 
 function CheckableItem(props: CheckableItemProps) {
-  const isChecked = !props.label ? false : props.checked;
+  const [isChecked, setOptimisticChecked] = useOptimistic(props.checked, (_state, newState: boolean) => { return newState; });
   const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (props.changeCallback) {
-      props.changeCallback({ checked: e.target.checked, label: props.label });
+      startTransition(async () => {
+        setOptimisticChecked(e.target.checked);
+        await new Promise((res) => setTimeout(res, 500));
+        props.changeCallback({ checked: e.target.checked, label: props.label });
+      })
     }
   };
 
@@ -37,30 +39,17 @@ function CheckableItem(props: CheckableItemProps) {
 
   const checkboxLabelId = useId();
 
-  const checkbox = (
-    <input
-      type="checkbox"
-      onChange={(e) => onCheckboxChange(e)}
-      checked={isChecked}
-      aria-label={props.label}
-      aria-labelledby={checkboxLabelId}
-    />
-  );
-
   return (
-    <div className={classes.container}>
-      {checkbox}
-      <input
-        className={props.checked ? classes.checked : ""}
-        id={checkboxLabelId}
-        type="text"
+    <li className="list-row">
+      <input type="checkbox" onChange={(e) => onCheckboxChange(e)}
+        checked={isChecked}
+        aria-label={props.label} aria-labelledby={checkboxLabelId} className="checkbox checkbox-primary place-self-center" />
+      <input type="text" id={checkboxLabelId}
         onFocus={(e) => e.currentTarget.select()}
         onBlur={(e) => onLabelChange(e.target.value)}
         onKeyDown={onKeyPress}
-        defaultValue={props.label}
-      />
-      <ThreeDotMenu />
-    </div>
+        defaultValue={props.label} className={"input input-ghost w-full " + (isChecked ? "line-through" : "")} />
+    </li>
   );
 }
 

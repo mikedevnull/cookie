@@ -1,5 +1,3 @@
-import classes from "./checkable-item.module.css";
-
 type NewItemInputProps = {
   onNewItemCallback?: (label: string) => void;
 };
@@ -21,15 +19,12 @@ export default function NewItemInput(props: NewItemInputProps) {
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.fakeCheckbox} />
-      <input
-        type="text"
-        onBlur={(e) => onNewItem(e.currentTarget)}
-        placeholder="New item"
-        onKeyDown={onKeyPress}
-        className={classes.newItem}
-      />
-    </div>
+    <input
+      type="text"
+      onBlur={(e) => onNewItem(e.currentTarget)}
+      placeholder="New item"
+      onKeyDown={onKeyPress}
+      className="input w-full my-4"
+    />
   );
 }
