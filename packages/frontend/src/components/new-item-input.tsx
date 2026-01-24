@@ -26,6 +26,7 @@ export default function NewItemInput(props: NewItemInputProps) {
       <input
         type="text"
         onBlur={(e) => onNewItem(e.currentTarget)}
+        placeholder="New item"
         onKeyDown={onKeyPress}
         className={classes.newItem}
       />
