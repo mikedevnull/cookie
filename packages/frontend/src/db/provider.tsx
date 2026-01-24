@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { type Database, initialize } from "./database";
+import { clearDatabase, type Database, initialize } from "./database";
 import { Provider } from "rxdb-hooks";
 import React from "react";
 
@@ -18,5 +18,24 @@ export const DatabaseProvider = ({
     databaseConstructor().then(setDb);
   }, [databaseConstructor]);
 
-  return <Provider db={db}>{children}</Provider>;
+  let resetDatabaseButton;
+  if (import.meta.env.DEV) {
+    resetDatabaseButton = (
+      <button
+        onClick={() => {
+          clearDatabase(db);
+          window.location.reload();
+        }}
+      >
+        Clear database
+      </button>
+    );
+  }
+
+  return (
+    <Provider db={db}>
+      {children}
+      {resetDatabaseButton}
+    </Provider>
+  );
 };
