@@ -56,14 +56,24 @@ export async function createDatabase({
   return database;
 }
 
-export async function initialize() {
+let dbCreation: Promise<Database> | undefined = undefined;
+
+export async function initialize(): Promise<Database> {
+  if (dbCreation) {
+    return dbCreation;
+  }
   const storage = import.meta.env.PROD
     ? getRxStorageDexie()
     : wrappedValidateAjvStorage({ storage: getRxStorageDexie() });
-  const db = await createDatabase({ storage });
-  return db;
+  dbCreation = createDatabase({ storage });
+
+  return dbCreation;
 }
 
-export async function clearDatabase() {
-  await removeRxDatabase("cookie", getRxStorageDexie());
+export async function clearDatabase(db?: Database) {
+  if (db) {
+    await db.remove();
+  } else {
+    await removeRxDatabase("cookie", getRxStorageDexie());
+  }
 }
