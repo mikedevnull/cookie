@@ -6,7 +6,6 @@ export default function NewItemInput(props: NewItemInputProps) {
   const onNewItem = (element: HTMLInputElement) => {
     const label = element.value;
     if (label && props.onNewItemCallback) {
-      console.log(label);
       props.onNewItemCallback(label);
     }
     element.value = "";

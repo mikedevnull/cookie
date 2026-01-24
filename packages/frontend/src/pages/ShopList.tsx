@@ -85,19 +85,13 @@ export default function ShopList() {
   return (
     <>
       <section>
-        <h2 className="font-semibold p-2">Without category</h2>
+        {/* <h2 className="font-semibold p-2">Without category</h2> */}
         <ul className="list bg-base-100 rounded-box shadow-md">
           {itemComponents}
         </ul>
       </section>
       <NewItemInput
         onNewItemCallback={(label) => {
-          console.log("insert", {
-            name: label,
-            category: "",
-            rankOrder: nextRank,
-            listId: shoplistId,
-          });
           insertOrUncheckItem(itemCollection, label, shoplistId, {
             category: "",
             rankOrder: nextRank,
