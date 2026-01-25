@@ -4,44 +4,15 @@ import { getRxStorageMemory } from "rxdb/plugins/storage-memory";
 import { renderWithDb } from "../../test/render";
 import ShopList from "./ShopList";
 
-async function setupTestData(db: Database) {
-    await db.collections.itemLists.insert({ id: "0", label: "TestList", categories: [] })
-    const collection = db.collections.items;
-    await db.collections.items.bulkInsert([
-        {
-            id: collection.schema.getPrimaryOfDocumentData({ name: "testItem1", listId: "0" }),
-            name: "testItem1",
-            listId: "0",
-            checked: false,
-            category: "",
-            rankOrder: 100,
-        },
-        {
-            id: collection.schema.getPrimaryOfDocumentData({ name: "testItem2", listId: "0" }),
-            name: "testItem2",
-            listId: "0",
-            checked: true,
-            category: "",
-            rankOrder: 200,
-        }, {
-            id: collection.schema.getPrimaryOfDocumentData({ name: "testItem3", listId: "0" }),
-            name: "testItem3",
-            listId: "0",
-            checked: true,
-            category: "",
-            rankOrder: 300,
-        }, {
-            id: collection.schema.getPrimaryOfDocumentData({ name: "testItem4", listId: "0" }),
-            name: "testItem4",
-            listId: "0",
-            checked: false,
-            category: "",
-            rankOrder: 400,
-        }
+const { FakeListSection } = vi.hoisted(() => {
+    return { FakeListSection: vi.fn((props) => { console.log(props); return <ul>{props.label}</ul> }) }
+})
 
-    ]);
+vi.mock(import('../components/list-section'), async () => ({
+    ListSection: FakeListSection
+}))
 
-}
+
 
 describe("ShoppingList page with database", function () {
     let db: Database;
@@ -49,30 +20,31 @@ describe("ShoppingList page with database", function () {
     beforeEach(async function () {
         const storage = wrappedValidateAjvStorage({ storage: getRxStorageMemory() });
         db = await createDatabase({ storage });
-        await setupTestData(db);
+
     });
 
     afterEach(async function () {
         await db?.remove();
+        FakeListSection.mockReset()
     });
 
-    it('Renders a list of all items in the database', async () => {
+    it('Renders section for each category in the database, plus an "other" section', async () => {
+        await db.collections.itemLists.insert({ id: "0", label: "TestList", categories: [{ id: "categoryA", label: "A" }, { id: "categoryB", label: "B" }] })
         const screen = await renderWithDb(db, <ShopList />)
-        const items = screen.getByRole("listitem").all();
-        expect(items.length).to.be.eq(4)
-        const labels = items.map(i => i.getByRole('textbox').element().getAttribute("value"));
-        expect(labels).to.have.members(['testItem1', 'testItem2', 'testItem3', 'testItem4'])
+        const sections = screen.getByRole("list").all();
+        expect(sections.length).to.be.eq(2 + 1)
+        expect(FakeListSection).toHaveBeenCalledTimes(3);
+        expect(FakeListSection).toHaveBeenCalledWith({ label: 'A', categoryId: 'categoryA', shoplistId: '0', showCompleted: true }, undefined)
+        expect(FakeListSection).toHaveBeenCalledWith({ label: 'B', categoryId: 'categoryB', shoplistId: '0', showCompleted: true }, undefined)
+        expect(FakeListSection).toHaveBeenCalledWith({ label: 'Other', categoryId: '', shoplistId: '0', showCompleted: true }, undefined)
     })
 
-    it('Renders a list of only done items when menu item toggled', async () => {
+    it('If no other sections are defined, renders last section without heading', async () => {
+        await db.collections.itemLists.insert({ id: "0", label: "TestList", categories: [] })
         const screen = await renderWithDb(db, <ShopList />)
-        await screen.getByLabelText('Page menu toggle').click()
-        await screen.getByText('Hide completed items').click();
-        const main = screen.getByRole("main");
-        const items = main.getByRole('listitem').all();
-        expect(items.length).to.be.eq(2)
-        const labels = items.map(i => i.getByRole('textbox').element().getAttribute("value"));
-        expect(labels).to.have.members(['testItem1', 'testItem4'])
-        expect(screen.getByText('Show completed items')).toBeInTheDocument()
+        const sections = screen.getByRole("list").all();
+        expect(sections.length).to.be.eq(1)
+        expect(FakeListSection).toHaveBeenCalledTimes(1);
+        expect(FakeListSection).toHaveBeenCalledWith({ label: undefined, categoryId: '', shoplistId: '0', showCompleted: true }, undefined)
     })
 })

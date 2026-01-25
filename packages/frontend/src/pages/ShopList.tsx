@@ -1,13 +1,11 @@
-import { useRxCollection, useRxData } from "rxdb-hooks";
-import { useCallback, useEffect, useState } from "react";
-import type { RxCollection, RxDocument } from "rxdb";
+import { useRxCollection } from "rxdb-hooks";
+import { useEffect, useState } from "react";
+import type { RxDocument } from "rxdb";
 import type { Subscription } from "rxjs";
-import CheckableItem from "../components/checkable-item";
-import type { Item, ItemList } from "../db/schema";
-import NewItemInput from "../components/new-item-input";
-import { handleItemChange, insertOrUncheckItem } from "../db/utilts";
+import type { ItemList } from "../db/schema";
 import { MainLayout } from "./Layout";
 import type { ValueWithSetCallback } from "../utils";
+import { ListSection } from "../components/list-section";
 
 const notVisibleIcon =
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
@@ -76,65 +74,46 @@ function useShopList(shoplistId: string) {
   return result;
 }
 
+// use this later when we hide empty categories and have other means to move an item to them (preferrably automatically)
+// function useAtLeastOneVisibleItemInSomeCategory(shoplistId: string, checkedVisible: boolean): boolean {
+//   const queryConstructor = useCallback(
+//     (itemCollection: RxCollection<Item>) => {
+//       const query = itemCollection
+//         ?.findOne()
+//         .where("listId")
+//         .equals(shoplistId)
+//         .where("category")
+//         .ne("")
+//       if (checkedVisible) {
+//         return query;
+//       }
+//       return query.where('checked').equals(false);
+//     },
+//     [shoplistId, checkedVisible],
+//   );
+//   const { result: visibleItemInSomeCategory } = useRxData("items", queryConstructor);
+//   return visibleItemInSomeCategory.length > 0;
+// }
+
 export default function ShopList() {
   const shoplistId = "0";
 
   const { itemList, isFetching: isListFetching } = useShopList(shoplistId);
   const [checkedVisible, setCheckedVisible] = useState(true)
 
-  const queryConstructor = useCallback(
-    (itemCollection: RxCollection<Item>) => {
-      const query = itemCollection
-        ?.find()
-        .where("listId")
-        .equals(shoplistId)
-        .where("category")
-        .equals("")
-        .sort({ checked: "asc", rankOrder: "asc", name: "asc" });
-      if (checkedVisible) {
-        return query;
-      }
-      return query.where('checked').equals(false);
-    },
-    [shoplistId, checkedVisible],
-  );
-  const { result: itemsWithoutCategory } = useRxData("items", queryConstructor);
-  const itemCollection = useRxCollection<Item>("items");
+  // const atLeastOneItemInCategoryVisible = useAtLeastOneVisibleItemInSomeCategory(shoplistId, checkedVisible)
+  const hasCategories = itemList?.categories.length && itemList?.categories.length > 0;
 
   if (isListFetching || !itemList) {
     return <>None</>;
   }
 
-  const itemComponents = itemsWithoutCategory.map((item) => (
-    <CheckableItem
-      checked={item.checked}
-      label={item.name}
-      key={item.name}
-      changeCallback={(data) => handleItemChange(item, data)}
-    />
-  ));
+  const otherLabel = hasCategories ? "Other" : undefined
 
-  const nextRank =
-    (itemsWithoutCategory.length > 0
-      ? itemsWithoutCategory[itemsWithoutCategory.length - 1].rankOrder
-      : 0) + 100;
+  const sections = itemList.categories.map((category) => <ListSection key={category.id} categoryId={category.id} label={category.label} shoplistId={shoplistId} showCompleted={checkedVisible} />)
+  return <MainLayout pageMenuItems={shopListPageMenu({ checkedVisible: { value: checkedVisible, callback: setCheckedVisible } })}>
+    {sections}
+    <ListSection categoryId="" label={otherLabel} shoplistId={shoplistId} showCompleted={checkedVisible} />
+  </MainLayout>
 
-  return (
-    <MainLayout pageMenuItems={shopListPageMenu({ checkedVisible: { value: checkedVisible, callback: setCheckedVisible } })}>
-      <section>
-        {/* <h2 className="font-semibold p-2">Without category</h2> */}
-        <ul className="list bg-base-100 rounded-box shadow-md">
-          {itemComponents}
-        </ul>
-      </section>
-      <NewItemInput
-        onNewItemCallback={(label) => {
-          insertOrUncheckItem(itemCollection, label, shoplistId, {
-            category: "",
-            rankOrder: nextRank,
-          });
-        }}
-      />
-    </MainLayout>
-  );
 }
