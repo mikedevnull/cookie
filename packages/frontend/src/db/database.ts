@@ -25,7 +25,7 @@ export type ItemListCollection = RxCollection<ItemList>;
 export type ItemCollection = RxCollection<Item>;
 type DatabaseCollections = {
   itemLists: ItemListCollection;
-  items: Item;
+  items: ItemCollection;
 };
 export type Database = RxDatabase<DatabaseCollections>;
 
