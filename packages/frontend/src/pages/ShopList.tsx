@@ -66,7 +66,6 @@ function useShopList(shoplistId: string) {
         setResult({ itemList: null, isFetching: false });
       });
     return () => {
-      console.log(subscription);
       subscription?.unsubscribe();
     };
   }, [collection, shoplistId]);
