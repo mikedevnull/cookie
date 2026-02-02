@@ -5,7 +5,7 @@ import { renderWithDb } from "../../test/render";
 import ShopList from "./ShopList";
 
 const { FakeListSection } = vi.hoisted(() => {
-    return { FakeListSection: vi.fn((props) => { console.log(props); return <ul>{props.label}</ul> }) }
+    return { FakeListSection: vi.fn((props) => { return <ul>{props.label}</ul> }) }
 })
 
 vi.mock(import('../components/list-section'), async () => ({
