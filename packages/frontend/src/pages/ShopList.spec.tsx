@@ -3,6 +3,7 @@ import { wrappedValidateAjvStorage } from "rxdb/plugins/validate-ajv";
 import { getRxStorageMemory } from "rxdb/plugins/storage-memory";
 import { renderWithDb } from "../../test/render";
 import ShopList from "./ShopList";
+import { MemoryRouter, Route, Routes } from "react-router";
 
 const { FakeListSection } = vi.hoisted(() => {
     return { FakeListSection: vi.fn((props) => { return <ul>{props.label}</ul> }) }
@@ -30,7 +31,12 @@ describe("ShoppingList page with database", function () {
 
     it('Renders section for each category in the database, plus an "other" section', async () => {
         await db.collections.itemLists.insert({ id: "0", label: "TestList", categories: [{ id: "categoryA", label: "A" }, { id: "categoryB", label: "B" }] })
-        const screen = await renderWithDb(db, <ShopList />)
+        const screen = await renderWithDb(db, <MemoryRouter initialEntries={["/shoplist/0"]}>
+            <Routes>
+                <Route path="/shoplist/:shoplistId" element={<ShopList />}></Route>
+            </Routes>
+        </MemoryRouter>
+        )
         const sections = screen.getByRole("list").all();
         expect(sections.length).to.be.eq(2 + 1)
         expect(FakeListSection).toHaveBeenCalledTimes(3);
@@ -41,7 +47,12 @@ describe("ShoppingList page with database", function () {
 
     it('If no other sections are defined, renders last section without heading', async () => {
         await db.collections.itemLists.insert({ id: "0", label: "TestList", categories: [] })
-        const screen = await renderWithDb(db, <ShopList />)
+        const screen = await renderWithDb(db, <MemoryRouter initialEntries={["/shoplist/0"]}>
+            <Routes>
+                <Route path="/shoplist/:shoplistId" element={<ShopList />}></Route>
+            </Routes>
+        </MemoryRouter>
+        )
         const sections = screen.getByRole("list").all();
         expect(sections.length).to.be.eq(1)
         expect(FakeListSection).toHaveBeenCalledTimes(1);

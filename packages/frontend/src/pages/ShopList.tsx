@@ -6,6 +6,8 @@ import type { ItemList } from "../db/schema";
 import { MainLayout } from "./Layout";
 import type { ValueWithSetCallback } from "../utils";
 import { ListSection } from "../components/list-section";
+import { Link, useParams } from "react-router";
+import { useShopList } from "../hooks/useShoplist";
 
 const notVisibleIcon =
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
@@ -95,8 +97,9 @@ function useShopList(shoplistId: string) {
 // }
 
 export default function ShopList() {
-  const shoplistId = "0";
+  let { shoplistId } = useParams();
 
+  shoplistId = shoplistId ?? '0'
   const { itemList, isFetching: isListFetching } = useShopList(shoplistId);
   const [checkedVisible, setCheckedVisible] = useState(true)
 
