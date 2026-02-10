@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { MainLayout } from "./Layout";
 import { useShopList } from "../hooks/useShoplist";
 import { CategoryEditor } from "../components/category-editor";
@@ -7,8 +7,13 @@ import { addNewCategory, changeCategoryLabel, deleteCategory, moveCategory } fro
 export function ShopListSettings() {
     const { shoplistId } = useParams();
     const { itemList, isFetching } = useShopList(shoplistId ?? '0')
+    const navigate = useNavigate()
 
-    if (!itemList || isFetching) {
+    if (isFetching) {
+        return <></>;
+    }
+    if (!itemList) {
+        navigate('/404')
         return <></>
     }
 

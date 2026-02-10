@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MainLayout } from "./Layout";
 import type { ValueWithSetCallback } from "../utils";
 import { ListSection } from "../components/list-section";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { useShopList } from "../hooks/useShoplist";
 
 const notVisibleIcon =
@@ -68,12 +68,17 @@ export default function ShopList() {
   shoplistId = shoplistId ?? '0'
   const { itemList, isFetching: isListFetching } = useShopList(shoplistId);
   const [checkedVisible, setCheckedVisible] = useState(true)
+  const navigate = useNavigate()
 
   // const atLeastOneItemInCategoryVisible = useAtLeastOneVisibleItemInSomeCategory(shoplistId, checkedVisible)
   const hasCategories = itemList?.categories.length && itemList?.categories.length > 0;
 
-  if (isListFetching || !itemList) {
-    return <>None</>;
+  if (isListFetching) {
+    return <></>;
+  }
+  if (!itemList) {
+    navigate('/404')
+    return <></>
   }
 
   const otherLabel = hasCategories ? "Other" : undefined
