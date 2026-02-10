@@ -18,18 +18,19 @@ export function useShopList(shoplistId: string) {
       return;
     }
     collection
-      .insertIfNotExists({
-        id: shoplistId,
-        label: "New list",
-        categories: [],
-      })
+      .findOne()
+      .where("id")
+      .equals(shoplistId)
+      .exec()
       .then((document) => {
-        subscription = document.$.subscribe((next) => {
-          setResult({
-            itemList: next,
-            isFetching: false,
+        if (document) {
+          subscription = document.$.subscribe((next) => {
+            setResult({
+              itemList: next,
+              isFetching: false,
+            });
           });
-        });
+        }
         setResult({
           itemList: document,
           isFetching: false,

@@ -65,6 +65,19 @@ export async function createDatabase({
 
 let dbCreation: Promise<Database> | undefined = undefined;
 
+export async function populateInitialWithData(db: Database) {
+  const itemListCount = await db.itemLists.count().exec();
+  if (itemListCount != 0) {
+    return db;
+  }
+  await db.itemLists.insertIfNotExists({
+    id: "0",
+    label: "New List",
+    categories: [],
+  });
+  return db;
+}
+
 export async function initialize(): Promise<Database> {
   if (dbCreation) {
     return dbCreation;
@@ -72,7 +85,7 @@ export async function initialize(): Promise<Database> {
   const storage = import.meta.env.PROD
     ? getRxStorageDexie()
     : wrappedValidateAjvStorage({ storage: getRxStorageDexie() });
-  dbCreation = createDatabase({ storage });
+  dbCreation = createDatabase({ storage }).then(populateInitialWithData);
 
   return dbCreation;
 }
