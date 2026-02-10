@@ -1,5 +1,5 @@
 import type { RxCollection, RxDocument } from "rxdb";
-import { type Item } from "./schema";
+import { type Category, type Item, type ItemList } from "./schema";
 import type { CheckableItemData } from "../components/checkable-item";
 import { arrayMove } from "@dnd-kit/sortable";
 
