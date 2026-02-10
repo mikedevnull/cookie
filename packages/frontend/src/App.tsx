@@ -5,7 +5,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import ShopList from "./pages/ShopList.tsx";
 import { Route, Routes, Navigate } from "react-router";
 import { ShopListSettings } from "./pages/ShopListSettings.tsx";
-
+import { NotFound } from './pages/NotFound'
 
 function renderError(error: unknown) {
   return <div>Something went wrong: {String(error)}</div>;
@@ -21,6 +21,8 @@ function App() {
 
           <Route path="/shoplist/:shoplistId" element={<ShopList />}></Route>
           <Route path="/shoplist/:shoplistId/settings" element={<ShopListSettings />} />
+          <Route path="/404" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/404" replace />} />
 
         </Routes>
       </DatabaseProvider>
