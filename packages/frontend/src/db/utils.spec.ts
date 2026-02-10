@@ -4,6 +4,7 @@ import { createDatabase, type Database } from "./database";
 import {
   addNewCategory,
   changeCategoryLabel,
+  changeItemCategory,
   deleteCategory,
   insertOrUncheckItem,
   moveCategory,
@@ -88,7 +89,7 @@ describe("Database utils", function () {
     });
   });
 
-  describe("insertOrUncheckItem", function () {
+  describe("item utils", function () {
     beforeEach(async function () {
       await db.collections.items.insert({
         id: db.collections.items.schema.getPrimaryOfDocumentData({
@@ -113,65 +114,86 @@ describe("Database utils", function () {
         rankOrder: 10,
       });
     });
-
-    it("inserts a new item if it does not exists", async function () {
-      await insertOrUncheckItem(db.collections.items, "New item", "0", {
-        category: "foo",
-        rankOrder: 20,
+    describe("insertOrUncheckItem", function () {
+      it("inserts a new item if it does not exists", async function () {
+        await insertOrUncheckItem(db.collections.items, "New item", "0", {
+          category: "foo",
+          rankOrder: 20,
+        });
+        const item = await db.collections.items
+          .findOne()
+          .where("name")
+          .equals("New item")
+          .exec();
+        expect(item?.toJSON()).toEqual({
+          name: "New item",
+          listId: "0",
+          category: "foo",
+          rankOrder: 20,
+          checked: false,
+          id: expect.any(String),
+        });
       });
-      const item = await db.collections.items
-        .findOne()
-        .where("name")
-        .equals("New item")
-        .exec();
-      expect(item?.toJSON()).toEqual({
-        name: "New item",
-        listId: "0",
-        category: "foo",
-        rankOrder: 20,
-        checked: false,
-        id: expect.any(String),
+
+      it("updates status of existing item if checked", async function () {
+        await insertOrUncheckItem(db.collections.items, "SomeItem", "0", {
+          category: "foo",
+          rankOrder: 20,
+        });
+        const item = await db.collections.items
+          .findOne()
+          .where("name")
+          .equals("SomeItem")
+          .exec();
+        expect(item?.toJSON()).toEqual({
+          name: "SomeItem",
+          listId: "0",
+          category: "",
+          rankOrder: 0,
+          checked: false,
+          id: expect.any(String),
+        });
+      });
+
+      it("Does not change existing item if already unchecked", async function () {
+        await insertOrUncheckItem(db.collections.items, "OtherItem", "0", {
+          category: "foo",
+          rankOrder: 20,
+        });
+        const item = await db.collections.items
+          .findOne()
+          .where("name")
+          .equals("OtherItem")
+          .exec();
+        expect(item?.toJSON()).toEqual({
+          name: "OtherItem",
+          listId: "0",
+          category: "",
+          rankOrder: 10,
+          checked: false,
+          id: expect.any(String),
+        });
       });
     });
 
-    it("updates status of existing item if checked", async function () {
-      await insertOrUncheckItem(db.collections.items, "SomeItem", "0", {
-        category: "foo",
-        rankOrder: 20,
-      });
-      const item = await db.collections.items
-        .findOne()
-        .where("name")
-        .equals("SomeItem")
-        .exec();
-      expect(item?.toJSON()).toEqual({
-        name: "SomeItem",
-        listId: "0",
-        category: "",
-        rankOrder: 0,
-        checked: false,
-        id: expect.any(String),
-      });
-    });
-
-    it("Does not change existing item if already unchecked", async function () {
-      await insertOrUncheckItem(db.collections.items, "OtherItem", "0", {
-        category: "foo",
-        rankOrder: 20,
-      });
+    it("does change an items category", async function () {
       const item = await db.collections.items
         .findOne()
         .where("name")
         .equals("OtherItem")
         .exec();
-      expect(item?.toJSON()).toEqual({
-        name: "OtherItem",
-        listId: "0",
-        category: "",
-        rankOrder: 10,
-        checked: false,
-        id: expect.any(String),
-      });
+      expect(item).toBeDefined();
+      expect(item?.category).not.toBe("categoryA");
+      if (item) {
+        await changeItemCategory(item, "categoryA");
+      }
+      const changedItem = await db.collections.items
+        .findOne()
+        .where("name")
+        .equals("OtherItem")
+        .exec();
+      expect(changedItem).toBeDefined();
+      expect(changedItem?.category).toBe("categoryA");
     });
   });
 });

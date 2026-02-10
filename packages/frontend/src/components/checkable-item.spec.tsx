@@ -102,7 +102,7 @@ describe("Checkable Item Editor", () => {
 
   test("Focusing label, entering text and pressing enter changes label", async () => {
     const { getByRole } = await render(
-      <CheckableItem label={label} changeCallback={cb} checked={true} />
+      <CheckableItem triggerChangeCategoryCallback={vi.fn()} label={label} changeCallback={cb} checked={true} />
     );
     const labelEdit = getByRole("textbox");
     await labelEdit.fill("foo");
