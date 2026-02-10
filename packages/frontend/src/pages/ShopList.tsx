@@ -1,8 +1,4 @@
-import { useRxCollection } from "rxdb-hooks";
-import { useEffect, useState } from "react";
-import type { RxDocument } from "rxdb";
-import type { Subscription } from "rxjs";
-import type { ItemList } from "../db/schema";
+import { useState } from "react";
 import { MainLayout } from "./Layout";
 import type { ValueWithSetCallback } from "../utils";
 import { ListSection } from "../components/list-section";
@@ -34,46 +30,14 @@ function shopListPageMenu({ checkedVisible }: pageMenuProps) {
       <a role="button" onClick={() => checkedVisible.callback(!checkedVisible.value)}>
         {icon} {text}
       </a>
+      <Link to="settings"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+      </svg>
+        List settings</Link>
     </li>
   </ul>
 }
 
-function useShopList(shoplistId: string) {
-  const [result, setResult] = useState<{
-    itemList: RxDocument<ItemList> | null;
-    isFetching: boolean;
-  }>({ itemList: null, isFetching: true });
-  const collection = useRxCollection<ItemList>("itemLists");
-
-  // todo: move "create if does not exist outside of this component, show error instead"
-  useEffect(() => {
-    let subscription: Subscription | undefined;
-    if (!collection) {
-      return;
-    }
-    collection
-      .insertIfNotExists({
-        id: shoplistId,
-        label: "New list",
-        categories: [],
-      })
-      .then((document) => {
-        subscription = document.$.subscribe((next) =>
-          setResult({ itemList: next, isFetching: false }),
-        );
-        setResult({ itemList: document, isFetching: false });
-      })
-      .catch((error) => {
-        console.error("Failed to fetch or create list", error);
-        setResult({ itemList: null, isFetching: false });
-      });
-    return () => {
-      subscription?.unsubscribe();
-    };
-  }, [collection, shoplistId]);
-
-  return result;
-}
 
 // use this later when we hide empty categories and have other means to move an item to them (preferrably automatically)
 // function useAtLeastOneVisibleItemInSomeCategory(shoplistId: string, checkedVisible: boolean): boolean {
@@ -95,6 +59,8 @@ function useShopList(shoplistId: string) {
 //   const { result: visibleItemInSomeCategory } = useRxData("items", queryConstructor);
 //   return visibleItemInSomeCategory.length > 0;
 // }
+
+
 
 export default function ShopList() {
   let { shoplistId } = useParams();
