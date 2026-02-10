@@ -5,6 +5,8 @@ import { ListSection } from "../components/list-section";
 import { Link, useNavigate, useParams } from "react-router";
 import { useShopList } from "../hooks/useShoplist";
 
+import { useItemCategorySelector } from "../hooks/useItemCategorySelector";
+
 const notVisibleIcon =
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
     <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
@@ -62,6 +64,7 @@ function shopListPageMenu({ checkedVisible }: pageMenuProps) {
 
 
 
+
 export default function ShopList() {
   let { shoplistId } = useParams();
 
@@ -69,9 +72,10 @@ export default function ShopList() {
   const { itemList, isFetching: isListFetching } = useShopList(shoplistId);
   const [checkedVisible, setCheckedVisible] = useState(true)
   const navigate = useNavigate()
-
   // const atLeastOneItemInCategoryVisible = useAtLeastOneVisibleItemInSomeCategory(shoplistId, checkedVisible)
   const hasCategories = itemList?.categories.length && itemList?.categories.length > 0;
+
+  const [setCurrentCategoryEditItem, renderCategoryEditDialog] = useItemCategorySelector()
 
   if (isListFetching) {
     return <></>;
@@ -83,10 +87,11 @@ export default function ShopList() {
 
   const otherLabel = hasCategories ? "Other" : undefined
 
-  const sections = itemList.categories.map((category) => <ListSection key={category.id} categoryId={category.id} label={category.label} shoplistId={shoplistId} showCompleted={checkedVisible} />)
+  const sections = itemList.categories.map((category) => <ListSection key={category.id} categoryId={category.id} label={category.label} shoplistId={shoplistId} changeCategoryCallback={setCurrentCategoryEditItem} showCompleted={checkedVisible} />)
   return <MainLayout pageMenuItems={shopListPageMenu({ checkedVisible: { value: checkedVisible, callback: setCheckedVisible } })}>
     {sections}
-    <ListSection categoryId="" label={otherLabel} shoplistId={shoplistId} showCompleted={checkedVisible} />
-  </MainLayout>
+    <ListSection categoryId="" label={otherLabel} shoplistId={shoplistId} showCompleted={checkedVisible} changeCategoryCallback={setCurrentCategoryEditItem} />
+    {renderCategoryEditDialog(itemList.categories)}
+  </MainLayout >
 
 }

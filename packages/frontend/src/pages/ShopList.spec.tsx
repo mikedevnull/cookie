@@ -40,9 +40,9 @@ describe("ShoppingList page with database", function () {
         const sections = screen.getByRole("list").all();
         expect(sections.length).to.be.eq(2 + 1)
         expect(FakeListSection).toHaveBeenCalledTimes(3);
-        expect(FakeListSection).toHaveBeenCalledWith({ label: 'A', categoryId: 'categoryA', shoplistId: '0', showCompleted: true }, undefined)
-        expect(FakeListSection).toHaveBeenCalledWith({ label: 'B', categoryId: 'categoryB', shoplistId: '0', showCompleted: true }, undefined)
-        expect(FakeListSection).toHaveBeenCalledWith({ label: 'Other', categoryId: '', shoplistId: '0', showCompleted: true }, undefined)
+        expect(FakeListSection).toHaveBeenCalledWith({ label: 'A', categoryId: 'categoryA', shoplistId: '0', showCompleted: true, changeCategoryCallback: expect.anything() }, undefined)
+        expect(FakeListSection).toHaveBeenCalledWith({ label: 'B', categoryId: 'categoryB', shoplistId: '0', showCompleted: true, changeCategoryCallback: expect.anything() }, undefined)
+        expect(FakeListSection).toHaveBeenCalledWith({ label: 'Other', categoryId: '', shoplistId: '0', showCompleted: true, changeCategoryCallback: expect.anything() }, undefined)
     })
 
     it('If no other sections are defined, renders last section without heading', async () => {
@@ -56,6 +56,6 @@ describe("ShoppingList page with database", function () {
         const sections = screen.getByRole("list").all();
         expect(sections.length).to.be.eq(1)
         expect(FakeListSection).toHaveBeenCalledTimes(1);
-        expect(FakeListSection).toHaveBeenCalledWith({ label: undefined, categoryId: '', shoplistId: '0', showCompleted: true }, undefined)
+        expect(FakeListSection).toHaveBeenCalledWith({ label: undefined, categoryId: '', shoplistId: '0', showCompleted: true, changeCategoryCallback: expect.anything() }, undefined)
     })
 })

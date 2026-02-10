@@ -57,7 +57,7 @@ describe("ShoppingList page with database", function () {
     });
 
     it('Renders a list of all items in the database for a category', async () => {
-        const screen = await renderWithDb(db, <ListSection shoplistId="0" categoryId="categoryA" showCompleted={true} />)
+        const screen = await renderWithDb(db, <ListSection shoplistId="0" categoryId="categoryA" showCompleted={true} changeCategoryCallback={vi.fn()} />)
         const items = screen.getByRole("listitem").all();
         expect(items.length).to.be.eq(3)
         const labels = items.map(i => i.getByRole('textbox').element().getAttribute("value"));
@@ -65,7 +65,7 @@ describe("ShoppingList page with database", function () {
     })
 
     it('Renders a list of only done items when show completed is disabled', async () => {
-        const screen = await renderWithDb(db, <ListSection shoplistId="0" categoryId="categoryA" showCompleted={false} />)
+        const screen = await renderWithDb(db, <ListSection shoplistId="0" categoryId="categoryA" showCompleted={false} changeCategoryCallback={vi.fn()} />)
         const items = screen.getByRole("listitem").all();
         expect(items.length).to.be.eq(2)
         const labels = items.map(i => i.getByRole('textbox').element().getAttribute("value"));

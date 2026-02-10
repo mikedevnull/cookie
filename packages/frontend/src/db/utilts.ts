@@ -50,6 +50,13 @@ export async function handleItemChange(
   }
 }
 
+export async function changeItemCategory(
+  item: RxDocument<Item>,
+  newCategoryId: string,
+) {
+  await item.patch({ category: newCategoryId });
+}
+
 export async function addNewCategory(
   newLabel: string,
   itemList: RxDocument<ItemList>,

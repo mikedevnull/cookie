@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import NewItemInput from "./new-item-input";
-import type { RxCollection } from "rxdb";
+import type { RxCollection, RxDocument } from "rxdb";
 import type { Item } from "../db/schema";
 import { useRxCollection, useRxData } from "rxdb-hooks";
 import CheckableItem from "./checkable-item";
@@ -10,11 +10,12 @@ interface Props {
     label?: string
     categoryId: string,
     shoplistId: string,
-    showCompleted: boolean
+    showCompleted: boolean,
+    changeCategoryCallback: (item: RxDocument<Item>) => void
 }
 
 
-export function ListSection({ label, categoryId, shoplistId, showCompleted }: Props) {
+export function ListSection({ label, categoryId, shoplistId, showCompleted, changeCategoryCallback }: Props) {
     const queryConstructor = useCallback(
         (itemCollection: RxCollection<Item>) => {
             const query = itemCollection
@@ -41,6 +42,7 @@ export function ListSection({ label, categoryId, shoplistId, showCompleted }: Pr
             label={item.name}
             key={item.name}
             changeCallback={(data) => handleItemChange(item, data)}
+            triggerChangeCategoryCallback={() => changeCategoryCallback(item)}
         />
     ));
 
