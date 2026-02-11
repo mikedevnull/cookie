@@ -1,6 +1,6 @@
 import { MainLayout } from "./Layout";
 
-export function NotFound() {
+export default function NotFound() {
     return <MainLayout>
         <div className="text-center">
             <h3 className="text-base pt-8 text-accent">404</h3>
