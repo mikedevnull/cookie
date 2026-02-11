@@ -31,7 +31,7 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install chromium-headless-shell --with-deps
     - run: npm run lint --workspaces
     - run: npm run build --workspaces
     - run: npm test --workspaces
