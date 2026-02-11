@@ -8,10 +8,10 @@ type Props = React.PropsWithChildren<{
   databaseConstructor?: DatabaseConstructor;
 }>;
 
-export const DatabaseProvider = ({
+export default function DatabaseProvider({
   children,
   databaseConstructor = initialize,
-}: Props) => {
+}: Props) {
   const [db, setDb] = useState<Database>();
 
   useEffect(() => {
@@ -39,3 +39,4 @@ export const DatabaseProvider = ({
     </Provider>
   );
 };
+
