@@ -2,6 +2,7 @@ import type { RxCollection, RxDocument } from "rxdb";
 import { type Category, type Item, type ItemList } from "./schema";
 import type { CheckableItemData } from "../components/checkable-item";
 import { arrayMove } from "@dnd-kit/sortable";
+import { v4 as uuidv4 } from "uuid";
 
 export async function insertOrUncheckItem(
   collection: RxCollection<Item> | null,
@@ -61,7 +62,7 @@ export async function addNewCategory(
   newLabel: string,
   itemList: RxDocument<ItemList>,
 ) {
-  const newId = crypto.randomUUID();
+  const newId = uuidv4();
   const newCategories: Category[] = [
     ...itemList.categories,
     { id: newId, label: newLabel },
