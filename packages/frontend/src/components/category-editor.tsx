@@ -66,7 +66,7 @@ function SortableItem({ id, label, onEdit, onDelete }: { id: string; label: stri
             <div onClick={(() => onDelete(id))} className="btn btn-square btn-ghost" role="button" aria-label="Delete category">
                 {TrashIcon}
             </div>
-            <div {...listeners} className="btn btn-square btn-ghost" role="button" style={{ cursor: "move" }} aria-label="Move category">
+            <div {...listeners} style={{ touchAction: "none", cursor: "move" }} className="btn btn-square btn-ghost" role="button" aria-label="Move category">
                 {DragIcon}
             </div>
         </li>
