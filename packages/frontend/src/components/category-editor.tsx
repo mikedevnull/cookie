@@ -14,13 +14,13 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useOptimistic, useState } from "react";
+import { useOptimistic, useState, useTransition } from "react";
 import type { Category } from "../db/schema";
 import type { DragEndEvent } from "@dnd-kit/core";
 
 interface CategoryEditorProps {
     categories: Category[];
-    onReorder: (movedId: string, relativeToId: string) => void;
+    onReorder: (movedId: string, relativeToId: string) => Promise<void>;
     onEdit: (id: string, newLabel: string) => void;
     onAdd: (newLabel: string) => void;
     onDelete: (id: string) => void
@@ -77,6 +77,7 @@ export function CategoryEditor({ categories, onReorder, onEdit, onAdd, onDelete 
 
     const [newCategory, setNewCategory] = useState("");
     const [optimisticCategories, setOptimisticCategories] = useOptimistic(categories, (_state, newState: Category[]) => { return newState; });
+    const [, startTransition] = useTransition()
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -91,8 +92,10 @@ export function CategoryEditor({ categories, onReorder, onEdit, onAdd, onDelete 
             const oldIndex = categories.findIndex((item) => item.id === active.id);
             const newIndex = categories.findIndex((item) => item.id === over?.id);
             const updated = arrayMove(categories, oldIndex, newIndex);
-            setOptimisticCategories(updated);
-            onReorder(active.id as string, over.id as string);
+            startTransition(async () => {
+                setOptimisticCategories(updated);
+                await onReorder(active.id as string, over.id as string);
+            })
         }
     }
 

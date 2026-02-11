@@ -26,7 +26,7 @@ describe("CategoryEditor", function () {
         const screen = await renderWithDb(db, (
             <CategoryEditor
                 categories={categories}
-                onReorder={() => { }}
+                onReorder={async () => { }}
                 onEdit={() => { }}
                 onAdd={() => { }}
                 onDelete={() => { }}
@@ -48,7 +48,7 @@ describe("CategoryEditor", function () {
         const screen = await renderWithDb(db, (
             <CategoryEditor
                 categories={categories}
-                onReorder={() => { }}
+                onReorder={async () => { }}
                 onEdit={mockOnEdit}
                 onAdd={() => { }}
                 onDelete={() => { }}
@@ -68,7 +68,7 @@ describe("CategoryEditor", function () {
         const screen = await renderWithDb(db, (
             <CategoryEditor
                 categories={[]}
-                onReorder={() => { }}
+                onReorder={async () => { }}
                 onEdit={() => { }}
                 onAdd={mockOnAdd}
                 onDelete={() => { }}
@@ -92,7 +92,7 @@ describe("CategoryEditor", function () {
         const screen = await renderWithDb(db, (
             <CategoryEditor
                 categories={categories}
-                onReorder={() => { }}
+                onReorder={async () => { }}
                 onEdit={() => { }}
                 onAdd={() => { }}
                 onDelete={mockOnDelete}
