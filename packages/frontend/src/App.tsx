@@ -1,6 +1,5 @@
 import "./App.css";
 
-import { DatabaseProvider } from "./db/provider.tsx";
 import { ErrorBoundary } from "react-error-boundary";
 import { Navigate, Route, Routes } from "react-router";
 import { lazy } from "react";
@@ -8,6 +7,8 @@ import { lazy } from "react";
 const ShopListSettings = lazy(() => import('./pages/ShopListSettings.tsx'));
 const NotFound = lazy(() => import('./pages/NotFound.tsx'));
 const ShopList = lazy(() => import('./pages/ShopList.tsx'));
+const DatabaseProvider = lazy(() => import('./db/provider.tsx'));
+
 function renderError(error: unknown) {
   return <div>Something went wrong: {String(error)}</div>;
 }
