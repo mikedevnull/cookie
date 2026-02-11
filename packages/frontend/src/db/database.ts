@@ -35,7 +35,7 @@ type DatabaseCreationOptions = {
 };
 
 const hashFunction: (input: string) => Promise<string> =
-  crypto?.subtle?.digest === undefined
+  crypto?.subtle?.digest !== undefined
     ? nativeSha256
     : (input) => Promise.resolve(hash(input));
 
