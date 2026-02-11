@@ -23,16 +23,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            if (id.includes("rxdb") || id.includes("rxjs")) {
-              return "rxdb";
-            }
-            if (id.includes("react")) {
-              return "react";
-            }
-            return "vendor"; // Split vendor libraries
-          }
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+          router: ["react-router"],
+          rxdb: ["rxdb", "rxdb-hooks", "rxjs"],
         },
       },
     },
