@@ -2,11 +2,12 @@ import "./App.css";
 
 import { DatabaseProvider } from "./db/provider.tsx";
 import { ErrorBoundary } from "react-error-boundary";
-import ShopList from "./pages/ShopList.tsx";
-import { Route, Routes, Navigate } from "react-router";
-import { ShopListSettings } from "./pages/ShopListSettings.tsx";
-import { NotFound } from './pages/NotFound'
+import { Navigate, Route, Routes } from "react-router";
+import { lazy } from "react";
 
+const ShopListSettings = lazy(() => import('./pages/ShopListSettings.tsx'));
+const NotFound = lazy(() => import('./pages/NotFound.tsx'));
+const ShopList = lazy(() => import('./pages/ShopList.tsx'));
 function renderError(error: unknown) {
   return <div>Something went wrong: {String(error)}</div>;
 }
