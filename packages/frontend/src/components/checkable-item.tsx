@@ -45,7 +45,7 @@ function CheckableItem(props: CheckableItemProps) {
 
   const checkboxLabelId = useId();
   return (
-    <li className="list-row">
+    <li className="py-1 list-row">
       <input type="checkbox" onChange={(e) => onCheckboxChange(e)}
         checked={isChecked}
         aria-label={props.label} aria-labelledby={checkboxLabelId} className="checkbox checkbox-primary place-self-center" />
