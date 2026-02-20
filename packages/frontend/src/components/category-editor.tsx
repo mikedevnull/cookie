@@ -14,7 +14,7 @@ import {
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useOptimistic, useState, useTransition } from "react";
+import { useOptimistic, useRef, useTransition } from "react";
 import type { Category } from "../db/schema";
 import type { DragEndEvent } from "@dnd-kit/core";
 
@@ -75,7 +75,7 @@ function SortableItem({ id, label, onEdit, onDelete }: { id: string; label: stri
 
 export function CategoryEditor({ categories, onReorder, onEdit, onAdd, onDelete }: CategoryEditorProps) {
 
-    const [newCategory, setNewCategory] = useState("");
+    const inputRef = useRef<HTMLInputElement>(null)
     const [optimisticCategories, setOptimisticCategories] = useOptimistic(categories, (_state, newState: Category[]) => { return newState; });
     const [, startTransition] = useTransition()
 
@@ -100,10 +100,13 @@ export function CategoryEditor({ categories, onReorder, onEdit, onAdd, onDelete 
     }
 
     function handleAddCategory() {
-        const trimmedLabel = newCategory.trim();
+        if (!inputRef.current) {
+            return
+        }
+        const trimmedLabel = inputRef.current.value.trim();
         if (trimmedLabel) {
             onAdd(trimmedLabel);
-            setNewCategory("");
+            inputRef.current.value = ""
         }
     }
 
@@ -111,10 +114,6 @@ export function CategoryEditor({ categories, onReorder, onEdit, onAdd, onDelete 
         if (event.key === "Enter") {
             handleAddCategory();
         }
-    }
-
-    function handleInputBlur() {
-        setNewCategory("");
     }
 
     return (
@@ -135,16 +134,17 @@ export function CategoryEditor({ categories, onReorder, onEdit, onAdd, onDelete 
                 </SortableContext>
             </DndContext>
             <div className="mt-4">
-                <input
-                    className="input input-bordered w-full"
-                    placeholder="Add new category"
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                    onKeyDown={handleInputKeyDown}
-                    onBlur={handleInputBlur}
-                    aria-label="Add new category"
-                />
-            </div>
+                <div className="join w-full">
+                    <input
+                        ref={inputRef}
+                        className="input input-bordered w-full join-item"
+                        placeholder="Add new category"
+                        onKeyDown={handleInputKeyDown}
+                        aria-label="Add new category"
+                    />
+                    <button className="btn btn-neutral join-item" onClick={handleAddCategory}>Add</button>
+                </div>
+            </div >
         </>
     );
 }
