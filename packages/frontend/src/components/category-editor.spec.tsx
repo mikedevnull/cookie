@@ -62,7 +62,7 @@ describe("CategoryEditor", function () {
         expect(mockOnEdit).toHaveBeenCalledWith("1", "Updated Category 1");
     });
 
-    it("calls onAdd when a new category is added", async () => {
+    it("calls onAdd when a new category is added by pressing enter", async () => {
         const mockOnAdd = vi.fn();
 
         const screen = await renderWithDb(db, (
@@ -77,9 +77,34 @@ describe("CategoryEditor", function () {
 
         const input = screen.getByRole("textbox", { name: "Add new category" });
 
-        await userEvent.type(input, "New Category{Enter}");
-        // input.element().blur();
+        // ensure it trims additional whitespaces as well
+        await userEvent.type(input, " New Category  {Enter}");
         expect(mockOnAdd).toHaveBeenCalledWith("New Category");
+        await expect.element(input).toHaveValue("")
+    });
+
+    it("calls onAdd when a new category is added by clicking add button", async () => {
+        const mockOnAdd = vi.fn();
+        const screen = await renderWithDb(db, (
+            <CategoryEditor
+                categories={[]}
+                onReorder={async () => { }}
+                onEdit={() => { }}
+                onAdd={mockOnAdd}
+                onDelete={() => { }}
+            />
+        ));
+        const input = screen.getByRole("textbox");
+        const addButton = screen.getByRole("button");
+        expect(input).toBeInTheDocument();
+        expect(input).toHaveValue("");
+
+        // ensure it trims additional whitespaces as well
+        await input.fill(" New category  ");
+        await expect.element(input).toHaveValue(" New category  ")
+        await addButton.click();
+        expect(mockOnAdd).toHaveBeenCalledExactlyOnceWith("New category");
+        await expect.element(input).toHaveValue("")
     });
 
     it('Calls onDelete when a category is deleted', async () => {

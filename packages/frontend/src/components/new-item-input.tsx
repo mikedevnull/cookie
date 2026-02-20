@@ -1,29 +1,38 @@
+import { useRef } from "react";
+
 type NewItemInputProps = {
   onNewItemCallback?: (label: string) => void;
 };
 
 export default function NewItemInput(props: NewItemInputProps) {
-  const onNewItem = (element: HTMLInputElement) => {
-    const label = element.value;
+  const inputFieldRef = useRef<HTMLInputElement>(null)
+  const onNewItem = () => {
+    if (!inputFieldRef.current) {
+      return
+    }
+    const label = inputFieldRef.current.value;
     if (label && props.onNewItemCallback) {
       props.onNewItemCallback(label.trim());
     }
-    element.value = "";
+    inputFieldRef.current.value = "";
   };
 
   const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      onNewItem(event.currentTarget);
+      onNewItem();
     }
   };
 
   return (
-    <input
-      type="text"
-      onBlur={(e) => onNewItem(e.currentTarget)}
-      placeholder="New item"
-      onKeyDown={onKeyPress}
-      className="input w-full my-4"
-    />
+    <div className="join w-full my-4">
+      <input
+        ref={inputFieldRef}
+        type="text"
+        placeholder="New item"
+        onKeyDown={onKeyPress}
+        className="input w-full join-item"
+      />
+      <button className="btn btn-neutral join-item" onClick={onNewItem}>Add</button>
+    </div >
   );
 }
