@@ -46,7 +46,7 @@ function SortableItem({ id, label, onEdit, onDelete }: { id: string; label: stri
     };
 
     return (
-        <li className="list-row items-center justify-between" style={style} ref={setNodeRef} {...attributes} role="list-item">
+        <li className="list-row items-center justify-between py-1" style={style} ref={setNodeRef} {...attributes} role="list-item">
             <div>&nbsp;</div>
             <input
                 className="input input-ghost w-full"
