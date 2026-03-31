@@ -78,7 +78,7 @@ jobs:
         run: npm run build -- --base=/cookie/
         working-directory: packages/frontend
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
@@ -86,4 +86,4 @@ jobs:
           path: './packages/frontend/dist'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
