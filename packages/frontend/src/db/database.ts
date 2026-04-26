@@ -12,9 +12,10 @@ import { getRxStorageMemory } from "rxdb/plugins/storage-memory";
 import { wrappedValidateAjvStorage } from "rxdb/plugins/validate-ajv";
 import { RxDBMigrationPlugin } from "rxdb/plugins/migration-schema";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
-import { createRxDatabase } from "rxdb";
+import { createRxDatabase, type HashFunction } from "rxdb";
 import { itemListSchema, itemSchema, type Item, type ItemList } from "./schema";
 import { hash } from "ohash";
+
 if (import.meta.env.DEV) {
   addRxPlugin(RxDBDevModePlugin);
 }
@@ -34,7 +35,7 @@ type DatabaseCreationOptions = {
   storage?: RxStorage<unknown, unknown>;
 };
 
-const hashFunction: (input: string) => Promise<string> =
+const hashFunction: HashFunction =
   crypto?.subtle?.digest !== undefined
     ? nativeSha256
     : (input) => Promise.resolve(hash(input));
